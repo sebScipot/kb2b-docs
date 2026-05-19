@@ -129,4 +129,4 @@ Cuando esto esté vivo:
 3. Crear el primer CI workflow
 4. Empezar a escribir el contenido real de los 12 stubs (orden recomendado por TTHW archetype: limites-de-tokens → grabar-reunion → chat-con-el-pot → subir-documentos → facturacion → que-es-kb2b → resto)
 
-¿Dudas? Mira el plan completo en [kb2b-docs-plan.md](../kb2b-docs-plan.md) o pídeme cosas específicas.
+¿Dudas? El plan completo `kb2b-docs-plan.md` vive en el filesystem de quien hizo el bootstrap inicial (no está en este repo). Consulta a quien mantenga el repo.
