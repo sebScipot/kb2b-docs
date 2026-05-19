@@ -1,0 +1,96 @@
+---
+title: "Knowledge and trust"
+sidebarTitle: "Knowledge"
+description: "The Knowledge section is the POT's trust panel: contradictions, validation, freshness, activity, and review queue, all on one screen."
+lang: "en"
+---
+
+The **Knowledge** section (`/dashboard/knowledge`) is the main panel for understanding the POT's epistemic health: how reliable is what it knows? what needs human attention? what's moved recently?
+
+(In earlier versions this was called **Memory** — the rename to Knowledge happened in v0.14.0. If you see "Memory" in an old screenshot, it's the same thing.)
+
+## The 5 Trust Dashboard signals
+
+The main page has **5 cards** all answering, in one place, "can I trust what's in here?":
+
+### 1. Contradictions (banner)
+
+A persistent banner at the top of the section showing **how many pending contradictions** there are and their severity (critical / moderate / mild). Click a contradiction → opens the resolution flow directly (see [POT Constitution](/en/admin/pot-constitution)).
+
+If there are no contradictions, the banner hides itself. That's a good signal.
+
+### 2. Last-7-days engagement
+
+A compact strip with:
+- Number of **actions** on facts in the last 7 days (approvals, disapprovals, comments)
+- **Active users** in the workspace
+- **Delta vs previous week** (green if more, red if less)
+- An inline **sparkline** showing the day-by-day trend
+
+"See detail" jumps to the Activity sub-route (below).
+
+### 3. Validation coverage
+
+**% of facts that have received at least 1 validation** (approval or disapproval).
+
+- Green / "healthy" if ≥ 70%
+- Orange / "at risk" if below 70%
+
+It's the metric for _"what fraction of the knowledge has had human eyes on it?"_. If it's low, your team is trusting too much of what kb2b auto-extracts without verifying.
+
+### 4. Freshness
+
+**% of facts touched (validated, edited, or referenced in chat) in the last 30 days.**
+
+Together with validation coverage, it tells you not only "has it been seen?" but also "is it still current?". A fact validated 2 years ago might be obsolete by now.
+
+### 5. Needs review
+
+A **queue of the top 10 unvalidated facts**, sorted by ascending POT Score (most uncertain first). The actionable list of "sit down for 15 minutes and review these".
+
+Each fact in the queue can be approved/disapproved inline, or you can open the inspector for more detail.
+
+### Recent evidence
+
+Below the 5 cards, a **Recent evidence** section showing the last 4 facts added to the POT. Useful to see "what got ingested this week" at a glance.
+
+## Sub-routes
+
+The Knowledge section has 3 sub-routes with their own sub-nav:
+
+| Route | What's in it |
+|---|---|
+| `/dashboard/knowledge` | The Trust Dashboard described above (5 cards + recent evidence) |
+| `/dashboard/knowledge/activity` | Full engagement widget (7d / 30d / all-time filters) + recent facts + activity feed |
+| `/dashboard/knowledge/constitution` | Constitutional axioms editor + active campaigns + danger zone (delete POT). See [POT Constitution](/en/admin/pot-constitution) for detail. |
+
+The contradictions banner appears on **all sub-routes** — it's global to the section.
+
+## Useful deep-links
+
+You can share specific URLs with your team:
+
+- `/dashboard/knowledge?fact={id}` → opens the inspector for a specific fact
+- `/dashboard/knowledge?contradiction={id}` → opens a specific contradiction for resolution
+- `/dashboard/knowledge/constitution?contradiction={id}` → takes you to the constitution editor with the contradiction already selected
+
+Old URLs like `/dashboard/pot` or `/dashboard/activity` still work — they auto-redirect (308) to the new Knowledge routes.
+
+## How to use this day-to-day
+
+**Monday morning** (10 minutes):
+1. Check the contradictions banner. If there are critical ones, resolve those first.
+2. Review the engagement delta vs the previous week. Did team activity on the POT go up or down?
+3. Coverage and freshness: are they above 70% and 50% respectively? If not, focus the team this week on validating.
+4. Needs review: approve/disapprove 5-10 facts before starting anything else.
+
+**In team meetings**: use the Activity tab to show "what we moved on account knowledge this week".
+
+**Before a quarter**: review coverage + freshness as POT health metrics. Below certain thresholds, decide whether to pause new ingestions until you clean up.
+
+## When NOT to look at this
+
+- **If your POT has fewer than 20 facts**, the metrics aren't meaningful. Get it to at least 50 facts (by uploading documents and recording meetings) before reading trust signals seriously.
+- **If you're a solo user** (no team), the Engagement and Needs review cards offer little — it's just you. Focus on chat and meetings.
+
+_Page in progress Phase 1 — screenshots of the 5 cards and sub-routes coming in Phase 2._

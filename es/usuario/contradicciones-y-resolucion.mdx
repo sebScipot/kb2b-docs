@@ -1,0 +1,160 @@
+---
+title: "Contradicciones y resolución"
+sidebarTitle: "Contradicciones"
+description: "Cuando dos hechos del POT se contradicen, kb2b los marca y abre un workflow en dos fases para que el equipo aporte evidencia y un curador resuelva."
+lang: "es"
+---
+
+## El problema que resuelve
+
+Si vas ingestando documentos y transcripciones a un POT, **tarde o temprano dos hechos van a contradecirse**. Ejemplos típicos:
+
+- Una propuesta antigua dice "descuento por volumen desde 500 unidades" — un email reciente dice "desde 300 unidades"
+- Una reunión menciona "el interlocutor único es Carlos" — un contrato dice "interlocutor único es Laura"
+- Un informe trimestral dice "creciendo al 12% YoY" — la presentación al inversor dice "8% YoY"
+
+Sin gestión, esto se convierte en ruido — kb2b respondería con baja confianza o se contradiría a sí mismo según qué hecho recuperara. La **resolución de contradicciones** es el flujo formal para que el equipo decida cuál vale.
+
+## Cómo se detecta
+
+kb2b detecta contradicciones automáticamente cuando ingesta un hecho nuevo:
+
+1. Para cada hecho nuevo, busca hechos semánticamente similares ya existentes en el POT.
+2. Un LLM evalúa si la relación es: `supports`, `refines`, `derives_from` o **`contradicts`**.
+3. Si es `contradicts`, se crea un **edge** entre los dos hechos con esa relación.
+4. Cada edge tiene un **peso** (0.0–1.0) que indica qué tan fuerte es la contradicción (cuánto se solapan los conceptos + cuánto difieren los scores).
+
+## Dónde se ven
+
+Las contradicciones aparecen en **dos sitios**:
+
+- **Banner persistente** arriba de toda la sección Conocimiento (`/dashboard/knowledge` y sub-rutas) — muestra el conteo total y por severidad. Si no hay contradicciones, el banner se oculta.
+- **Página dedicada** en `/dashboard/knowledge/constitution` — la lista completa, expandible, con AI Triage si hay ≥3.
+
+### Severidades
+
+kb2b clasifica cada contradicción por su **peso**:
+
+| Peso | Severidad | Color | Significado |
+|---|---|---|---|
+| ≥ 0.80 | **Crítica** | Rojo | Solapamiento alto y scores muy distintos — alta probabilidad de ser un conflicto real importante |
+| 0.50 – 0.79 | **Moderada** | Naranja | Probable contradicción que merece revisión |
+| < 0.50 | **Leve** | Amarillo | Posible falso positivo o contradicción menor |
+
+La severidad se calcula automáticamente del peso del edge — no se asigna manualmente. Las contradicciones se ordenan descendente por peso, así que las críticas siempre aparecen primero.
+
+### AI Triage
+
+Cuando hay **3 o más contradicciones activas**, kb2b muestra un panel de Triage automatizado con recomendaciones de Claude: agrupa contradicciones relacionadas, sugiere por dónde empezar, y resume los conflictos. **No resuelve por ti** — sólo te ayuda a priorizar.
+
+## El workflow en dos fases
+
+La resolución de una contradicción tiene **dos fases**, intencionalmente separadas:
+
+```
+   Fase 1 — STANCE (evidencia)                    Fase 2 — RESOLUCIÓN (decisión)
+   ─────────────────────────                      ─────────────────────────
+   El equipo aporta votos       ────────────▶     Un curador toma decisión final
+   (editores+ pueden hacerlo)                     (editor / admin / curador)
+                                                  
+   confirm_a / confirm_b /                        confirmed_a / confirmed_b /
+   dismiss                                         both_valid / needs_update / dismissed
+```
+
+La separación es deliberada: las stances se acumulan asíncronamente entre el equipo, y la resolución final ocurre cuando ya hay evidencia suficiente.
+
+### Fase 1 — Stances (todos los editores)
+
+En cada contradicción aparecen las dos cards de hechos lado a lado. Bajo cada una hay tres botones:
+
+- **"Apoyo este hecho"** (confirm_a o confirm_b según el lado) — votas a favor del hecho.
+- **"No es contradicción"** (dismiss) — marcas el edge como falso positivo.
+
+Cada stance puede incluir **notas opcionales** explicando por qué. Cada uno también dispara un **score delta** que se propaga a los hechos involucrados:
+
+- Confirmar un hecho **sube** su POT Score proporcional a tu nivel de expertise.
+- El hecho contrario **baja** proporcionalmente.
+
+Los conteos se muestran en vivo: _"3 apoyan A · 1 apoya B · 0 descartan"_. Si cambias de opinión, tu stance se reemplaza (no se duplica).
+
+### Fase 2 — Resolución (editor / admin / curador)
+
+Cuando hay evidencia suficiente, alguien con permisos toma la decisión final. Hay **5 opciones**:
+
+| Resolución | Significado |
+|---|---|
+| **confirmed_a** | "El Hecho A es correcto" — sube score de A, baja el de B. |
+| **confirmed_b** | "El Hecho B es correcto" — al revés. |
+| **both_valid** | "Ambos son válidos en contextos distintos" — no penaliza, marca explícitamente que no son contradictorios. |
+| **needs_update** | "Los documentos necesitan actualizarse" — flag que no es decisión epistémica sino tarea de mantenimiento. |
+| **dismissed** | "No es una contradicción real" — falso positivo. |
+
+Cada resolución puede incluir **notas** explicando el rationale.
+
+Cuando se confirma, kb2b muta el edge en SciPot: `contradicts` → `resolved_contradiction`, marca quién resolvió y cuándo, guarda las notas, y aplica los deltas finales de score.
+
+## Revertir una resolución
+
+Si te equivocas o aparece evidencia nueva, el resolver original puede **revertir** su resolución. Click en "Revertir" en la tarjeta resuelta:
+
+- El edge vuelve a `contradicts` (estado activo).
+- Las stances previas se mantienen como historial.
+- El revert queda en el audit trail.
+
+Solo quien resolvió puede revertir su propia resolución. Otros editores pueden tomar una stance nueva si discrepan, pero no sobrescribir directamente.
+
+## Axiomas constitucionales y contradicciones
+
+Cuando un hecho `Constitutional` (POT Score 1.0) participa en una contradicción:
+
+- kb2b **muestra un warning amber explícito** en la UI: _"Este hecho contradice un axioma constitucional. Resolverlo en contra del axioma requiere intervención de administrador."_
+- **NO bloquea** la resolución técnicamente — la decisión queda en el responsable.
+- El warning es para que pienses dos veces: si vas a tumbar un axioma, lo apropiado es ir a [Constitución del POT](/es/admin/constitucion-del-pot) y degradarlo o eliminarlo formalmente con repropagación de scores.
+
+<Warning>
+  El whitepaper de SciPot describe los axiomas como "immune to stance penalties". En kb2b la implementación actual es **warning-aware**, no **bloqueo-duro**: la UI te advierte pero permite la acción. Si tu organización necesita bloqueo real (auditoría regulatoria, compliance), confírmalo con tu admin antes de operar sobre contradicciones que tocan axiomas.
+</Warning>
+
+## Qué queda registrado (audit trail)
+
+Cada acción sobre una contradicción genera un **evento de actividad** que queda en el log:
+
+| Evento | Quién | Cuándo | Qué guarda |
+|---|---|---|---|
+| `stance_taken` | userId | timestamp | stance (`confirm_a`/`confirm_b`/`dismiss`) + notas |
+| `contradiction_resolved` | userId | timestamp | resolution_type + notas |
+| Revert de resolución | userId | timestamp | retorno a `contradicts` |
+
+Los stances históricos se ven en el panel **"Posiciones del equipo"** dentro de cada contradicción — quién votó qué, cuándo, con qué notas, y el delta de score que generó.
+
+Las contradicciones resueltas se conservan en un panel separado: **"Mis resoluciones"** (las tuyas) y **"Resueltas por otros"** (las del equipo) — atenuadas pero accesibles para revisión.
+
+## Notificaciones
+
+<Info>
+  En esta versión kb2b **NO envía notificaciones push** cuando:
+  - Se detecta una contradicción nueva
+  - Alguien toma una stance en una contradicción que te concierne
+  - Se resuelve una contradicción que tú originaste o votaste
+
+  Todos los cambios quedan en el activity feed y son visibles cuando entras a la sección Conocimiento. Las notificaciones push están en el roadmap.
+</Info>
+
+## Cuándo NO usar este flujo
+
+- **Si descubres un hecho mal extraído** (no contradice nada, simplemente está mal), **no abras una contradicción** — usa la curación 👎 desde el inspector del fact (ver [Explorar y discutir facts](/es/usuario/explorar-y-discutir-facts)).
+- **Si quieres discutir un fact pero no contradice otro**, usa la pestaña Discusión, no este flujo.
+- **Si dos hechos parecen contradecirse pero realmente son sobre cosas diferentes**, resuelve con `dismissed` o `both_valid` — no fuerces una decisión binaria donde no aplica.
+
+## Permisos
+
+| Acción | Reader | Editor | Admin | Human Curator |
+|---|---|---|---|---|
+| Ver contradicciones | ✓ | ✓ | ✓ | ✓ |
+| Tomar stance | — | ✓ | ✓ | ✓ |
+| Resolver contradicción | — | ✓ | ✓ | ✓ |
+| Resolver tocando axioma | — | ⚠ (warning) | ⚠ | ⚠ |
+| Revertir tu propia resolución | — | ✓ | ✓ | ✓ |
+| Gestionar Constitución | — | — | ✓ | ✓ |
+
+_Página en construcción Phase 1 — capturas del banner, del workflow de stance, y del modal de resolución vienen en Phase 2._

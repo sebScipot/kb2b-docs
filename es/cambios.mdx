@@ -1,0 +1,408 @@
+---
+title: "Cambios"
+sidebarTitle: "Cambios"
+description: "Notas de versión de kb2b (web) y kb2b Desktop, en formato Keep a Changelog."
+lang: "es"
+---
+
+{/* AUTO-GENERATED: scripts/sync-changelog.js writes this file from kb2b/CHANGELOG.md and kb2b-desktop git tags. Do not edit manually — changes between the markers will be overwritten. Last sync: 2026-05-19. */}
+
+<Info>
+  El contenido detallado del log está originalmente en inglés (es un changelog técnico). Cuando un cambio afecta la UI o la experiencia del usuario, los títulos y descripciones se traducen aquí.
+</Info>
+
+{/* changelog:start */}
+
+## kb2b (web)
+
+## [Unreleased]
+
+## [0.15.1] - 2026-05-17
+
+### Fixed
+- **CRITICAL — workspace deletion no longer wipes your account.** The
+  *Danger zone* in `/dashboard/profile` previously called an endpoint
+  that, after deleting the active workspace, also deleted the user
+  row. Because `organization_member.userId` cascades on user delete,
+  that silently unlinked the user from every OTHER workspace they
+  belonged to, leaving them dropped onto the onboarding screen with
+  no visible workspaces. The endpoint now deletes only the active
+  workspace; the account and all other workspaces stay intact. Copy
+  in ES/EN/CA has been rewritten to say "Eliminar este workspace" /
+  "Delete this workspace" (no longer "Eliminar cuenta y organización"
+  / "Delete account and organization") so the intent matches what
+  actually happens. A regression test in
+  `src/__tests__/api-account-delete.test.ts` asserts that a user
+  with memberships in two workspaces keeps the second after deleting
+  the first.
+
+## [0.15.0] - 2026-05-17
+
+### Changed
+- **Contradictions move from the Constitution tab to the Knowledge section.**
+  The full triage banner (list, severity, stances, resolve, discussion) now
+  lives in the Knowledge layout, so it appears on Dashboard, Updates, and
+  Constitution alike. Clicking *Pending contradictions* on the dashboard
+  no longer bounces you to the Constitution tab with a collapsed panel
+  that needs a second click — the banner is right there, ready to expand.
+  Deep-links (`?contradiction=<id>`) work from any sub-tab. The banner
+  still self-hides when there are no contradictions, so tabs with a clean
+  knowledge base render exactly as before.
+
+### Removed
+- Dashboard's compact *Pending contradictions* summary card — the
+  layout-level banner shows the same count + severity in its collapsed
+  header.
+- The `/dashboard/knowledge?contradiction=<id>` → `/constitution` redirect
+  (no longer needed; banner is everywhere).
+
+## [0.14.1] - 2026-05-17
+
+### Fixed
+- **Onboarding "Capture meetings" quick-start** no longer fails with
+  *"Could not create the knowledge base. Please try again."* The SciPot
+  client was calling the old `POST /pots/from-json` endpoint, which was
+  renamed to `POST /pots` on the SciPot side and now returns 405. Updated
+  the client to use the new canonical create route. Request body, headers,
+  and response shape are unchanged.
+
+## [0.14.0] - 2026-05-17
+
+The Memory section becomes **Conocimiento** (English path `/dashboard/knowledge`,
+localized label in es / en / ca) and is restructured into a Trust Dashboard
+with sub-routes. The orphan `/dashboard/activity` page gets folded into a
+proper sub-route. Per-document detail moves to a canonical `/dashboard/documents/[id]`
+route with provenance cross-links to contradictions and campaign syntheses.
+
+The Trust Dashboard answers "can I trust what's in this knowledge base?" at
+a glance, with five signals:
+- **Contradictions** — first-class summary card with severity badges
+  (critical / moderate / mild); deep-link goes straight to the full
+  triage UI on the constitution sub-route.
+- **Engagement summary** — compact strip showing 7d actions, active users,
+  week-over-week delta and a tiny sparkline. "Ver detalle" jumps to the
+  full engagement widget on the activity sub-route.
+- **Validation coverage** — % of facts with ≥1 validation, with healthy
+  / at-risk progress bar (≥70% threshold).
+- **Freshness** — % of facts touched in the last 30 days, paired with
+  coverage in a 2-column grid so the "ever validated" + "still current"
+  question is one glance.
+- **Needs review queue** — top-10 unvalidated facts sorted by lowest
+  POT score (most-uncertain first). Empty state celebrates "all caught
+  up" instead of leaving an awkward blank.
+
+Old URLs keep working via 308 redirects (`/dashboard/pot` → `/dashboard/knowledge`,
+`/dashboard/activity` → `/dashboard/knowledge/activity`), so bookmarks
+and external links don't break.
+
+### Added
+- **Trust Dashboard** at `/dashboard/knowledge` composing
+  `ContradictionsSummaryCard`, `EngagementSummaryStrip`,
+  `ValidationCoverageCard`, `FreshnessCard`, `NeedsReviewQueue`, and
+  `RecentFacts` (limit=4).
+- New sub-routes: `/dashboard/knowledge/activity` (full engagement
+  widget + recent facts + activity feed) and `/dashboard/knowledge/constitution`
+  (axioms + active campaigns + danger zone + full ContradictionsBanner
+  triage).
+- New `/dashboard/documents/[id]` route as the canonical per-doc viewer
+  (extraction history + paginated facts + metadata editor + mounted
+  FactInspectorModal for `?fact=` deep-links).
+- Per-document cross-link sections:
+  - **Contradicciones que involucran este documento** — edges where any
+    fact endpoint comes from the doc.
+  - **Síntesis de campaña** — campaigns whose latest synthesis was
+    uploaded as this document.
+- Three new API endpoints:
+  - `GET /api/documents/[id]/contradictions` — in-memory join of
+    doc-facts × `contradicts` edges in the active POT.
+  - `GET /api/documents/[id]/campaigns` — campaign syntheses sourcing
+    this document (via `campaign_synthesis.scipotDocumentId`).
+  - `GET /api/pot/facts/needs-review?limit=10` — facts never validated,
+    ordered by POT score asc.
+  - `GET /api/metrics/freshness?window_days=30` — fraction of facts
+    updated within the window.
+- Shared sub-nav layout component for `/dashboard/knowledge/*` with
+  Panel / Novedades / Constitución links (localized per profile language).
+- `requireWorkspaceAndPot()` shared server auth helper now used by every
+  /dashboard surface that needs an authenticated session + active POT.
+- 29 new `knowledge.*` i18n keys with full parity across es / en / ca
+  (87 entries total).
+- 11 new test files (101 cases) covering the new endpoints, redirect
+  contract, i18n key presence in all three locales, and PATCH allowlist
+  behavior.
+
+### Changed
+- **Sidebar nav** renamed Memoria → Conocimiento. URL path `/dashboard/pot`
+  → `/dashboard/knowledge`; existing path 308-redirects to the new one.
+- **`PATCH /api/documents/[id]`** now hard-allowlists `source_url` and
+  `description`; any other body field is silently dropped and an empty
+  payload returns 400. Closes a write-amplification surface the UI was
+  never using but the route accepted blindly.
+- Sidebar Documents row click now navigates to `/dashboard/documents/[id]`
+  (canonical detail route). Old `?doc=<id>` deep-links from
+  `recent-documents.tsx` and other callers point at the new URL directly.
+- `DocumentDetailView` extracted from `pot-documents.tsx` into
+  `src/components/documents/document-detail-view.tsx` so it can be
+  shared by the dedicated route. Copy-link button now emits the new
+  `/dashboard/documents/[id]` URL.
+- `RecentFacts` accepts a `limit` prop (defaults to 8; Trust Dashboard
+  uses 4 for "Recent evidence").
+- Contradiction navigation across the app (`FactInspectorModal`,
+  `ContradictionsBanner` copy-link, `NotificationBell` edge clicks)
+  now lands on `/dashboard/knowledge/constitution?contradiction=<id>`
+  directly, skipping the redirect hop.
+- Fact deep-links (`scout-fact-sheet`, `FactInspectorModal` copy-link,
+  `NotificationBell` fact clicks, `contribution-confirmation`,
+  onboarding redirect, dashboard root redirect, campaigns/[token]/workspace
+  redirect, demo page links) point at `/dashboard/knowledge` directly.
+
+### Removed
+- `src/app/dashboard/pot/page.tsx` (orphaned by the `/dashboard/knowledge`
+  rewrite; sub-routes `/pot/agents`, `/pot/campaigns`, `/pot/meetings`
+  remain — they're separate features).
+- `src/app/dashboard/activity/page.tsx` (replaced by the new
+  `/dashboard/knowledge/activity` sub-route; the old URL 308-redirects).
+- `src/components/pot/pot-dashboard.tsx`,
+  `src/components/pot/pot-documents.tsx`, and
+  `src/components/pot/pot-overview.tsx` (no remaining importers after
+  the Trust Dashboard rewrite).
+- Deprecated i18n keys (21 entries across es / en / ca): `nav.memory`,
+  `nav.activity`, `pot.overview`, `pot.documents`, `activity.title`,
+  `activity.description`, `activity.timeline`.
+
+### Security
+- `PATCH /api/documents/[id]` allowlists writable fields (see Changed),
+  preventing accidental mutation of internal fields like
+  `uploaded_by_contributor_id` or `pot_score` via crafted requests.
+
+## [0.13.0] - 2026-05-16
+
+The whole `/dashboard/settings/subscription` surface is now i18n'd —
+every visible string routes through the existing `useLanguage().t()`
+dictionary with es / en / ca variants. Workspaces switching languages
+finally see the subscription page respect the chosen locale instead of
+staying frozen on Spanish.
+
+Also drops the misleading "X documentos" line from the plan cards.
+Documents was never enforced as a hard cap on the KB2B side
+(`syncQuotasToSciPot` only ever passes `max_monthly_tokens`), so the
+number was display-only and gave customers the wrong mental model.
+Now docs and queries-per-day render as derived estimates with a
+prefix "≈" and a footnote ("estimado, depende del uso"). Tokens stays
+as the only real ceiling.
+
+### Added
+- ~85 new translation keys spanning `subscription.*`, `topup.*`,
+  `deleteAccount.*`, and `consumption.*` namespaces, with full
+  parity across es / en / ca.
+- `<SubscriptionPageHeader>` client wrapper so the (async) page
+  Server Component can delegate header rendering to a child that
+  consumes `useLanguage()`.
+
+### Changed
+- `<PlanSelector>` cards now render docs/queries as estimates with
+  the "≈" prefix and a shared "* estimated, depends on usage"
+  footnote below the grid. Tokens / meeting-hours / members stay as
+  hard caps above the fold.
+- `<SubscriptionBilling>` — status badges, cancellation banner,
+  admin-granted banner, and plan-selector title all go through the
+  dictionary. Date formatting honors the active locale instead of
+  hardcoding `"es-ES"`.
+- `<TopupSection>` and helpers (`SuccessBanner`, `CanceledBanner`,
+  `ErrorBanner`, `HoursTab`, `HoursTabIneligible`, `TopupPackCard`)
+  now consume translations. The three `HoursTabIneligible` reasons
+  share a single render path off translation-key tuples.
+- `<DeleteAccountSection>` — both the entry-point danger panel and
+  the confirmation panel are translated. Org name interpolation
+  keeps the visible `<strong>` styling on the org name through a
+  small `__ORG__` placeholder split.
+- `<SubscriptionConsumption>` + `<ConsumptionMini>` — the wrapper
+  title, "view detail" toggle, and the three near-limit / over /
+  blocked tail messages are translated. The collapse content
+  (`<ConsumptionView>`) is still hardcoded Spanish — flagged as a
+  follow-up in the wrapper.
+
+### Notes
+- The "X documentos" → "≈ X documentos/mes*" reframe is UI-only.
+  KB2B never enforced documents as a quota — `syncQuotasToSciPot`
+  always only passed `max_monthly_tokens` to SciPot, and SciPot's
+  own `max_documents_per_pot: 50` default is applied uniformly to
+  every workspace regardless of plan. No backend change is needed
+  to align the UI with reality.
+- Token top-up pricing is **unchanged**. Reviewed the margins
+  (3.6x → 2.6x cost) and the principle "top-up rate > plan rate"
+  from the v0.10.0 spec stays — keeps the upgrade signal intact.
+
+## [0.12.0] - 2026-05-16
+
+**Meeting-hours top-up bonuses no longer expire.** Customers who buy a
+pack keep those minutes until they use them — same semantics as token
+top-ups, which have always persisted indefinitely. The cycle-end cliff
+(introduced in v0.11.0) caused two problems in PROD: customers buying
+late in their cycle got short-changed (or refused outright by the
+1-hour-runway gate), and the Stripe product description claimed an
+expiry that mismatched the actual UX customers expected.
+
+### Changed
+- **Hours bonus minutes persist indefinitely.** `getCapMinutes` no
+  longer checks `bonusMeetingMinutesExpiresAt`; bonus always counts.
+  The column stays on the schema (NOT NULL on `meeting_hours_topup`,
+  nullable on `subscription`) for historical rows, but is no longer
+  load-bearing.
+- **Eligibility check simplified.** Dropped the `period_end_too_soon`
+  reason from `canBuyHoursTopup` (no anchor to protect anymore). The
+  helper now rejects only on `no_sub`, `cancelling`, and
+  `override_active`. The 1h Stripe-session-expiry cap is gone; sessions
+  use Stripe's default 24h.
+- **Webhook credit simplified.** The CASE-WHEN expression that reset
+  the running bonus balance when the previous expiry had passed is
+  gone — straight `bonusMeetingMinutes + minutesPurchased` SQL
+  increment (still race-safe under concurrent webhooks).
+- **Stripe product description fixed.** The hours top-up product no
+  longer reads "Expires at the end of the current billing cycle" — it
+  matches the actual behavior.
+- **UI copy updated** across `<TopupSection>`, `<MeetingQuotaExceededModal>`,
+  the meetings-settings inline panel, and the quota-exceeded email.
+  All four surfaces now describe top-ups as "persist hasta que las
+  uses" instead of "caducan al final del ciclo".
+- **`/api/meetings/quota-status`** response shape drops `bonusExpiresAt`
+  (no longer meaningful).
+
+### Note for operators
+
+If you previously had customers refused by `period_end_too_soon` near
+their cycle end, that gate is gone. Existing rows in
+`meeting_hours_topup` and `subscription` with historical expiry
+timestamps are preserved but no longer affect the read path —
+customers with "expired" bonus minutes on their account effectively
+just got those minutes credited.
+
+## [0.11.2] - 2026-05-16
+
+Hotfix on the v0.11.x top-up flow surfaced during local dogfooding: when
+the `STRIPE_PRICE_TOPUP_*` (or `STRIPE_PRICE_HOURS_TOPUP_*`) env var was
+unset, the buy click crashed with `SyntaxError: Unexpected end of JSON
+input` in the browser and a misleading "couldn't reach server" banner —
+hiding the real (operator-fixable) cause.
+
+### Fixed
+- Token and hours checkout routes now wrap the price-id lookup in
+  try/catch and respond with a clean **503 + JSON** body
+  (`"Token top-up is not configured on this environment yet. Contact
+  support."`). Previously a missing env var threw an unstructured 500
+  with no body, which the client's `res.json()` tried to parse and
+  exploded on.
+- `<TopupSection>` checkout handler now defensively parses the response
+  as text-first, falls back gracefully when the body isn't JSON, and
+  surfaces a useful message including the HTTP status when it has no
+  structured error to show — so an operator-side misconfiguration is
+  legible in the UI instead of misattributed to a network failure.
+
+## [0.11.1] - 2026-05-16
+
+Bug-fix patch on the v0.11.0 hours top-up flow. Two real PROD problems:
+admin-granted ("cortesía") plan users couldn't buy top-ups at all, and
+the admin grant endpoint accepted arbitrary durations up to 36 months
+(effectively unbounded cortesía).
+
+### Added
+- Admin-granted plan users can now buy meeting-hours and token top-ups.
+  The buy flow anchors `bonusExpiresAt` to `adminGrantedUntil` via a new
+  `getEffectivePeriodEnd` helper. Same atomic-credit semantics as paid
+  subs; the bonus disappears from the quota read path when the grant
+  cliff passes.
+- `getEffectivePeriodEnd(sub)` helper in `topup-eligibility.ts` —
+  returns `currentPeriodEnd` for Stripe subs and falls back to
+  `adminGrantedUntil` for cortesía. Single source of truth for "when
+  does this billing window end?" used by checkout, the subscription
+  API, the quota-status endpoint, the meetings page, and the at-quota
+  modal.
+
+### Changed
+- `<TopupSection>` is now visible to admin-granted workspaces in
+  `/dashboard/settings/subscription`. The `isPaid` gate widened to
+  accept `adminGrantedPlan === true` alongside Stripe subs. Pure-trial
+  Spark users remain excluded by design (no Stripe customer, no
+  cycle to anchor to).
+- Ineligibility copy "Your billing period ends too soon" →
+  "Your plan ends too soon" — works for both Stripe billing cycles
+  and admin-grant cliffs without sounding off.
+
+### Fixed
+- **Admin grant endpoint capped at 3 months.** The `/api/admin/workspaces/
+  [id]/grant-plan` validation previously allowed 1–36 months; the admin
+  UI dropdown defaulted to 36 as the max. Both are now capped at 3.
+  Long-lived cortesía should be a contract or a recurring Stripe sub,
+  not an admin override that drifts. Also bounds the blast radius of an
+  accidental click in the admin panel.
+
+## [0.11.0] - 2026-05-16
+
+Closes the v0.10.x top-up redesign milestone (Option A v1 per the autoplan
+spec). The landing page promised three top-up products since v0.9.0;
+v0.10.0 made tokens real, this release makes meeting hours real and scrubs
+the Members promise that won't ship for now. Users at quota — or close to
+it — now have a same-page path forward instead of a dead-end CTA.
+
+The Hours top-up flow mirrors the Tokens 3-gate idempotency from v0.9.1,
+with two intentional structural differences: credit lands locally in the
+KB2B DB (no SciPot round-trip), and bonus minutes carry an absolute
+expiry timestamp captured at purchase so a plan upgrade mid-cycle can't
+silently extend minutes the customer already paid for.
+
+### Added
+- **Meeting-hours top-up** as a one-shot purchase. Four packs:
+  Bump 5h €15 / Boost 15h €38 / Stretch 30h €60 / Mega 100h €120
+  (€/h decreases €3 → €1.20, always ≥2× operating cost). Expires at the
+  end of the current billing cycle; non-refundable once credited.
+- **Tabbed top-up UI** at `/dashboard/settings/subscription`. Tokens and
+  Horas de meeting live behind separate tabs, deep-linkable via
+  `?tab=tokens|hours`. The per-plan recommended pack gets a
+  `border-primary` highlight and "Recomendado" badge on both tabs.
+- **Inline "Buy extra hours" panel** in `/dashboard/settings/meetings`
+  whenever usage crosses 80% of the effective cap (plan + non-expired
+  bonus). Same `<HoursTopupPicker>` as the main tab, in compact form.
+- **At-quota import modal** on `/dashboard/meetings`: clicking Import
+  now pre-checks the meeting cap and, if you're already at it, opens
+  `<MeetingQuotaExceededModal>` with the Hours packs instead of the
+  import form. Server-side hard-block at 110% remains the authority.
+- Post-checkout success banner reading `?topup=success&type=&qty=` so the
+  user gets immediate visual confirmation that the payment landed.
+- Inline error banner with retry on Stripe failures (replaces the prior
+  `window.alert()` fall-through).
+- Quota-status read endpoint `/api/meetings/quota-status` used by the
+  web import-flow pre-check (read-only, no Stripe sync).
+- Shared `formatPrice` helper in `src/lib/billing/format.ts` using
+  `Intl.NumberFormat("es-ES")` so prices render consistently across
+  plan-selector, top-up tabs, and modals.
+
+### Changed
+- Quota-exceeded email (`sendMeetingQuotaExceeded`) CTA now reads
+  "Comprar horas extra" and deep-links to
+  `/dashboard/settings/subscription?tab=hours&from=quota-email`. Body
+  copy reframed around buying hours for the current cycle, with plan
+  upgrade as the secondary option for repeat buyers.
+- Landing-page pricing copy (en/es/ca, 6 strings) no longer mentions
+  the Members add-on. Tokens and Hours promises stay — both ship in v1.
+- `getCapMinutes()` in `src/lib/meetings/quota.ts` now returns the
+  effective cap (plan + non-expired bonus) plus a breakdown of
+  `planMinutes` / `bonusMinutes` / `bonusExpiresAt`. Existing callers
+  pick up the bonus automatically without code changes.
+
+### Fixed
+- Subscription cycle rollover correctly drops expired bonus minutes
+  without a background sweeper — the expiry check is part of the read
+  path on every quota query.
+
+## kb2b Desktop
+
+- **v0.7.2** (2026-05-14) — release: v0.7.2
+- **v0.5.0** (2026-05-12) — release: v0.5.0
+- **v0.4.0** (2026-05-10) — release: v0.4.0
+- **v0.3.0** (2026-05-06) — release: v0.3.0
+- **v0.2.1** (2026-05-05) — release: v0.2.1
+- **v0.2.0** (2026-05-03) — release: v0.2.0
+- **v0.1.8** (2026-05-02) — release: v0.1.8
+- **v0.1.7** (2026-04-28) — release: v0.1.7
+
+{/* changelog:end */}

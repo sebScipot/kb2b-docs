@@ -1,0 +1,96 @@
+---
+title: "Conocimiento y confianza"
+sidebarTitle: "Conocimiento"
+description: "La sección Conocimiento es el panel de confianza del POT: contradicciones, validación, frescura, actividad y revisión pendiente, todo en una pantalla."
+lang: "es"
+---
+
+La sección **Conocimiento** (`/dashboard/knowledge`) es el panel principal para entender la salud epistémica de tu POT: ¿qué tan confiable es lo que sabe? ¿qué necesita atención humana? ¿qué se ha movido últimamente?
+
+(En versiones anteriores se llamaba **Memoria** — el rename a Conocimiento ocurrió en la v0.14.0. Si ves "Memoria" en una captura vieja, es lo mismo.)
+
+## Las 5 señales del Trust Dashboard
+
+La página principal tiene **5 cards** que responden, todas a una, "¿puedo confiar en lo que hay aquí dentro?":
+
+### 1. Contradicciones (banner)
+
+Un banner persistente arriba de la sección que muestra **cuántas contradicciones pendientes** hay y su severidad (crítica / moderada / leve). Click en una contradicción → abre el flujo de resolución directamente (ver [Constitución del POT](/es/admin/constitucion-del-pot)).
+
+Si no hay contradicciones, el banner se oculta. Eso es buena señal.
+
+### 2. Engagement de los últimos 7 días
+
+Una franja compacta con:
+- Cantidad de **acciones** sobre facts en los últimos 7 días (aprobaciones, desaprobaciones, comentarios)
+- **Usuarios activos** del workspace
+- **Delta vs semana anterior** (verde si más, rojo si menos)
+- Un **sparkline** inline mostrando la tendencia día a día
+
+"Ver detalle" salta a la sub-ruta de Actividad (más abajo).
+
+### 3. Cobertura de validación (Validation coverage)
+
+**% de facts que han recibido al menos 1 validación** (aprobación o desaprobación).
+
+- Verde / "sano" si ≥ 70%
+- Naranja / "en riesgo" si está por debajo del 70%
+
+Es la métrica de _"¿qué fracción del conocimiento ha pasado por ojos humanos?"_. Si está baja, tu equipo está confiando demasiado en lo que extrae kb2b automáticamente sin verificarlo.
+
+### 4. Frescura (Freshness)
+
+**% de facts tocados (validados, editados, o referenciados en chat) en los últimos 30 días.**
+
+Junto con la coverage de validación, te dice no solo "¿se ha visto?" sino también "¿sigue vigente?". Un fact validado hace 2 años puede haber quedado obsoleto.
+
+### 5. Pendiente de revisión (Needs review)
+
+Una **cola de los top 10 facts sin validar**, ordenados por POT Score ascendente (los más inciertos primero). Es la lista accionable de "siéntate 15 minutos y revisa estos".
+
+Cada fact en la cola se puede aprobar/desaprobar en línea, o abrir el inspector para ver más detalle.
+
+### Evidencia reciente
+
+Debajo de las 5 cards, una sección de **Evidencia reciente** que muestra los últimos 4 facts añadidos al POT. Útil para ver "¿qué se ingestó esta semana?" de un vistazo.
+
+## Sub-rutas
+
+La sección Conocimiento tiene 3 sub-rutas con su propia sub-nav:
+
+| Ruta | Qué tiene |
+|---|---|
+| `/dashboard/knowledge` | El Trust Dashboard descrito arriba (las 5 cards + evidencia reciente) |
+| `/dashboard/knowledge/activity` | Widget completo de engagement (filtros 7d / 30d / todo) + facts recientes + feed de actividad |
+| `/dashboard/knowledge/constitution` | Editor de axiomas constitucionales + campañas activas + zona de peligro (eliminar POT). Ver [Constitución del POT](/es/admin/constitucion-del-pot) para el detalle. |
+
+El banner de contradicciones aparece en **todas las sub-rutas** — es global a la sección.
+
+## Deep-links útiles
+
+Puedes compartir URLs específicas con tu equipo:
+
+- `/dashboard/knowledge?fact={id}` → abre el inspector de un fact específico
+- `/dashboard/knowledge?contradiction={id}` → abre la contradicción específica para resolver
+- `/dashboard/knowledge/constitution?contradiction={id}` → lleva al editor de constitución con la contradicción ya seleccionada
+
+URLs viejas tipo `/dashboard/pot` o `/dashboard/activity` siguen funcionando — redirigen automáticamente (308) a las nuevas rutas dentro de Conocimiento.
+
+## Cómo usar esto día a día
+
+**Lunes por la mañana** (10 minutos):
+1. Mira el banner de contradicciones. Si hay críticas, resuélvelas primero.
+2. Revisa el delta de engagement vs semana anterior. ¿Subió o bajó la actividad del equipo sobre el POT?
+3. Cobertura y frescura: ¿están por encima de 70% y 50% respectivamente? Si no, los próximos días enfoca el equipo en validar.
+4. Pendiente de revisión: aprueba/desaprueba 5-10 facts antes de empezar otra cosa.
+
+**En reuniones de equipo**: usa la pestaña Activity para mostrar "qué movimos esta semana sobre el conocimiento de cuenta".
+
+**Antes de un trimestre**: revisa cobertura + frescura como métricas de salud del POT. Por debajo de ciertos umbrales, decide si pausar nuevas ingestiones hasta limpiar.
+
+## Cuándo NO mirar esto
+
+- **Si tu POT tiene menos de 20 facts**, las métricas no son significativas. Llévalo a por lo menos 50 facts (subiendo documentos y grabando reuniones) antes de empezar a leer trust signals.
+- **Si eres usuario individual** (sin equipo), las cards de Engagement y Pendiente de revisión te aportan poco — eres tú solo. Enfócate en chat y meetings.
+
+_Página en construcción Phase 1 — capturas de las 5 cards y de las sub-rutas vienen en Phase 2._

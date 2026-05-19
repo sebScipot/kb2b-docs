@@ -1,0 +1,88 @@
+---
+title: "Meetings: summaries, highlights, and facts"
+sidebarTitle: "Meetings (web)"
+description: "What happens after a meeting recording ends: the auto-generated summary, extracted highlights, facts entering the POT, and the meeting-specific chat."
+lang: "en"
+---
+
+This page covers **the web side** of meetings — what you see in `kb2b.app/dashboard/meetings/[id]` after a recording finishes. To record meetings from the desktop, see [kb2b Desktop](/en/desktop/record-a-meeting).
+
+## The full cycle
+
+```
+Recording ends           →  status: recording
+   ↓
+Upload to backend       →  status: transcribing
+   ↓
+Transcript ready       →  status: done
+   ↓                       ↓                     ↓
+   ↓                Claude summary         Facts via SciPot
+   ↓                (per-language)         (async ingestion)
+   ↓                       ↓                     ↓
+   ↓                Highlights extracted   Edges + scores
+   ↓                                       Contradictions detected
+```
+
+When you open `/dashboard/meetings/[id]`, what you see depends on status. While `transcribing`, you see a placeholder; once `done` loads summary, facts, and chat in parallel.
+
+## Meeting summary
+
+kb2b generates a **full markdown summary** of the meeting using Claude. Features:
+
+- **Per-language.** If your team works in Spanish but a customer watched the meeting in English, you can generate the summary in both. kb2b caches each language separately (`summariesJson.es`, `summariesJson.en`).
+- **Structured.** Includes context, participants, agenda covered, decisions made, next actions, **a `## Highlights` section**, and optionally notable sentiments or non-verbal aspects.
+- **Cached.** Once generated, it isn't regenerated unless you switch language or request a manual refresh.
+
+## Highlights
+
+**Highlights** are the meeting's key points — auto-extracted by kb2b from the `## Highlights` section of the markdown summary:
+
+- **Typically 3–7 highlights** per meeting.
+- Each one with a **timestamp** pointing to the exact moment in the transcript.
+- If the meeting has no manual title, kb2b uses **the first highlight as the title** in the meetings list.
+- Highlights are NOT standalone POT facts — they're narrative summaries of the specific meeting.
+
+## Facts extracted to the POT
+
+Apart from the narrative summary, kb2b ingests the transcript into the POT as **another document**, and SciPot extracts structured **facts**:
+
+- Each fact has its **POT Score** and level (Extracted, Inferred, etc.).
+- Each fact points to **exact citations** in the transcript (provenance: filename + offset).
+- If any fact **contradicts a Constitution axiom**, the contradictions workflow kicks off (see [POT Constitution](/en/admin/pot-constitution)).
+- Facts inherit the **tags and project** assigned to the meeting.
+
+On the meeting detail page, the **"Extracted facts"** section loads lazy (on scroll or expand). Gives you a quick view of what kb2b now knows that it didn't before.
+
+## Chat about the specific meeting
+
+Each meeting has its **own chat**, separate from the POT's global chat:
+
+| Chat type | Context | When to use |
+|---|---|---|
+| **POT chat** (`/dashboard/chat`) | All facts in the account | Broad questions: "What's the overall situation with Acme?" |
+| **Meeting chat** (`/dashboard/meetings/[id]`) | Only facts extracted from that meeting | Specific questions: "What did we decide about pricing on this call?" |
+
+Meeting chat scopes context to that meeting's facts so it doesn't blend with prior knowledge. Useful for preparing follow-ups or clarifying what was decided.
+
+## Statuses you can see
+
+| Status | What it means | What to do |
+|---|---|---|
+| `recording` | Recording is running on the desktop | Wait |
+| `transcribing` | Recall.ai is processing the audio | Wait 2-5 min typically |
+| `done` | Ready: summary + facts + chat available | Review and interact |
+| `failed` | Something failed in transcription or ingestion | Check the error on the page; report to support if it persists |
+
+## If the summary doesn't generate
+
+If status is `done` but the summary takes more than 30 seconds:
+
+1. Refresh the page.
+2. If still empty, check `/dashboard/consumption` — your workspace may be at 110% tokens (hard limit blocks LLM operations including summaries).
+3. If everything looks OK, email [support@kb2b.app](mailto:support@kb2b.app) with the meeting ID.
+
+## Retention policy
+
+**Transcripts are kept while your workspace is active**. **Raw audio** is deleted after **7 days** (Recall.ai free tier). **Extracted facts** in the POT are never deleted — they're the account's persistent memory. Legal details in [Recording policy](/en/legal/recording-policy).
+
+_Page in progress Phase 1 — screenshots of summary and facts panel coming in Phase 2._

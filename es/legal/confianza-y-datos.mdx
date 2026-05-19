@@ -1,0 +1,42 @@
+---
+title: "Confianza y datos — para procurement"
+sidebarTitle: "Confianza y datos"
+description: "Respuestas rápidas sobre GDPR, sub-procesadores, retención y seguridad para equipos de procurement evaluando kb2b."
+lang: "es"
+---
+
+## Respuestas rápidas para procurement
+
+Para una evaluación inicial de seguridad y cumplimiento:
+
+- ✅ **Datos almacenados en AWS UE (Frankfurt)** — sin transferencias fuera del EEE para operación estándar.
+- ✅ **Sub-procesadores listados abajo** — Stripe (facturación), Recall.ai (audio), Anthropic (síntesis LLM), AWS (storage), Resend (email).
+- ✅ **Política de retención: 30 días de transcripciones, 7 días de meeting media** (tier free de Recall).
+- ✅ **Consentimiento de grabación documentado** — ver [Política de grabación](/es/legal/politica-de-grabacion).
+- ✅ **DPA disponible bajo solicitud** — escribir a [legal@kb2b.app](mailto:legal@kb2b.app).
+- ✅ **Reunión de seguridad con un responsable** — solicítala escribiendo a [legal@kb2b.app](mailto:legal@kb2b.app) con asunto "Security call".
+
+## Si necesitas más detalle
+
+| Documento | Disponibilidad |
+|---|---|
+| Data Processing Agreement (DPA) | Bajo solicitud (firma electrónica) |
+| Lista actualizada de sub-procesadores | Disponible en esta página (siguiente sección) |
+| Reporte SOC 2 Type II | En curso — pre-launch entregamos GDPR posture + DPA |
+| Cuestionario de seguridad estándar (CAIQ, VSA) | Bajo solicitud |
+| Penetration test report | Bajo NDA |
+
+## Sub-procesadores actuales
+
+_Lista detallada y propósito de cada sub-procesador pendiente — incluirá: AWS (storage en eu-central-1), Anthropic Claude (síntesis LLM, sin entrenamiento sobre tus datos), Recall.ai (captura audio meetings, retención 7d), Stripe (pagos), Resend (transactional email)._
+
+## Aislamiento entre workspaces
+
+Cada workspace de kb2b vive en su propio **POT** (Knowledge Pot — el contenedor de conocimiento de la cuenta). Los POTs están aislados a nivel de base de datos por `workspace_id`. **No hay forma de que un workspace consulte datos de otro workspace** — ni accidentalmente, ni mediante prompt injection.
+
+## Contacto de seguridad
+
+- General: [legal@kb2b.app](mailto:legal@kb2b.app)
+- Reporte de vulnerabilidades: [security@kb2b.app](mailto:security@kb2b.app)
+
+_Contenido detallado de DPA, sub-procesadores y aislamiento pendiente._

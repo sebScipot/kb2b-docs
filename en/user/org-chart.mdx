@@ -1,0 +1,61 @@
+---
+title: "Team org chart"
+sidebarTitle: "Org chart"
+description: "Visualize the structure of your kb2b workspace: who reports to whom inside your team. NOT the customer's structure."
+lang: "en"
+---
+
+## What it is and what it isn't
+
+The **org chart** (`/dashboard/org-chart`) shows the structure **of your kb2b workspace** — that is, who's a member of your team and how they relate hierarchically to each other.
+
+<Warning>
+  **Don't confuse:** this is NOT the organizational structure **of the customer** whose knowledge you're maintaining in a POT. This is **your own team's** structure inside kb2b. If you want to see "Acme's org chart", that information would need to be stored as facts inside the Acme POT, not on this page.
+</Warning>
+
+## What it's for
+
+- **Internal onboarding**: someone joining your workspace sees at a glance who's who.
+- **Expertise attribution**: when a fact is approved or disapproved, the vote weight depends on the voter's seniority level (see [Explore and discuss facts](/en/user/explore-and-discuss-facts)). The org chart documents those levels.
+- **Visibility into who handles which account**: combined with projects and tags, gives you a complete picture of "who's working with whom".
+
+## How it's built
+
+kb2b builds the org chart from the workspace's **contributor profiles**:
+
+| Field | Where it comes from |
+|---|---|
+| **Name + avatar** | Your user account (photo, displayName) |
+| **Role title** | Each member sets it in their profile — `/dashboard/profile` |
+| **Seniority level** | Junior, Medior, Senior, Principal — set by the admin |
+| **Manager (who they report to)** | Set by the admin in each member profile |
+
+If nobody has configured managers, the org chart shows everyone as **"orphans"** (not nested under anyone). That's the default state when the hierarchy hasn't been mapped yet.
+
+## How to navigate it
+
+- It's an **interactive canvas** (built on React Flow). You can zoom, pan, and drag nodes.
+- Click a node → opens a **side panel** with metrics for that member:
+  - How many facts they've approved/disapproved
+  - How many documents they've uploaded
+  - How many meetings they've recorded
+  - Their declared areas of expertise (see SciPot docs on **expertise-weighted scoring**)
+- If your workspace has **fewer than 2 members**, instead of the canvas you'll see a message inviting you to add people.
+
+## Who can edit it
+
+- Any member can **edit their own role title and avatar** from `/dashboard/profile`.
+- Only the **workspace admin** can assign/change manager and seniority level for other members. Done from `/dashboard/settings/team`.
+
+## When NOT to use the org chart
+
+- If your workspace has **1-2 people**, it adds nothing — skip it until the team grows.
+- If you work in **agency mode with many customers** and your internal hierarchy doesn't change vote weight on facts (because you don't use expertise-weighted scoring), the org chart is ornamental — useful for onboarding but little more.
+
+## If the page is empty
+
+1. Check your workspace has at least 2 members (see [Members and roles](/en/admin/members-and-roles) _(page in progress)_).
+2. If there are members but they don't show in the canvas: nobody configured managers. Go to `/dashboard/settings/team` as admin and assign at least one manager → reports relationship to kick off the hierarchy.
+3. If you still see nothing and you think it's a bug, email [support@kb2b.app](mailto:support@kb2b.app).
+
+_Page in progress Phase 1 — canvas and stats panel screenshots coming in Phase 2._

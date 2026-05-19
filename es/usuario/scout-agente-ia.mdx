@@ -1,0 +1,81 @@
+---
+title: "Scout — tu primer agente IA"
+sidebarTitle: "Scout (agente IA)"
+description: "Scout lee los facts de tu POT, busca contexto externo en la web y sintetiza insights con procedencia verificable. Cuándo usarlo, cómo leerlo, y sus límites."
+lang: "es"
+---
+
+## Qué hace Scout
+
+**Scout** es un agente IA dentro de kb2b que combina tres cosas que tú harías a mano si tuvieras tiempo:
+
+1. **Lee tu POT** — toma los hechos relevantes que ya hay en la cuenta.
+2. **Busca contexto externo en la web** (vía Tavily) — encuentra noticias, comunicados, publicaciones recientes sobre las personas, empresas o temas mencionados en esos facts.
+3. **Sintetiza insights** con Claude — combina ambos lados y produce **3-5 tarjetas de insight** con citas inline a tus facts (`[fact:X]`) y a las fuentes externas (`[src:N]`).
+
+Cada insight te dice algo accionable: una conexión que no habías visto, un cambio relevante en el contexto del cliente, una pregunta que deberías hacer en la próxima reunión.
+
+## Cuándo usarlo
+
+- **Antes de una reunión** con un cliente: para llegar con contexto fresco más allá de lo que ya está en el POT.
+- **Después de un evento del cliente** (ronda de inversión, anuncio, salida de un directivo): para entender qué cambia.
+- **En revisiones trimestrales**: como entrada de discusión sobre qué está pasando alrededor de la cuenta.
+
+**No es para** preguntas factuales sobre el POT — para eso usa el chat. Scout es para **descubrir**, no para consultar.
+
+## Cuándo NO usarlo
+
+- Si tu POT tiene **menos de 5 hechos**, Scout no se puede ejecutar — no tiene material suficiente para extraer queries útiles.
+- Si la cuenta es **muy genérica o privada** (no aparece online), las búsquedas web no devolverán nada relevante.
+- Si necesitas información **cerrada** (datos internos del cliente que no son públicos), Scout no los va a encontrar — usa el chat sobre los documentos cargados.
+
+## Cómo se ejecuta
+
+1. Navega a `/dashboard/pot/agents` en kb2b.
+2. Click en **"Ejecutar Scout"**.
+3. Scout inicia un run en background y muestra una pantalla con el **thinking log** en vivo:
+   - Fase 1: leyendo facts del POT
+   - Fase 2: generando queries de búsqueda
+   - Fase 3: buscando en la web
+   - Fase 4: sintetizando insights
+4. Cuando termina (típicamente 30-90 segundos), aparece un **carousel de insight cards**.
+
+Cada card muestra:
+- El insight en una frase corta
+- Los facts del POT citados (con su POT Score visible)
+- Las fuentes externas citadas (con enlace)
+- Un CTA **"Preguntar a tu base de conocimiento"** que lleva al chat con el contexto pre-cargado
+
+## Historial
+
+Cada run queda guardado en **Historial** dentro de `/dashboard/pot/agents`. Puedes:
+- Volver a abrir runs anteriores
+- Comparar qué cambió entre dos runs (manualmente — el diff automático llegará en Phase 2)
+- Exportar el resultado (Phase 2)
+
+## Límites
+
+Scout tiene rate limits para proteger tu cuota de tokens y la API de Tavily:
+
+| Límite | Valor |
+|---|---|
+| Mínimo de facts en el POT | 5 |
+| Runs por hora (organización) | 5 |
+| Runs por usuario en 10 minutos | 2 |
+
+Si te excedes, Scout te dice **cuándo podrás volver a ejecutar**. Ningún token se cobra si el run no llega a completar.
+
+## Coste en tokens
+
+Cada run consume tokens de tu plan:
+
+- **Generación de queries** (Claude Haiku): bajo coste, ~5-10K tokens
+- **Síntesis de insights** (Claude Sonnet): coste principal, ~30-50K tokens por run dependiendo del tamaño del POT
+
+Si tu workspace está cerca del límite de tokens, Scout te avisa antes de ejecutar. Más detalle en [Límites de tokens](/es/admin/limites-de-tokens).
+
+## ¿Por qué se llama "Scout" y no "Researcher"?
+
+Internamente el feature tiene el código `agent_kind = "research"` porque está pensado como la primera de varias herramientas de exploración. **Scout** es el nombre del producto — la idea es que sea un explorador rápido que **te trae cosas**, no un asistente de investigación profunda. Si te trae algo interesante, tú decides si vale la pena profundizar (con chat, con otra reunión, con documentos adicionales).
+
+_Página en construcción Phase 1 — capturas de los insight cards y del thinking log vienen en Phase 2._

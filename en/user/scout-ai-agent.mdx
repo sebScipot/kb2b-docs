@@ -1,0 +1,81 @@
+---
+title: "Scout — your first AI agent"
+sidebarTitle: "Scout (AI agent)"
+description: "Scout reads your POT facts, fetches external web context, and synthesizes insights with verifiable provenance. When to use it, how to read it, and its limits."
+lang: "en"
+---
+
+## What Scout does
+
+**Scout** is an AI agent inside kb2b that combines three things you'd do by hand if you had time:
+
+1. **Reads your POT** — pulls the relevant facts already in the account.
+2. **Fetches external web context** (via Tavily) — finds news, releases, recent posts about the people, companies, or topics mentioned in those facts.
+3. **Synthesizes insights** with Claude — combines both sides and produces **3-5 insight cards** with inline citations to your facts (`[fact:X]`) and external sources (`[src:N]`).
+
+Each insight tells you something actionable: a connection you hadn't seen, a relevant shift in the customer's context, a question worth asking in the next meeting.
+
+## When to use it
+
+- **Before a meeting** with a customer: arrive with fresh context beyond what's already in the POT.
+- **After a customer event** (funding round, announcement, executive departure): to understand what's changing.
+- **In quarterly reviews**: as input for discussion about what's happening around the account.
+
+**Not for** factual questions about the POT — use chat for that. Scout is for **discovery**, not lookup.
+
+## When NOT to use it
+
+- If your POT has **fewer than 5 facts**, Scout can't run — there isn't enough material to derive useful queries.
+- If the account is **very generic or private** (not findable online), web searches won't return anything relevant.
+- If you need **closed** information (internal customer data that isn't public), Scout won't find it — use chat over the loaded documents.
+
+## How to run it
+
+1. Navigate to `/dashboard/pot/agents` in kb2b.
+2. Click **"Run Scout"**.
+3. Scout kicks off a background run and shows a screen with the **thinking log** live:
+   - Phase 1: reading POT facts
+   - Phase 2: generating search queries
+   - Phase 3: searching the web
+   - Phase 4: synthesizing insights
+4. When done (typically 30-90 seconds), an **insight card carousel** appears.
+
+Each card shows:
+- The insight in a short sentence
+- The cited POT facts (with their POT Score visible)
+- The cited external sources (with link)
+- A CTA **"Ask your knowledge base"** that opens the chat with the context pre-loaded
+
+## History
+
+Every run is saved in **History** inside `/dashboard/pot/agents`. You can:
+- Reopen previous runs
+- Compare what changed between two runs (manually — automatic diff coming in Phase 2)
+- Export the result (Phase 2)
+
+## Limits
+
+Scout has rate limits to protect your token quota and the Tavily API:
+
+| Limit | Value |
+|---|---|
+| Minimum POT facts | 5 |
+| Runs per hour (organization) | 5 |
+| Runs per user in 10 minutes | 2 |
+
+If you hit a limit, Scout tells you **when you can run again**. No tokens are charged if a run doesn't complete.
+
+## Token cost
+
+Each run consumes plan tokens:
+
+- **Query generation** (Claude Haiku): low cost, ~5-10K tokens
+- **Insight synthesis** (Claude Sonnet): main cost, ~30-50K tokens per run depending on POT size
+
+If your workspace is near the token limit, Scout warns you before running. More detail in [Token limits](/en/admin/token-limits).
+
+## Why is it called "Scout" and not "Researcher"?
+
+Internally the feature ships as `agent_kind = "research"` because it's designed as the first of several exploration tools. **Scout** is the product name — the idea is a quick explorer that **brings things to you**, not a deep research assistant. If it surfaces something interesting, you decide whether it's worth digging deeper (with chat, another meeting, additional documents).
+
+_Page in progress Phase 1 — insight card and thinking log screenshots coming in Phase 2._

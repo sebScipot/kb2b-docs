@@ -1,0 +1,84 @@
+---
+title: "Explore and discuss facts"
+sidebarTitle: "Explore and discuss facts"
+description: "How to open an individual fact, see its connections, discuss it with your team, and approve or reject it. Without this, facts are just loose data."
+lang: "en"
+---
+
+Every **fact** in the POT (a piece of knowledge extracted from a document or meeting) has a dedicated view that opens as a modal — the **fact inspector**. There you see its connections, discuss it with your team, and approve or disapprove it.
+
+## Opening the inspector
+
+Any mention of a fact in the app opens the inspector. For example:
+
+- Click a fact in **Knowledge → Needs review** (`/dashboard/knowledge`)
+- Click a fact cited in a chat response
+- Click a fact from a Scout insight
+- Direct URL: `/dashboard/knowledge?fact={id}` (deep-link, useful to share a fact with a teammate)
+
+The inspector has two tabs: **Connections** and **Discussion**.
+
+## Connections tab
+
+Shows the fact's **local graph**:
+
+- Source documents or meetings (with exact citation: filename + offset)
+- Outgoing edges (which other facts **support**, **refine**, **derive from**, or **contradict** this one)
+- Current POT Score and level (Constitutional, Verified, Extracted, Inferred, Pending)
+- Score change history (when it changed, why, who curated)
+
+If this fact **contradicts a Constitution axiom**, a red banner appears at the top with a direct link to the Constitution page to resolve.
+
+## Discussion tab
+
+This is the **internal team chat about this specific fact**. A nested conversation, not a flat chat:
+
+| Capability | How to use |
+|---|---|
+| **Comment** | Type in the input and send. Appears as a chronological thread. |
+| **Reply to a comment** | Click "Reply" under the parent comment. Creates a nested sub-thread. |
+| **Mention a teammate** | Type `@` and pick from the workspace list. They get a notification. |
+| **Edit your comment** | Hover over your comment → "Edit". Marked with an edit timestamp. |
+| **Delete** | Soft delete — the comment shows as "(deleted)" in the thread to preserve the conversation. |
+
+> **Terminology note:** in some internal conversations people refer to this as "the trio chat" or "the fact chat". The product's formal name is **Discussion** and it lives in the tab of the same name. There's no "trio" entity in kb2b — it's simply the threaded discussion on a fact (or on an edge between two facts).
+
+## Curating the fact (approve / disapprove)
+
+Below the main information are two buttons (👍 / 👎) — **curation**:
+
+- **Approve (👍)** raises the fact's score and counts a vote in its favor. Magnitude depends on your registered expertise level in the workspace.
+- **Disapprove (👎)** lowers the score and counts against. Useful when you see a fact has been misinterpreted from its source document.
+
+Rules:
+
+- Each user can **approve or disapprove once** per fact (changing your vote replaces the previous one).
+- Your vote contributes proportionally to your **seniority level** registered in the workspace (junior < medior < senior < principal).
+- **Repeated votes from the same user** have diminishing returns — you can't hammer a fact up or down by volume.
+- **Constitutional facts (Constitution) cannot be curated** from here — only a Human Curator manages them from the Constitution page.
+
+Each curation is recorded in the fact's **curation history**, visible in the Connections tab. You can undo your own curation if you made a mistake.
+
+## Resolving a contradiction
+
+If two facts contradict each other, a **`contradicts`** edge appears between them. In the inspector of the contradictory fact you'll see:
+
+1. Red banner: "This fact contradicts X"
+2. List of stances (team votes) — who supports which
+3. If you have Human Curator permissions, an option to **resolve** the contradiction: confirm A, confirm B, or mark as false positive
+
+Final resolution flips the edge from `contradicts` to `resolved_contradiction` and goes into the audit trail. More detail in [SciPot docs](https://docs.scipot.ai/trust-mechanics/pot-score-and-provenance).
+
+## Share a fact externally
+
+Click the copy-link icon → you get a URL like `https://kb2b.app/dashboard/knowledge?fact={id}`. Any teammate in the workspace who opens the link lands in the same inspector, on the same tab.
+
+This does NOT work for people outside the workspace — kb2b doesn't expose facts publicly by default. To share with an external customer or partner, manually copy the relevant content (with its POT Score and source) and send it through whatever channel you use.
+
+## When NOT to discuss a fact
+
+- **If it's an obvious fact extracted correctly**, no need to discuss. Discussions are useful when there's doubt about interpretation, context, or validity.
+- **If you dislike the fact but lack evidence**, prefer to disapprove (👎) rather than open an opinion thread.
+- **If you find a contradiction**, don't open the discussion on the fact — use contradiction resolution (the proper workflow that goes into the formal audit trail).
+
+_Page in progress Phase 1 — inspector screenshots and discussion thread examples coming in Phase 2._

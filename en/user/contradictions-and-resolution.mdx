@@ -1,0 +1,160 @@
+---
+title: "Contradictions and resolution"
+sidebarTitle: "Contradictions"
+description: "When two POT facts contradict each other, kb2b flags them and opens a two-phase workflow for the team to provide evidence and a curator to resolve."
+lang: "en"
+---
+
+## The problem this solves
+
+If you keep ingesting documents and transcripts into a POT, **sooner or later two facts will contradict each other**. Typical examples:
+
+- An old proposal says "volume discount starts at 500 units" — a recent email says "starts at 300 units"
+- A meeting mentions "the single point of contact is Carlos" — a contract says "single point of contact is Laura"
+- A quarterly report says "growing 12% YoY" — the investor deck says "8% YoY"
+
+Without management this becomes noise — kb2b would answer with low confidence or contradict itself depending on which fact got retrieved. **Contradiction resolution** is the formal flow for the team to decide which one stands.
+
+## How they're detected
+
+kb2b detects contradictions automatically as it ingests a new fact:
+
+1. For each new fact, it looks for semantically similar facts already in the POT.
+2. An LLM evaluates whether the relationship is: `supports`, `refines`, `derives_from`, or **`contradicts`**.
+3. If `contradicts`, an **edge** is created between the two facts with that relationship type.
+4. Each edge has a **weight** (0.0–1.0) indicating how strong the contradiction is (concept overlap + score divergence).
+
+## Where they appear
+
+Contradictions show up in **two places**:
+
+- **Persistent banner** at the top of the entire Knowledge section (`/dashboard/knowledge` and sub-routes) — shows total count and per-severity. If there are no contradictions, the banner hides.
+- **Dedicated page** at `/dashboard/knowledge/constitution` — the full list, expandable, with AI Triage if there are ≥ 3.
+
+### Severities
+
+kb2b classifies each contradiction by its **weight**:
+
+| Weight | Severity | Color | Meaning |
+|---|---|---|---|
+| ≥ 0.80 | **Critical** | Red | High concept overlap and big score divergence — high probability of being a real, important conflict |
+| 0.50 – 0.79 | **Moderate** | Orange | Likely contradiction worth reviewing |
+| Below 0.50 | **Mild** | Yellow | Possible false positive or minor contradiction |
+
+Severity is computed automatically from the edge weight — not manually assigned. Contradictions sort descending by weight, so critical ones always appear first.
+
+### AI Triage
+
+When there are **3 or more active contradictions**, kb2b shows an automated Triage panel with Claude-powered recommendations: it groups related contradictions, suggests where to start, and summarizes the conflicts. **It does not resolve for you** — it only helps you prioritize.
+
+## The two-phase workflow
+
+Resolving a contradiction has **two phases**, intentionally separated:
+
+```
+   Phase 1 — STANCE (evidence)                    Phase 2 — RESOLUTION (decision)
+   ─────────────────────────                      ─────────────────────────
+   Team contributes votes       ────────────▶     A curator makes the final call
+   (editors+ can do this)                         (editor / admin / curator)
+                                                  
+   confirm_a / confirm_b /                        confirmed_a / confirmed_b /
+   dismiss                                         both_valid / needs_update / dismissed
+```
+
+The split is deliberate: stances accumulate asynchronously across the team, and the final decision happens once there's enough evidence.
+
+### Phase 1 — Stances (all editors)
+
+Each contradiction shows the two fact cards side by side. Under each is a set of three buttons:
+
+- **"Support this fact"** (confirm_a or confirm_b depending on the side) — you vote in favor of the fact.
+- **"Not a contradiction"** (dismiss) — you mark the edge as a false positive.
+
+Each stance can include **optional notes** explaining why. Each one also triggers a **score delta** that propagates to the involved facts:
+
+- Confirming a fact **raises** its POT Score proportional to your expertise level.
+- The opposing fact **drops** proportionally.
+
+Counts are shown live: _"3 support A · 1 supports B · 0 dismiss"_. If you change your mind, your stance is replaced (not duplicated).
+
+### Phase 2 — Resolution (editor / admin / curator)
+
+Once there's enough evidence, someone with permissions makes the final call. There are **5 options**:
+
+| Resolution | Meaning |
+|---|---|
+| **confirmed_a** | "Fact A is correct" — raises A's score, lowers B's. |
+| **confirmed_b** | "Fact B is correct" — flipped. |
+| **both_valid** | "Both are valid in different contexts" — no penalty, explicitly marks them as non-contradicting. |
+| **needs_update** | "Documents need updating" — flag that this isn't an epistemic decision but a maintenance task. |
+| **dismissed** | "Not a real contradiction" — false positive. |
+
+Each resolution can include **notes** explaining the rationale.
+
+When confirmed, kb2b mutates the edge in SciPot: `contradicts` → `resolved_contradiction`, marks who resolved and when, stores the notes, and applies the final score deltas.
+
+## Reverting a resolution
+
+If you made a mistake or new evidence appears, the original resolver can **revert** their resolution. Click "Revert" on the resolved card:
+
+- The edge goes back to `contradicts` (active state).
+- Previous stances are kept as history.
+- The revert is recorded in the audit trail.
+
+Only the person who resolved can revert their own resolution. Other editors can take a new stance if they disagree, but can't overwrite directly.
+
+## Constitutional axioms and contradictions
+
+When a `Constitutional` fact (POT Score 1.0) participates in a contradiction:
+
+- kb2b **shows an explicit amber warning** in the UI: _"This fact contradicts a constitutional axiom. Resolving against the axiom requires administrator intervention."_
+- It does **NOT block** the resolution technically — the call stays with the responsible person.
+- The warning is there so you think twice: if you're about to tear down an axiom, the right move is to go to [POT Constitution](/en/admin/pot-constitution) and downgrade or remove it formally with score re-propagation.
+
+<Warning>
+  The SciPot whitepaper describes axioms as "immune to stance penalties". In kb2b the current implementation is **warning-aware**, not **hard-block**: the UI warns you but lets the action through. If your organization needs real blocking (regulatory audit, compliance), confirm with your admin before operating on contradictions that touch axioms.
+</Warning>
+
+## What gets logged (audit trail)
+
+Every action on a contradiction generates an **activity event** logged for audit:
+
+| Event | Who | When | What it stores |
+|---|---|---|---|
+| `stance_taken` | userId | timestamp | stance (`confirm_a`/`confirm_b`/`dismiss`) + notes |
+| `contradiction_resolved` | userId | timestamp | resolution_type + notes |
+| Resolution revert | userId | timestamp | return to `contradicts` |
+
+Historical stances appear in the **"Team positions"** panel inside each contradiction — who voted what, when, with what notes, and what score delta it caused.
+
+Resolved contradictions are kept in a separate panel: **"My resolutions"** (yours) and **"Resolved by others"** (the team's) — dimmed but accessible for review.
+
+## Notifications
+
+<Info>
+  In this version kb2b **does NOT send push notifications** when:
+  - A new contradiction is detected
+  - Someone takes a stance on a contradiction that involves you
+  - A contradiction you originated or voted on is resolved
+
+  All changes are in the activity feed and visible when you visit the Knowledge section. Push notifications are on the roadmap.
+</Info>
+
+## When NOT to use this flow
+
+- **If you find a fact extracted incorrectly** (it contradicts nothing, it's just wrong), **don't open a contradiction** — use 👎 curation from the fact inspector (see [Explore and discuss facts](/en/user/explore-and-discuss-facts)).
+- **If you want to discuss a fact but it doesn't contradict another**, use the Discussion tab, not this flow.
+- **If two facts appear to contradict but are actually about different things**, resolve with `dismissed` or `both_valid` — don't force a binary decision where it doesn't apply.
+
+## Permissions
+
+| Action | Reader | Editor | Admin | Human Curator |
+|---|---|---|---|---|
+| View contradictions | ✓ | ✓ | ✓ | ✓ |
+| Take a stance | — | ✓ | ✓ | ✓ |
+| Resolve contradiction | — | ✓ | ✓ | ✓ |
+| Resolve touching an axiom | — | ⚠ (warning) | ⚠ | ⚠ |
+| Revert your own resolution | — | ✓ | ✓ | ✓ |
+| Manage Constitution | — | — | ✓ | ✓ |
+
+_Page in progress Phase 1 — banner, stance workflow, and resolution modal screenshots coming in Phase 2._

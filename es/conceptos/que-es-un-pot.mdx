@@ -1,0 +1,66 @@
+---
+title: "¿Qué es un POT?"
+sidebarTitle: "¿Qué es un POT?"
+description: "POT = Knowledge Pot. Cómo kb2b organiza el conocimiento por cuenta, y qué significa el POT Score que acompaña cada hecho."
+lang: "es"
+---
+
+## En una frase
+
+Un **POT** (Knowledge Pot) es un contenedor especializado donde vive todo el conocimiento de una cuenta o dominio: documentos, transcripciones de reuniones, hechos extraídos y las relaciones entre ellos. **1 cuenta = 1 POT.**
+
+## Las tres letras, tres significados
+
+"POT" tiene una etimología deliberada con tres capas:
+
+| Significado | Qué denota |
+|---|---|
+| **Knowledge Pot** | El contenedor — qué es un POT cuando hablamos de "el POT de tu cuenta principal" o "el POT del cliente X". |
+| **POT Score** (**Proof of Truth**) | El sistema de puntuación de certeza (0.0–1.0) que cada hecho dentro del POT lleva consigo. |
+| **Scientia Potentia Est** | "El conocimiento es poder" — el lema latino que dio nombre a SciPot, la infraestructura sobre la que kb2b está construido. |
+
+Cuando lees "el POT" o "tu POT" — es el contenedor. Cuando lees "POT Score 0.92" — es la métrica de confianza.
+
+## Qué contiene un POT
+
+- **Constitución**: un set pequeño (típicamente 3–7) de axiomas constitucionales — los hechos foundational de esa cuenta, con POT Score = 1.0. Sólo un Human Curator puede modificarlos.
+- **Documentos**: los PDFs, DOCX, Markdown e imágenes que has subido.
+- **Transcripciones**: de las reuniones grabadas con kb2b Desktop.
+- **Hechos extraídos**: automáticamente desde documentos y transcripciones, cada uno con su POT Score.
+- **Edges** (relaciones): conexiones tipadas entre hechos — apoya, contradice, refina, deriva de, etc.
+- **Conversaciones**: el historial de chats sobre la cuenta.
+
+## POT Score — la confianza por hecho
+
+Cada hecho dentro del POT lleva un **POT Score** entre 0.0 y 1.0. El white paper de SciPot define cinco niveles:
+
+| Score | Nivel | Significado |
+|---|---|---|
+| `1.0` | **Constitutional** | Axioma constitucional — verdad definicional. Sólo Human Curator. |
+| `0.85–0.99` | **Verified** | Validado por un Human Curator. |
+| `0.50–0.84` | **Extracted** | Extraído directamente de una fuente de calidad. |
+| `0.30–0.49` | **Inferred** | Derivado a través de relaciones. |
+| `0.00–0.29` | **Pending** | Sin verificar, en revisión. |
+
+Cuando kb2b te responde, el score te dice **qué tan seguro está**. Es transparencia, no marketing.
+
+<Card title="Más sobre POT Scores" icon="external-link" href="https://docs.scipot.ai/trust-mechanics/pot-score-and-provenance">
+  La mecánica completa del POT Score, propagación a través del grafo de conocimiento, decay temporal, y curaduría humana vive en la [documentación oficial de SciPot](https://docs.scipot.ai).
+</Card>
+
+## Cuándo se crea un POT
+
+- Al crear tu workspace en kb2b, se crea un POT principal automáticamente.
+- Al crear una cuenta nueva (un cliente, un proyecto), se crea un POT nuevo.
+- 1 cuenta = 1 POT, siempre. No hay multi-POT por cuenta.
+
+## Cuándo no aplica el modelo POT
+
+- **Si tu workspace es para investigación libre** (no tienes "cuentas" en el sentido B2B), puedes usar el POT principal como bandeja de entrada.
+- **Si tu equipo trabaja por temas en vez de cuentas** (legal trabaja por casos, no por clientes), nombra tus POTs como casos: "Caso Cliente-X 2026-Q2".
+
+## La relación kb2b ↔ SciPot
+
+kb2b no inventó el modelo POT — lo consume. La infraestructura subyacente es **SciPot** (Memory-as-a-Service para agentes de IA). SciPot provee los POTs, los POT Scores, el grafo de conocimiento y la trazabilidad de procedencia. kb2b construye encima la experiencia de uso para equipos comerciales que quieren los beneficios sin tocar APIs.
+
+Si vienes del lado developer y quieres usar POTs directamente vía API, mira [docs.scipot.ai](https://docs.scipot.ai).

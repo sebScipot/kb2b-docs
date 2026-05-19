@@ -1,0 +1,66 @@
+---
+title: "What is a POT?"
+sidebarTitle: "What is a POT?"
+description: "POT = Knowledge Pot. How kb2b organizes knowledge per account, and what the POT Score attached to every fact means."
+lang: "en"
+---
+
+## In one sentence
+
+A **POT** (Knowledge Pot) is a specialized container where all knowledge for one account or domain lives: documents, meeting transcripts, extracted facts, and the relationships between them. **1 account = 1 POT.**
+
+## Three letters, three meanings
+
+"POT" has a deliberate three-layer etymology:
+
+| Meaning | What it denotes |
+|---|---|
+| **Knowledge Pot** | The container — what a POT is when we say "your main account's POT" or "Customer X's POT". |
+| **POT Score** (**Proof of Truth**) | The 0.0–1.0 certainty scoring system every fact inside the POT carries. |
+| **Scientia Potentia Est** | "Knowledge is power" — the Latin motto behind SciPot, the infrastructure kb2b is built on. |
+
+When you read "the POT" or "your POT" — that's the container. When you read "POT Score 0.92" — that's the confidence metric.
+
+## What a POT contains
+
+- **Constitution**: a small set (typically 3–7) of constitutional axioms — the foundational facts of that account, with POT Score = 1.0. Only a Human Curator can modify them.
+- **Documents**: the PDFs, DOCX, Markdown, and images you uploaded.
+- **Transcripts**: from meetings recorded with kb2b Desktop.
+- **Extracted facts**: automatically from documents and transcripts, each one with its POT Score.
+- **Edges** (relationships): typed connections between facts — supports, contradicts, refines, derives from, etc.
+- **Conversations**: the chat history about the account.
+
+## POT Score — confidence per fact
+
+Every fact inside the POT carries a **POT Score** between 0.0 and 1.0. The SciPot whitepaper defines five levels:
+
+| Score | Level | Meaning |
+|---|---|---|
+| `1.0` | **Constitutional** | Constitutional axiom — definitional truth. Human Curator only. |
+| `0.85–0.99` | **Verified** | Validated by a Human Curator. |
+| `0.50–0.84` | **Extracted** | Directly extracted from a quality source. |
+| `0.30–0.49` | **Inferred** | Derived through relationships. |
+| `0.00–0.29` | **Pending** | Unverified, under review. |
+
+When kb2b answers, the score tells you **how confident it is**. Transparency, not marketing.
+
+<Card title="More on POT Scores" icon="external-link" href="https://docs.scipot.ai/trust-mechanics/pot-score-and-provenance">
+  The full POT Score mechanic — propagation through the knowledge graph, temporal decay, and human curation — lives in the [official SciPot documentation](https://docs.scipot.ai).
+</Card>
+
+## When a POT is created
+
+- When you create your kb2b workspace, a main POT is created automatically.
+- When you create a new account (a customer, a project), a new POT is created.
+- 1 account = 1 POT, always. No multi-POT per account.
+
+## When the POT model doesn't quite apply
+
+- **If your workspace is for open research** (you don't have "accounts" in the B2B sense), use the main POT as inbox.
+- **If your team works by topics rather than accounts** (legal works by cases, not by clients), name your POTs as cases: "Case Customer-X 2026-Q2".
+
+## The kb2b ↔ SciPot relationship
+
+kb2b did not invent the POT model — it consumes it. The underlying infrastructure is **SciPot** (Memory-as-a-Service for AI agents). SciPot provides the POTs, POT Scores, knowledge graph, and provenance traceability. kb2b builds on top the use experience for commercial teams that want the benefits without touching APIs.
+
+If you're coming from the developer side and want to use POTs directly via API, see [docs.scipot.ai](https://docs.scipot.ai).

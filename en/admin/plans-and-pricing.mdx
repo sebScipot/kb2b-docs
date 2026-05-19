@@ -1,0 +1,50 @@
+---
+title: "Plans and pricing"
+sidebarTitle: "Plans and pricing"
+description: "Spark, Cortex, Synapse, Megamind: what each plan includes, token top-ups, and meeting-hour top-ups."
+lang: "en"
+---
+
+{/* AUTO-GENERATED: scripts/sync-pricing.js writes this file from kb2b/src/lib/billing/plans.ts. Do not edit manually — changes between the markers will be overwritten. Last sync: 2026-05-19. */}
+
+{/* pricing:start */}
+
+## Plans (EUR/month)
+
+| Plan | Price | Tokens | Meetings | Guests | Documents | Queries | Campaigns |
+|---|---|---|---|---|---|---|---|
+| **Spark** | €45 | 5M | 300 min | 3 | ≈ 30* | ≈ 30/day* | 5 |
+| **Cortex** | €759 | 60M | 1,500 min | 10 | ≈ 250* | ≈ 150/day* | ∞ |
+| **Synapse** | €1199 | 120M | 3,600 min | 25 | ≈ 750* | ≈ 400/day* | ∞ |
+| **Megamind** | €2100 | 220M | 9,000 min | 50 | ≈ 2000* | ≈ 1500/day* | ∞ |
+
+**Tokens and meeting minutes are the real limits** (billable, hard limits). The columns marked `≈ ... *` (Documents and Queries) are **derived estimates** based on typical token usage — your actual usage may be higher or lower depending on document size, query complexity, and model used.
+
+**Free trial:** 7 days on the Spark plan, no card required.
+
+## Token top-ups (one-time)
+
+| Pack | Price |
+|---|---|
+| **Boost** 5M | €90 |
+| **Surge** 25M | €400 |
+| **Heavy** 75M | €1050 |
+| **Mega** 150M | €1950 |
+
+## Meeting-hours top-ups (one-time)
+
+| Pack | Price |
+|---|---|
+| **Bump** 5h | €15 |
+| **Boost** 15h | €38 |
+| **Stretch** 30h | €60 |
+| **Mega** 100h | €120 |
+
+## Warnings and blocks (on the real token limit)
+
+- At **95% of your token limit**, you see a yellow warning in kb2b. You can still query.
+- At **110% of your token limit**, queries are blocked. You need a top-up, plan change, or to wait for next cycle. Details on [Token limits](/en/admin/token-limits).
+
+Meeting minutes have their own independent counter, with dedicated warnings and top-ups.
+
+{/* pricing:end */}

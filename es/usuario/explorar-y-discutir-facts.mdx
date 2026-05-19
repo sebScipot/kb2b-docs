@@ -1,0 +1,84 @@
+---
+title: "Explorar y discutir facts"
+sidebarTitle: "Explorar y discutir facts"
+description: "Cómo abrir un fact individual, ver sus conexiones, comentarlo con el equipo y aprobarlo o rechazarlo. Sin esto, los facts son solo datos sueltos."
+lang: "es"
+---
+
+Cada **fact** del POT (un hecho extraído de un documento o una reunión) tiene una vista dedicada que se abre como modal — el **inspector de fact**. Ahí puedes ver sus conexiones, discutirlo con tu equipo, y aprobarlo o desaprobarlo.
+
+## Abrir el inspector
+
+Cualquier mención de un fact en la app abre el inspector. Por ejemplo:
+
+- Click en un fact desde **Conocimiento → Pendientes de revisión** (`/dashboard/knowledge`)
+- Click en un fact citado en una respuesta del chat
+- Click en un fact desde un insight de Scout
+- URL directa: `/dashboard/knowledge?fact={id}` (deep-link, útil para compartir un fact con un compañero)
+
+El inspector tiene dos pestañas: **Conexiones** y **Discusión**.
+
+## Pestaña Conexiones
+
+Muestra el **grafo local** del fact:
+
+- Documentos o reuniones de origen (con cita exacta: nombre del archivo + offset)
+- Edges salientes (qué otros facts **apoyan**, **refinan**, **derivan de** o **se contradicen con** este)
+- POT Score actual y nivel (Constitutional, Verified, Extracted, Inferred, Pending)
+- Historial de cambios de score (cuándo cambió, por qué, quién lo curó)
+
+Si este fact **contradice un axioma de la Constitución**, aparece un banner rojo arriba con link directo a la página de Constitución para resolver.
+
+## Pestaña Discusión
+
+Aquí está el **chat interno del equipo sobre este fact específico**. Es una conversación anidada, no un chat plano:
+
+| Capacidad | Cómo se usa |
+|---|---|
+| **Comentar** | Escribe en el input y envía. Aparece como hilo cronológico. |
+| **Responder a un comentario** | Click en "Responder" debajo del comentario padre. Crea un sub-hilo anidado. |
+| **Mencionar a un compañero** | Escribe `@` y selecciona del listado del workspace. Recibe notificación. |
+| **Editar tu comentario** | Hover sobre tu comentario → "Editar". Queda marcado con timestamp de edición. |
+| **Borrar** | Soft delete — el comentario queda como "(eliminado)" en el hilo para preservar la conversación. |
+
+> **Nota terminológica:** en algunas conversaciones internas la gente se refiere a esto como "el chat de trio" o "el chat del fact". El nombre formal en producto es **Discusión** y vive en la pestaña del mismo nombre. No hay una entidad "trio" en kb2b — es simplemente la discusión threaded sobre un fact (o sobre un edge entre dos facts).
+
+## Curar el fact (aprobar / desaprobar)
+
+Debajo de la información principal hay dos botones (👍 / 👎) — la **curación**:
+
+- **Aprobar (👍)** sube el score del fact y suma un voto a tu favor. La magnitud depende de tu nivel de expertise registrado en el workspace.
+- **Desaprobar (👎)** baja el score y resta. Útil cuando ves que un fact extraído está mal interpretado del documento.
+
+Reglas:
+
+- Cada usuario puede **aprobar o desaprobar una vez** por fact (cambiar tu voto reemplaza el anterior).
+- Tu voto contribuye proporcionalmente a tu **nivel de seniority** registrado en el workspace (junior < medior < senior < principal).
+- Los **votos repetidos del mismo usuario** tienen rendimiento decreciente — no puedes martillar un fact para subirlo o bajarlo por volumen.
+- **Los facts constitucionales (Constitution) no se pueden curar** desde aquí — solo un Human Curator los gestiona desde la página de Constitución.
+
+Cada curación queda registrada en el **historial de curación** del fact, visible en la pestaña Conexiones. Puedes deshacer tu propia curación si te equivocas.
+
+## Resolver una contradicción
+
+Si dos facts se contradicen, aparece un edge tipo **`contradicts`** entre ellos. En el inspector del fact contradictorio verás:
+
+1. Banner rojo: "Este fact contradice X"
+2. Listado de stances (votos del equipo) — quién apoya cuál
+3. Si tienes permisos de Human Curator, opción de **resolver** la contradicción: confirmar A, confirmar B, o marcarla como falso positivo
+
+La resolución final convierte el edge de `contradicts` a `resolved_contradiction` y queda en el audit trail. Más detalle en [SciPot docs](https://docs.scipot.ai/trust-mechanics/pot-score-and-provenance).
+
+## Compartir un fact externamente
+
+Click en el ícono de copiar link → te da una URL tipo `https://kb2b.app/dashboard/knowledge?fact={id}`. Cualquier compañero del workspace que abra el link aterriza en el mismo inspector, en la misma pestaña.
+
+Esto NO funciona para personas fuera del workspace — kb2b no expone facts públicamente por defecto. Para compartir con un cliente o partner externo, copia manualmente el contenido relevante (con su POT Score y fuente) y mándalo por el canal que uses.
+
+## Cuándo NO discutir un fact
+
+- **Si es un fact obvio extraído correctamente**, no necesita discusión. Las discusiones son útiles cuando hay duda sobre interpretación, contexto o validez.
+- **Si te disgusta el fact pero no tienes evidencia**, prefiere desaprobar (👎) antes que abrir un hilo opinativo.
+- **Si descubres una contradicción**, no abras la discusión en el fact — usa la resolución de contradicciones (es el flujo apropiado y queda en el audit trail formal).
+
+_Página en construcción Phase 1 — capturas del inspector y ejemplos de hilos de discusión vienen en Phase 2._

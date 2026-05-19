@@ -1,0 +1,47 @@
+---
+title: "Vincular kb2b Desktop con tu workspace"
+sidebarTitle: "Vincular con kb2b"
+description: "Flujo de OAuth en el navegador para conectar la aplicación de escritorio con tu workspace de kb2b."
+lang: "es"
+---
+
+## Resumen
+
+kb2b Desktop se vincula a tu workspace **vía OAuth en el navegador**. No hay códigos de 6 dígitos ni copia-pega de tokens. Sólo confirmas en tu navegador habitual.
+
+## Pasos
+
+1. **Abre kb2b Desktop**. En la pantalla de bienvenida verás "Vincular con kb2b".
+
+2. **Confirma la URL de la API**. Por defecto es `https://kb2b.app`. Si tu empresa usa una instancia distinta, cámbiala aquí.
+
+3. **Pulsa "Vincular con kb2b"**. Se abre tu navegador en `https://kb2b.app/desktop/link`.
+
+4. **Inicia sesión en kb2b** si no lo estás ya.
+
+5. **Autoriza el cliente de escritorio** en la pantalla de consentimiento. Verás:
+   - El nombre del dispositivo desde el que estás vinculando
+   - El workspace al que se vincula
+   - Los permisos que solicita (capturar audio, leer transcripciones, etc.)
+
+6. **Vuelve a kb2b Desktop**. El navegador devuelve el control y la app muestra el nombre del workspace confirmado.
+
+<Note>
+  El token de sesión se guarda en el Keychain del sistema (servicio `ai.kb2b.desktop`). No se expone como variable de entorno.
+</Note>
+
+## Si algo falla
+
+<Warning>
+  Si el navegador no se abre o el flujo se queda colgado:
+  - Cancela en la app desktop con el botón "Cancelar"
+  - Confirma que la URL es correcta (`https://kb2b.app` para producción)
+  - Vuelve a pulsar "Vincular con kb2b"
+  - Si persiste, revisa que tu sesión de kb2b está activa en el navegador (abre [kb2b.app](https://kb2b.app) primero)
+</Warning>
+
+## Desvincular
+
+En la pantalla de Onboarding, una vez vinculado, hay un botón "Desvincular dispositivo". Pulsa, confirma. El token se borra del Keychain y el dispositivo se elimina del workspace en kb2b web.
+
+_Capturas de pantalla y detalles del consentimiento pendientes._

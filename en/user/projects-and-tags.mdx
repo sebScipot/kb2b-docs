@@ -1,0 +1,78 @@
+---
+title: "Projects and tags"
+sidebarTitle: "Projects and tags"
+description: "How to organize meetings and documents with projects and reusable tags. Useful for filtering and for auditing where each fact came from."
+lang: "en"
+---
+
+kb2b lets you organize what you ingest into the POT with **two complementary systems**: projects (one per meeting or document) and tags (up to 19, free-form). Neither creates new POTs — everything still feeds the account's POT. What changes is how you can filter later and what provenance each extracted fact carries.
+
+## Projects
+
+A **project** groups meetings and documents tied to a specific initiative or phase. Examples:
+
+- "Acme migration" — all meetings and specs from an implementation project
+- "Q2 2026 renewal" — documents and conversations about a contract renegotiation
+- "Customer X onboarding" — discovery meetings plus the customer's documents
+
+### Rules
+
+- **1 meeting or document = max 1 project.** You can't assign two.
+- **Org-scoped.** Projects live at the workspace level, not per POT. Other teammates see the same list.
+- **Free-form name** (up to 100 chars), **auto-generated slug** (lowercase, no accents, hyphenated).
+- **Optional color** to visually distinguish them in lists.
+- **Archivable but not deleted** — facts already extracted keep their provenance (`project:slug`) in SciPot even if the project is archived.
+
+### How to create one
+
+From the picker that appears when you upload a document or import a meeting: click **"+ New project"** → type a name → confirm. Created instantly and available for future assignments.
+
+## Tags
+
+**Tags** are free-form, reusable labels with no hierarchy. Unlike projects (1:1), a single document or meeting can carry **up to 19 tags**.
+
+### Convention suggestion: prefixes
+
+To keep tags discoverable and consistent, use category prefixes:
+
+| Prefix | For | Examples |
+|---|---|---|
+| `TEAM/` | Owning team | `TEAM/sales`, `TEAM/operations` |
+| `CLIENT/` | Client or account | `CLIENT/acme`, `CLIENT/distribuidora-x` |
+| `CATEGORY/` | Content kind | `CATEGORY/retro`, `CATEGORY/discovery` |
+| `TYPE/` | Document nature | `TYPE/contract`, `TYPE/email`, `TYPE/transcript` |
+
+This isn't mandatory — kb2b accepts any tag — but it keeps things sane once you have >20 tags.
+
+### Rules
+
+- **Org-scoped** like projects.
+- **Max 19 per document or meeting** (plus the project = 20 metadata sources per item).
+- **Auto-generated slug** from the name.
+- **Optional color**.
+
+## What happens when you ask something
+
+When kb2b extracts facts from your documents and meetings, each fact inherits the source tags:
+
+```
+source.tags = ["project:acme-migration", "tag:team-sales", "tag:client-acme"]
+```
+
+That means later you can filter queries by source: _"Only answers based on facts from the Acme migration"_ or _"Only what the sales team contributed"_. The `project:` and `tag:` slugs are immutable — if you rename a project later, old facts still point to the original slug (this is deliberate; it preserves audit history).
+
+## When NOT to use this
+
+- **If your workspace has 1 single account and few meetings**, you don't need projects. Start with tags only.
+- **If your team isn't disciplined about tagging**, avoid creating hundreds of prefix-less tags — it becomes noise that filters nothing. Better few consistent tags than many chaotic ones.
+
+## Difference vs. workspace and POT
+
+| Entity | What it groups | Who manages it |
+|---|---|---|
+| **Workspace** | Everything: users + POTs + projects + tags. 1 workspace = 1 organization in kb2b. | Workspace owner. |
+| **POT** | The knowledge (facts, edges, constitution) of **one account** or domain. 1 account = 1 POT. | The POT's Human Curator. |
+| **Project** | Meetings and documents from an initiative. Lives at the workspace level, not per POT. | Any member with edit permissions. |
+| **Tag** | Free-form reusable labels. Workspace-level. | Any member. |
+
+_Page in progress Phase 1 — more screenshots and examples coming in Phase 2._

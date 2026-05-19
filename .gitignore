@@ -1,0 +1,9 @@
+node_modules/
+.next/
+.mintlify/
+.DS_Store
+*.log
+.env
+.env.local
+.vale-tmp/
+dist/

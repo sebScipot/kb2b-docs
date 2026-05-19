@@ -1,0 +1,204 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "kb2b",
+  "description": "Documentación de kb2b — base de conocimiento empresarial con memoria de cuenta.",
+  "colors": {
+    "primary": "#3F8F62",
+    "light": "#5BAC7E",
+    "dark": "#3F8F62"
+  },
+  "favicon": "/logo/favicon.png",
+  "logo": {
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png"
+  },
+  "fonts": {
+    "family": "Geist"
+  },
+  "appearance": {
+    "default": "dark"
+  },
+  "navigation": {
+    "languages": [
+      {
+        "language": "es",
+        "default": true,
+        "groups": [
+          {
+            "group": "Empezar",
+            "pages": [
+              "es/welcome",
+              "es/empezar/que-es-kb2b",
+              "es/empezar/primera-conversacion"
+            ]
+          },
+          {
+            "group": "Para usuarios",
+            "pages": [
+              "es/usuario/chat-con-el-pot",
+              "es/usuario/subir-documentos",
+              "es/usuario/proyectos-y-etiquetas",
+              "es/usuario/reuniones-resumenes-y-facts",
+              "es/usuario/explorar-y-discutir-facts",
+              "es/usuario/contradicciones-y-resolucion",
+              "es/usuario/scout-agente-ia",
+              "es/usuario/conocimiento-y-confianza",
+              "es/usuario/organigrama"
+            ]
+          },
+          {
+            "group": "Para administradores",
+            "pages": [
+              "es/admin/planes-y-precios",
+              "es/admin/facturacion",
+              "es/admin/limites-de-tokens",
+              "es/admin/constitucion-del-pot"
+            ]
+          },
+          {
+            "group": "kb2b Desktop",
+            "pages": [
+              "es/escritorio/descargar-e-instalar",
+              "es/escritorio/permisos-macos",
+              "es/escritorio/emparejar-con-kb2b",
+              "es/escritorio/grabar-reunion"
+            ]
+          },
+          {
+            "group": "Conceptos",
+            "pages": [
+              "es/conceptos/que-es-un-pot"
+            ]
+          },
+          {
+            "group": "Legal",
+            "pages": [
+              "es/legal/politica-de-grabacion",
+              "es/legal/confianza-y-datos"
+            ]
+          },
+          {
+            "group": "Cambios",
+            "pages": [
+              "es/cambios"
+            ]
+          }
+        ]
+      },
+      {
+        "language": "en",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "en/welcome",
+              "en/get-started/what-is-kb2b",
+              "en/get-started/first-conversation"
+            ]
+          },
+          {
+            "group": "For users",
+            "pages": [
+              "en/user/chat-with-the-pot",
+              "en/user/upload-documents",
+              "en/user/projects-and-tags",
+              "en/user/meetings-summaries-and-facts",
+              "en/user/explore-and-discuss-facts",
+              "en/user/contradictions-and-resolution",
+              "en/user/scout-ai-agent",
+              "en/user/knowledge-and-trust",
+              "en/user/org-chart"
+            ]
+          },
+          {
+            "group": "For admins",
+            "pages": [
+              "en/admin/plans-and-pricing",
+              "en/admin/billing",
+              "en/admin/token-limits",
+              "en/admin/pot-constitution"
+            ]
+          },
+          {
+            "group": "kb2b Desktop",
+            "pages": [
+              "en/desktop/download-and-install",
+              "en/desktop/macos-permissions",
+              "en/desktop/pair-with-kb2b",
+              "en/desktop/record-a-meeting"
+            ]
+          },
+          {
+            "group": "Concepts",
+            "pages": [
+              "en/concepts/what-is-a-pot"
+            ]
+          },
+          {
+            "group": "Legal",
+            "pages": [
+              "en/legal/recording-policy",
+              "en/legal/trust-and-data"
+            ]
+          },
+          {
+            "group": "Changelog",
+            "pages": [
+              "en/changelog"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Soporte",
+        "href": "mailto:soporte@kb2b.app"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Abrir kb2b",
+      "href": "https://kb2b.app"
+    }
+  },
+  "footer": {
+    "socials": {
+      "linkedin": "https://www.linkedin.com/company/kb2b",
+      "github": "https://github.com/kb2b"
+    },
+    "links": [
+      {
+        "header": "Producto",
+        "items": [
+          { "label": "kb2b", "href": "https://kb2b.app" },
+          { "label": "Precios", "href": "https://kb2b.app#pricing" }
+        ]
+      },
+      {
+        "header": "Recursos",
+        "items": [
+          { "label": "Documentación", "href": "https://docs.kb2b.app" },
+          { "label": "Cambios", "href": "https://docs.kb2b.app/es/cambios" }
+        ]
+      },
+      {
+        "header": "Legal",
+        "items": [
+          { "label": "Política de grabación", "href": "https://docs.kb2b.app/es/legal/politica-de-grabacion" },
+          { "label": "Confianza y datos", "href": "https://docs.kb2b.app/es/legal/confianza-y-datos" }
+        ]
+      }
+    ]
+  },
+  "seo": {
+    "metatags": {
+      "og:site_name": "kb2b docs",
+      "og:image": "/images/og-default.png"
+    }
+  },
+  "redirects": []
+}

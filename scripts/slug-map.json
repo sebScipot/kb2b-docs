@@ -1,0 +1,30 @@
+{
+  "_comment": "Maps ES slugs to EN slugs. Used by check-parity.js. Add new pages here when registering in docs.json.",
+  "_format": {
+    "es-relative-path": "en-relative-path"
+  },
+  "welcome": "welcome",
+  "empezar/que-es-kb2b": "get-started/what-is-kb2b",
+  "empezar/primera-conversacion": "get-started/first-conversation",
+  "usuario/chat-con-el-pot": "user/chat-with-the-pot",
+  "usuario/subir-documentos": "user/upload-documents",
+  "usuario/proyectos-y-etiquetas": "user/projects-and-tags",
+  "usuario/reuniones-resumenes-y-facts": "user/meetings-summaries-and-facts",
+  "usuario/explorar-y-discutir-facts": "user/explore-and-discuss-facts",
+  "usuario/contradicciones-y-resolucion": "user/contradictions-and-resolution",
+  "usuario/scout-agente-ia": "user/scout-ai-agent",
+  "usuario/conocimiento-y-confianza": "user/knowledge-and-trust",
+  "usuario/organigrama": "user/org-chart",
+  "admin/planes-y-precios": "admin/plans-and-pricing",
+  "admin/facturacion": "admin/billing",
+  "admin/limites-de-tokens": "admin/token-limits",
+  "admin/constitucion-del-pot": "admin/pot-constitution",
+  "escritorio/descargar-e-instalar": "desktop/download-and-install",
+  "escritorio/permisos-macos": "desktop/macos-permissions",
+  "escritorio/emparejar-con-kb2b": "desktop/pair-with-kb2b",
+  "escritorio/grabar-reunion": "desktop/record-a-meeting",
+  "conceptos/que-es-un-pot": "concepts/what-is-a-pot",
+  "legal/politica-de-grabacion": "legal/recording-policy",
+  "legal/confianza-y-datos": "legal/trust-and-data",
+  "cambios": "changelog"
+}

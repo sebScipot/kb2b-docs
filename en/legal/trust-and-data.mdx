@@ -1,0 +1,42 @@
+---
+title: "Trust and data — for procurement"
+sidebarTitle: "Trust and data"
+description: "Quick answers on GDPR, sub-processors, retention, and security for procurement teams evaluating kb2b."
+lang: "en"
+---
+
+## Quick answers for procurement
+
+For an initial security and compliance evaluation:
+
+- ✅ **Data stored in AWS EU (Frankfurt)** — no transfers outside the EEA in standard operation.
+- ✅ **Sub-processors listed below** — Stripe (billing), Recall.ai (audio), Anthropic (LLM synthesis), AWS (storage), Resend (email).
+- ✅ **Retention policy: 30 days for transcripts, 7 days for meeting media** (Recall free tier).
+- ✅ **Recording consent documented** — see [Recording policy](/en/legal/recording-policy).
+- ✅ **DPA available on request** — email [legal@kb2b.app](mailto:legal@kb2b.app).
+- ✅ **Security call with a responsible party** — request one by emailing [legal@kb2b.app](mailto:legal@kb2b.app) with subject "Security call".
+
+## If you need more detail
+
+| Document | Availability |
+|---|---|
+| Data Processing Agreement (DPA) | On request (e-signed) |
+| Up-to-date sub-processor list | Available on this page (next section) |
+| SOC 2 Type II report | In progress — pre-launch we deliver GDPR posture + DPA |
+| Standard security questionnaire (CAIQ, VSA) | On request |
+| Penetration test report | Under NDA |
+
+## Current sub-processors
+
+_Detailed list and purpose per sub-processor pending — will include: AWS (storage in eu-central-1), Anthropic Claude (LLM synthesis, no training on your data), Recall.ai (meeting audio capture, 7d retention), Stripe (payments), Resend (transactional email)._
+
+## Workspace isolation
+
+Each kb2b workspace lives in its own **POT** (Knowledge Pot — the account's knowledge container). POTs are isolated at the database level by `workspace_id`. **There is no way for one workspace to query another workspace's data** — neither accidentally, nor via prompt injection.
+
+## Security contacts
+
+- General: [legal@kb2b.app](mailto:legal@kb2b.app)
+- Vulnerability disclosure: [security@kb2b.app](mailto:security@kb2b.app)
+
+_Detailed DPA, sub-processor and isolation content pending._

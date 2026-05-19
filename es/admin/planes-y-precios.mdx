@@ -1,0 +1,50 @@
+---
+title: "Planes y precios"
+sidebarTitle: "Planes y precios"
+description: "Spark, Cortex, Synapse, Megamind: qué incluye cada plan, top-ups de tokens y horas de reunión."
+lang: "es"
+---
+
+{/* AUTO-GENERATED: scripts/sync-pricing.js writes this file from kb2b/src/lib/billing/plans.ts. Do not edit manually — changes between the markers will be overwritten. Last sync: 2026-05-19. */}
+
+{/* pricing:start */}
+
+## Planes (EUR/mes)
+
+| Plan | Precio | Tokens | Reuniones | Invitados | Documentos | Consultas | Campañas |
+|---|---|---|---|---|---|---|---|
+| **Spark** | €45 | 5M | 300 min | 3 | ≈ 30* | ≈ 30/día* | 5 |
+| **Cortex** | €759 | 60M | 1500 min | 10 | ≈ 250* | ≈ 150/día* | ∞ |
+| **Synapse** | €1199 | 120M | 3600 min | 25 | ≈ 750* | ≈ 400/día* | ∞ |
+| **Megamind** | €2100 | 220M | 9000 min | 50 | ≈ 2000* | ≈ 1500/día* | ∞ |
+
+**Tokens y minutos de reunión son los límites reales** (cobrables, hard limits). Las columnas marcadas con `≈ ... *` (Documentos y Consultas) son **estimaciones derivadas** del consumo típico de tokens — tu uso real puede ser mayor o menor según el tamaño de los documentos, complejidad de las consultas, y modelo usado.
+
+**Prueba gratuita:** 7 días en el plan Spark, sin tarjeta.
+
+## Top-ups de tokens (pago único)
+
+| Pack | Precio |
+|---|---|
+| **Boost** 5M | €90 |
+| **Surge** 25M | €400 |
+| **Heavy** 75M | €1050 |
+| **Mega** 150M | €1950 |
+
+## Top-ups de horas de reunión (pago único)
+
+| Pack | Precio |
+|---|---|
+| **Bump** 5h | €15 |
+| **Boost** 15h | €38 |
+| **Stretch** 30h | €60 |
+| **Mega** 100h | €120 |
+
+## Avisos y bloqueos (sobre el límite real de tokens)
+
+- A partir del **95% del límite de tokens** ves un aviso amarillo en kb2b. Aún puedes consultar.
+- A partir del **110% del límite de tokens** las consultas se bloquean. Necesitas un top-up, cambio de plan, o esperar al siguiente ciclo. Más detalle en [Límites de tokens](/es/admin/limites-de-tokens).
+
+Los minutos de reunión tienen su propio contador independiente, también con avisos y top-ups dedicados.
+
+{/* pricing:end */}

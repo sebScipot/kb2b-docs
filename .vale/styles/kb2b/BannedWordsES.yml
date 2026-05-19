@@ -1,0 +1,18 @@
+extends: existence
+message: "No uses '%s' — ver glossary.md y reglas de vocabulario en DESIGN.md."
+level: error
+ignorecase: true
+tokens:
+  - fundamental
+  - integral
+  - robusto
+  - sólido
+  - holístico
+  - sinérgico
+  - ecosistema
+  - paradigma
+  - transformador
+  - potente
+  - vibrante
+  - aprovechar
+  - empoderar

@@ -1,0 +1,20 @@
+{
+  "name": "kb2b-docs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Documentación pública bilingüe de kb2b — Mintlify",
+  "scripts": {
+    "dev": "mintlify dev",
+    "broken-links": "mintlify broken-links",
+    "check:parity": "node scripts/check-parity.js",
+    "check:screenshots": "node scripts/check-screenshots-age.js",
+    "check:all": "npm run check:parity && npm run check:screenshots && npm run broken-links",
+    "sync:pricing": "node scripts/sync-pricing.js",
+    "sync:changelog": "node scripts/sync-changelog.js",
+    "sync:all": "npm run sync:pricing && npm run sync:changelog"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=22"
+  }
+}

@@ -1,0 +1,86 @@
+---
+title: "Constitución del POT"
+sidebarTitle: "Constitución del POT"
+description: "Los axiomas constitucionales (POT Score = 1.0) son la verdad fundacional de tu cuenta. Sólo un Human Curator puede crearlos o modificarlos."
+lang: "es"
+---
+
+## Qué es la Constitución
+
+La **Constitución** de un POT es un set pequeño de **axiomas constitucionales** — hechos foundational que kb2b trata como verdad definicional sobre esa cuenta. Su POT Score es **1.0**, el máximo posible.
+
+Ejemplos típicos para una cuenta de cliente:
+
+- "El contrato con Distribuidora X expira el 30/06/2026."
+- "La política de descuento por volumen aplica desde 500 unidades/mes."
+- "El interlocutor único para temas comerciales es Laura Ferrer."
+
+Y para un POT más operativo:
+
+- "Las reuniones de revisión trimestral se hacen el primer martes del mes."
+- "Toda especificación técnica debe ser revisada por un Human Curator antes de promoverla a Verified."
+
+Típicamente tienes **entre 3 y 7 axiomas** por POT. Más que eso suele indicar que confundiste un fact regular con uno constitucional.
+
+## Por qué importan
+
+Los axiomas constitucionales son la **referencia contra la que kb2b mide el resto**:
+
+- Cuando se extrae un hecho de un nuevo documento, kb2b comprueba si **apoya, refina o contradice** algún axioma. Si lo contradice, dispara un workflow de resolución (ver Contradicciones).
+- Las consultas que tocan un área cubierta por un axioma reciben la información constitucional con confianza máxima.
+- Eliminar o modificar un axioma **dispara una repropagación de scores** a través del grafo de conocimiento.
+
+Por eso son **inmunes a las penalizaciones de stance** — ningún voto de equipo puede erosionar un axioma. Sólo un Human Curator con autoridad explícita los toca.
+
+## Quién puede gestionarlos
+
+Sólo un **Human Curator** designado del POT puede crear, editar, eliminar o promover un fact a constitucional. Esto es por diseño: la integridad epistémica del POT depende de que los axiomas estén bajo control humano experto.
+
+En kb2b esto se traduce en que el rol de admin del workspace gestiona la Constitución del POT por defecto. Si tu equipo separa el rol de admin operativo del de Human Curator, configura los permisos en [Miembros y roles](/es/admin/miembros-y-roles) _(página en construcción)_.
+
+## Cómo crear o editar axiomas
+
+1. Navega a **`/dashboard/knowledge/constitution`** en kb2b.
+2. Verás la lista de axiomas actuales — cada uno expandible para ver los hechos del POT que lo apoyan o contradicen.
+3. Click en **"Agregar Axioma"** abre el formulario:
+   - Escribe el contenido del axioma en lenguaje natural claro y falsable.
+   - kb2b ejecuta una **validación previa con Claude** que comprueba si el axioma:
+     - Está fuera del dominio declarado del POT (rechazo)
+     - Contradice axiomas existentes (advertencia)
+     - Se solapa con otro axioma (sugerencia de unificación)
+     - Es vago o no-falsable (sugerencia de reescritura)
+   - Acepta la sugerencia o guarda el axioma como lo escribiste.
+4. El axioma se persiste con `pot_score = 1.0` y nivel `CONSTITUTION`.
+5. Se dispara la repropagación de scores en el grafo (proceso async, no bloqueante).
+
+## Cómo escribir un buen axioma
+
+Un buen axioma cumple cuatro propiedades:
+
+- **Falsable.** Se puede demostrar incorrecto con evidencia. _"Nuestro mejor cliente es Acme"_ no es falsable; _"Acme genera >40% de nuestros ingresos en 2026"_ sí.
+- **Específico.** Una fecha, un nombre, un número, una regla. Evita _"importante", "estratégico", "clave"_.
+- **Estable.** Cosas que no van a cambiar cada semana. Si cambia mensualmente, no es axioma — es fact regular.
+- **Dentro del dominio del POT.** Si tu POT es la cuenta de Acme, el axioma debe ser sobre Acme — no sobre todo el mercado.
+
+## Cuándo NO crear un axioma
+
+- Si **cambia con frecuencia** — déjalo como fact regular y deja que la decay temporal de POT Score haga su trabajo.
+- Si **necesitas más evidencia** — promueve primero a `Verified` (0.85-0.99), no directamente a Constitutional.
+- Si **podría ser controversial dentro de tu equipo** — discútelo primero. Los axiomas son institucionales, no personales.
+
+## Eliminar o degradar un axioma
+
+Eliminar un axioma constitucional es un acto deliberado: dispara la repropagación de scores y registra un evento en el audit log. Si después de ingerir más documentos resulta que un axioma era incorrecto:
+
+1. Abre la página de Constitución.
+2. Selecciona el axioma.
+3. Click en **"Degradar"** (lo baja a Verified 0.85) o **"Eliminar"** (lo borra completamente).
+4. kb2b te pedirá confirmación porque la acción es costosa de revertir.
+
+Todo cambio queda registrado con quién lo hizo, cuándo, y qué efecto tuvo en los scores del resto del POT.
+
+## Sobre la mecánica completa
+
+La definición teórica de la Constitución, la propagación de scores, las relaciones tipadas entre facts (edges), la curaduría experta y la resolución de contradicciones viven en la [documentación oficial de SciPot](https://docs.scipot.ai). Esta página cubre solo lo que un admin de kb2b necesita para gestionarla en el día a día.
+
+_Página en construcción Phase 1 — capturas de pantalla del formulario y ejemplos de validación vienen en Phase 2._

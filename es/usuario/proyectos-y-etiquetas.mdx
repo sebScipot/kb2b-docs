@@ -1,0 +1,78 @@
+---
+title: "Proyectos y etiquetas"
+sidebarTitle: "Proyectos y etiquetas"
+description: "Cómo organizar reuniones y documentos por proyecto y con etiquetas reutilizables. Útil para filtrar y para auditar de dónde viene cada hecho."
+lang: "es"
+---
+
+kb2b te deja organizar lo que ingestas en el POT con **dos sistemas complementarios**: proyectos (uno por reunión o documento) y etiquetas (hasta 19, libres). Ninguno crea POTs nuevos — todo sigue alimentando el POT de la cuenta. Lo que cambia es cómo lo puedes filtrar después y qué procedencia ve cada hecho extraído.
+
+## Proyectos
+
+Un **proyecto** agrupa reuniones y documentos relacionados a una iniciativa o etapa concreta. Ejemplos:
+
+- "Migración Acme" — todas las reuniones y especificaciones de un proyecto de implementación
+- "Renovación Q2 2026" — documentos y conversaciones sobre la renegociación de contrato
+- "Onboarding Cliente X" — meetings de descubrimiento más documentos del cliente
+
+### Reglas
+
+- **1 reunión o documento = máximo 1 proyecto.** No puedes asignar dos.
+- **Org-scoped.** Los proyectos viven a nivel de workspace, no de POT. Otros miembros del equipo ven la misma lista.
+- **Nombre libre** (hasta 100 caracteres), **slug auto-generado** (minúsculas, sin acentos, separado por guiones).
+- **Color opcional** para distinguirlos visualmente en listas.
+- **Archivable** pero no se borra — los hechos ya extraídos mantienen su procedencia (`project:slug`) en SciPot aunque el proyecto se archive.
+
+### Cómo crear uno
+
+Desde el selector que aparece cuando subes un documento o importas una reunión: click **"+ Nuevo proyecto"** → escribe nombre → confirma. Se crea al momento y queda disponible para futuras asignaciones.
+
+## Etiquetas
+
+Las **etiquetas** son labels libres y reutilizables, sin estructura jerárquica. A diferencia del proyecto (1:1), un mismo documento o reunión puede tener **hasta 19 etiquetas**.
+
+### Sugerencia de convención: prefijos
+
+Para que las etiquetas sean fáciles de encontrar y consistentes, usa prefijos por categoría:
+
+| Prefijo | Para qué | Ejemplos |
+|---|---|---|
+| `TEAM/` | Equipo responsable | `TEAM/comercial`, `TEAM/operaciones` |
+| `CLIENT/` | Cliente o cuenta | `CLIENT/acme`, `CLIENT/distribuidora-x` |
+| `CATEGORY/` | Tipo de contenido | `CATEGORY/retrospectiva`, `CATEGORY/discovery` |
+| `TYPE/` | Naturaleza del documento | `TYPE/contrato`, `TYPE/email`, `TYPE/transcripcion` |
+
+Esto no es obligatorio — kb2b acepta cualquier etiqueta — pero ordena la base cuando ya tienes >20 etiquetas creadas.
+
+### Reglas
+
+- **Org-scoped** como los proyectos.
+- **Máximo 19 por documento o reunión** (más el proyecto, da 20 fuentes de metadata por elemento).
+- **Slug auto-generado** desde el nombre.
+- **Color opcional**.
+
+## Qué pasa cuando preguntas algo
+
+Cuando kb2b extrae hechos de tus documentos y reuniones, cada hecho hereda los tags de origen:
+
+```
+fuente.tags = ["project:migracion-acme", "tag:team-comercial", "tag:client-acme"]
+```
+
+Eso significa que más adelante puedes filtrar consultas por origen: _"Solo respuestas basadas en hechos de Migración Acme"_ o _"Solo lo que aportó el equipo comercial"_. Los `project:` y `tag:` slugs son inmutables — si después renombras el proyecto, los hechos antiguos siguen apuntando al slug original (esto es deliberado, mantiene auditoría).
+
+## Cuándo NO usar esto
+
+- **Si tu workspace tiene 1 sola cuenta y pocas reuniones**, no necesitas proyectos. Empieza solo con tags.
+- **Si tu equipo no está disciplinado con etiquetas**, evita crear cientos de tags sin prefijos — termina ruido que no filtra nada. Mejor pocos tags consistentes que muchos caóticos.
+
+## Diferencia con workspace y POT
+
+| Entidad | Qué agrupa | Quién la gestiona |
+|---|---|---|
+| **Workspace** | Todo: usuarios + POTs + proyectos + tags. 1 workspace = 1 organización en kb2b. | Owner del workspace. |
+| **POT** | El conocimiento (facts, edges, constitution) de **una cuenta** o dominio. 1 cuenta = 1 POT. | Human Curator del POT. |
+| **Proyecto** | Reuniones y documentos de una iniciativa. Vive a nivel de workspace, no de POT. | Cualquier miembro con permisos de edición. |
+| **Tag** | Marcas libres reutilizables. Vive a nivel de workspace. | Cualquier miembro. |
+
+_Página en construcción Phase 1 — más capturas y ejemplos vienen en Phase 2._

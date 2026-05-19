@@ -1,0 +1,61 @@
+---
+title: "Organigrama del equipo"
+sidebarTitle: "Organigrama"
+description: "Visualiza la estructura de tu workspace de kb2b: quién reporta a quién dentro de tu equipo. NO es la estructura del cliente."
+lang: "es"
+---
+
+## Qué es y qué NO es
+
+El **organigrama** (`/dashboard/org-chart`) muestra la estructura **de tu workspace de kb2b** — es decir, quiénes son los miembros de tu equipo y cómo se relacionan jerárquicamente entre sí.
+
+<Warning>
+  **No confundir:** esto NO es la estructura organizativa **del cliente** sobre el que estás manteniendo conocimiento en un POT. Esto es la estructura de **tu propio equipo** dentro de kb2b. Si quieres ver "el organigrama del cliente Acme", esa información tendría que estar como facts en el POT de Acme, no en esta página.
+</Warning>
+
+## Para qué sirve
+
+- **Onboarding interno**: que alguien que se incorpora a tu workspace vea de un vistazo quién es quién.
+- **Atribución de expertise**: cuando un fact se aprueba o desaprueba, el peso del voto depende del nivel de seniority del votante (ver [Explorar y discutir facts](/es/usuario/explorar-y-discutir-facts)). El organigrama documenta esos niveles.
+- **Visibilidad de quién maneja qué cuenta**: combinado con los proyectos y tags, te da una visión completa de "quién está trabajando con quién".
+
+## Cómo se construye
+
+kb2b construye el organigrama desde los **perfiles de contributor** del workspace:
+
+| Campo | De dónde sale |
+|---|---|
+| **Nombre + avatar** | De tu cuenta de usuario (foto, displayName) |
+| **Cargo (role title)** | Lo configura cada miembro en su perfil — `/dashboard/profile` |
+| **Nivel de seniority** | Junior, Medior, Senior, Principal — lo configura el admin |
+| **Manager (a quién reporta)** | Lo configura el admin en cada perfil de miembro |
+
+Si nadie ha configurado managers, el organigrama muestra a todos como **"huérfanos"** (no anidados bajo nadie). Eso es el estado por defecto cuando aún no se ha mapeado la jerarquía.
+
+## Cómo se navega
+
+- Es un **canvas interactivo** (basado en React Flow). Puedes hacer zoom, panear, y mover nodos.
+- Click en un nodo → abre un **panel lateral** con métricas de ese miembro:
+  - Cuántos facts ha aprobado/desaprobado
+  - Cuántos documentos ha subido
+  - Cuántas reuniones ha grabado
+  - Sus áreas de expertise declaradas (ver SciPot docs sobre **expertise-weighted scoring**)
+- Si tu workspace tiene **menos de 2 miembros**, en lugar del canvas verás un mensaje invitándote a sumar gente.
+
+## Quién puede editarlo
+
+- Cualquier miembro puede **editar su propio cargo y avatar** desde `/dashboard/profile`.
+- Sólo el **admin del workspace** puede asignar/cambiar el manager y el nivel de seniority de los demás miembros. Esto se hace desde `/dashboard/settings/team`.
+
+## Cuándo NO usar el organigrama
+
+- Si tu workspace tiene **1-2 personas**, no aporta nada — sáltatelo hasta que el equipo crezca.
+- Si trabajas en **modo agencia con muchos clientes** y tu jerarquía interna no cambia el peso de los votos en facts (porque no usas expertise-weighted scoring), el organigrama es ornamental — útil para onboarding pero poco más.
+
+## Si la página aparece vacía
+
+1. Comprueba que tu workspace tiene al menos 2 miembros (mira [Miembros y roles](/es/admin/miembros-y-roles) _(página en construcción)_).
+2. Si hay miembros pero no aparecen en el canvas: nadie ha configurado managers. Vete a `/dashboard/settings/team` como admin y asigna al menos una relación manager → reporta para arrancar la jerarquía.
+3. Si sigues sin ver nada y crees que es un bug, escribe a [soporte@kb2b.app](mailto:soporte@kb2b.app).
+
+_Página en construcción Phase 1 — captura del canvas y del panel de stats vienen en Phase 2._

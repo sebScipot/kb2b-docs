@@ -1,0 +1,47 @@
+---
+title: "Pair kb2b Desktop with your workspace"
+sidebarTitle: "Pair with kb2b"
+description: "Browser OAuth flow to connect the desktop app to your kb2b workspace."
+lang: "en"
+---
+
+## Summary
+
+kb2b Desktop pairs to your workspace **via browser OAuth**. No 6-digit codes, no token copy-pasting. Just confirm in your usual browser.
+
+## Steps
+
+1. **Open kb2b Desktop**. On the welcome screen you'll see "Link with kb2b".
+
+2. **Confirm the API URL**. Default is `https://kb2b.app`. If your company uses a different instance, change it here.
+
+3. **Click "Link with kb2b"**. Your browser opens at `https://kb2b.app/desktop/link`.
+
+4. **Sign in to kb2b** if you aren't already.
+
+5. **Authorize the desktop client** on the consent screen. You'll see:
+   - The device name you're linking from
+   - The workspace it will link to
+   - The permissions it's requesting (capture audio, read transcripts, etc.)
+
+6. **Return to kb2b Desktop**. The browser hands control back and the app shows the confirmed workspace name.
+
+<Note>
+  The session token is stored in the system Keychain (service `ai.kb2b.desktop`). It is not exposed as an environment variable.
+</Note>
+
+## If something fails
+
+<Warning>
+  If the browser doesn't open or the flow hangs:
+  - Cancel in the desktop app with the "Cancel" button
+  - Confirm the URL is correct (`https://kb2b.app` for production)
+  - Click "Link with kb2b" again
+  - If it persists, check your kb2b session is active in the browser (open [kb2b.app](https://kb2b.app) first)
+</Warning>
+
+## Unpair
+
+On the Onboarding screen, once paired, there's an "Unpair device" button. Click, confirm. The token is removed from the Keychain and the device is removed from the workspace in kb2b web.
+
+_Screenshots and consent screen details pending._

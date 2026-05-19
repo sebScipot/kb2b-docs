@@ -1,0 +1,86 @@
+---
+title: "POT Constitution"
+sidebarTitle: "POT Constitution"
+description: "Constitutional axioms (POT Score = 1.0) are the foundational truth of your account. Only a Human Curator can create or modify them."
+lang: "en"
+---
+
+## What the Constitution is
+
+The **Constitution** of a POT is a small set of **constitutional axioms** — foundational facts kb2b treats as definitional truth about that account. Their POT Score is **1.0**, the maximum possible.
+
+Typical examples for a customer account:
+
+- "The contract with Distribuidora X expires on 2026-06-30."
+- "Volume discount policy applies starting at 500 units/month."
+- "The single point of contact for commercial topics is Laura Ferrer."
+
+For a more operational POT:
+
+- "Quarterly review meetings happen the first Tuesday of the month."
+- "Every technical spec must be reviewed by a Human Curator before being promoted to Verified."
+
+You typically have **between 3 and 7 axioms** per POT. More than that usually means you confused a regular fact with a constitutional one.
+
+## Why they matter
+
+Constitutional axioms are the **reference point against which kb2b measures everything else**:
+
+- When a fact is extracted from a new document, kb2b checks whether it **supports, refines, or contradicts** any axiom. A contradiction triggers a resolution workflow (see Contradictions).
+- Queries touching an area covered by an axiom receive the constitutional information at maximum confidence.
+- Removing or modifying an axiom **triggers score re-propagation** across the knowledge graph.
+
+That's why they're **immune to stance penalties** — no team vote can erode an axiom. Only a Human Curator with explicit authority touches them.
+
+## Who can manage them
+
+Only a designated **Human Curator** of the POT can create, edit, remove, or promote a fact to constitutional. This is by design: the POT's epistemic integrity depends on axioms being under expert human control.
+
+In kb2b this maps to the workspace admin role managing the POT's Constitution by default. If your team separates the operational admin role from the Human Curator role, configure permissions in [Members and roles](/en/admin/members-and-roles) _(page in progress)_.
+
+## How to create or edit axioms
+
+1. Navigate to **`/dashboard/knowledge/constitution`** in kb2b.
+2. You'll see the list of current axioms — each one expandable to show the POT facts that support or contradict it.
+3. Click **"Add Axiom"** to open the form:
+   - Write the axiom in clear, falsifiable natural language.
+   - kb2b runs a **Claude-powered pre-validation** that checks whether the axiom:
+     - Falls outside the POT's declared domain (rejection)
+     - Contradicts existing axioms (warning)
+     - Overlaps with another axiom (merge suggestion)
+     - Is vague or non-falsifiable (rewrite suggestion)
+   - Accept the suggestion or save the axiom as-is.
+4. The axiom is persisted with `pot_score = 1.0` and level `CONSTITUTION`.
+5. Score re-propagation kicks off across the graph (async, non-blocking).
+
+## How to write a good axiom
+
+A good axiom satisfies four properties:
+
+- **Falsifiable.** Can be shown wrong with evidence. _"Our best customer is Acme"_ is not falsifiable; _"Acme generates >40% of our 2026 revenue"_ is.
+- **Specific.** A date, a name, a number, a rule. Avoid _"important", "strategic", "key"_.
+- **Stable.** Things that won't change every week. If it changes monthly, it's not an axiom — it's a regular fact.
+- **Inside the POT's domain.** If your POT is the Acme account, the axiom must be about Acme — not about the whole market.
+
+## When NOT to create an axiom
+
+- If it **changes often** — leave it as a regular fact and let temporal POT Score decay do its work.
+- If **you need more evidence** — promote first to `Verified` (0.85-0.99), not directly to Constitutional.
+- If it **could be controversial inside your team** — discuss first. Axioms are institutional, not personal.
+
+## Removing or downgrading an axiom
+
+Removing a constitutional axiom is a deliberate act: it triggers score re-propagation and logs an audit event. If after ingesting more documents an axiom turns out to be wrong:
+
+1. Open the Constitution page.
+2. Select the axiom.
+3. Click **"Downgrade"** (drops to Verified 0.85) or **"Remove"** (deletes outright).
+4. kb2b will ask for confirmation because the action is costly to reverse.
+
+Every change is logged with who did it, when, and what effect it had on the rest of the POT's scores.
+
+## On the full mechanic
+
+The theoretical definition of the Constitution, score propagation, typed relationships between facts (edges), expert curation, and contradiction resolution live in the [official SciPot documentation](https://docs.scipot.ai). This page covers only what a kb2b admin needs to manage it day-to-day.
+
+_Page in progress Phase 1 — form screenshots and validation examples coming in Phase 2._

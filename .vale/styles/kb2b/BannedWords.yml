@@ -1,0 +1,28 @@
+extends: existence
+message: "Don't use '%s' — see glossary.md and DESIGN.md vocabulary rules."
+level: error
+ignorecase: true
+tokens:
+  - delve
+  - robust
+  - comprehensive
+  - seamless
+  - empower
+  - intuitive
+  - leverage
+  - cutting-edge
+  - multifaceted
+  - foster
+  - showcase
+  - vibrant
+  - fundamental
+  - significant
+  - pivotal
+  - landscape
+  - tapestry
+  - underscore
+  - crucial
+  - nuanced
+  - furthermore
+  - moreover
+  - additionally
