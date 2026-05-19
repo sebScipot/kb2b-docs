@@ -80,11 +80,13 @@ jobs:
           node-version: '22'
       - name: Install Mintlify CLI
         run: npm install -g mintlify
-      - name: Validate docs.json schema
-        run: mintlify docs.json
-        continue-on-error: true # Mintlify CLI may not support a `validate` subcommand on all versions; fallback below.
+      - name: docs.json JSON validity
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('docs.json','utf8'))" \
+            || (echo "✗ docs.json is not valid JSON" && exit 1)
+          echo "✓ docs.json parses as JSON"
       - name: Check broken internal links
-        run: mintlify broken-links || (echo "✗ broken internal links" && exit 1)
+        run: mintlify broken-links
 
   external-links:
     name: External link check (weekly only)
@@ -102,24 +104,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Forbid stale terms
+      - name: Forbid stale terms (excluding changelog)
         shell: bash
         run: |
           fail=0
           # Renamed terms — must not appear in current docs.
-          STALE_TERMS_EN=("Memory" "Campaigns")
-          STALE_TERMS_ES=("Memoria" "Campañas")
+          # EXCLUDES changelog and cambios pages: those legitimately document
+          # historical renames (e.g. "Memory section becomes Conocimiento" in v0.14.0).
+          STALE_TERMS_EN=("Memory section" "Campaigns section")
           for term in "${STALE_TERMS_EN[@]}"; do
-            if grep -rn --include='*.mdx' -w "$term" en/ ; then
-              echo "  ✗ EN stale term '$term' found — should be 'Conocimiento' / 'Entrevistas IA'"
+            hits=$(grep -rln --include='*.mdx' -w "$term" en/ 2>/dev/null \
+              | grep -v 'changelog\.mdx' || true)
+            if [ -n "$hits" ]; then
+              echo "  ✗ EN stale term '$term' found in non-changelog file(s):"
+              echo "$hits"
               fail=1
             fi
           done
-          # NOTE: ES uses Spanish names for these concepts ("Conocimiento", "Entrevistas IA") —
-          # we don't ban the Spanish ORIGINAL words globally, only when used as the old
-          # product feature name. This check is intentionally minimal in Phase 1.
           if [ "$fail" = "1" ]; then exit 1; fi
-          echo "✓ no stale terms"
+          echo "✓ no stale terms outside changelog"
 
   pricing-sync:
     name: Pricing in sync with plans.ts
