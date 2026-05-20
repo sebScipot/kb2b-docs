@@ -71,7 +71,8 @@
                   "es/admin/planes-y-precios",
                   "es/admin/facturacion",
                   "es/admin/limites-de-tokens",
-                  "es/admin/constitucion-del-pot"
+                  "es/admin/constitucion-del-pot",
+                  "es/admin/escribir-constitucion"
                 ]
               }
             ]
@@ -165,7 +166,8 @@
                   "en/admin/plans-and-pricing",
                   "en/admin/billing",
                   "en/admin/token-limits",
-                  "en/admin/pot-constitution"
+                  "en/admin/pot-constitution",
+                  "en/admin/writing-the-constitution"
                 ]
               }
             ]
@@ -258,6 +260,12 @@
     "metatags": {
       "og:site_name": "kb2b docs",
       "og:image": "/images/og-default.png"
+    }
+  },
+  "integrations": {
+    "posthog": {
+      "apiKey": "phc_uRUshwsSPHLH9rVj2YFpWbzB39q4vairAAQsD8TNdgJd",
+      "apiHost": "https://eu.i.posthog.com"
     }
   },
   "redirects": []
