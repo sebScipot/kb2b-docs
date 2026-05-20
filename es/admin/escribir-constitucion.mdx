@@ -1,0 +1,143 @@
+---
+title: "Cómo escribir la Constitución de tu POT"
+sidebarTitle: "Cómo escribir la Constitución"
+description: "Los 3 a 7 axiomas que definen lo que tu POT cree son la pieza con más riesgo que vas a escribir. La mayoría de equipos lo hace mal la primera vez. Aquí está el patrón que funciona — seis errores frecuentes, dos pruebas y un ejemplo trabajado."
+lang: "es"
+---
+
+La Constitución es la base de cada POT en kb2b — entre 3 y 7 axiomas con POT Score 1.0 que definen lo que es verdad por afirmación en tu cuenta. Si los aciertas, todo el resto del conocimiento se compone correctamente encima. Si los fallas, terminas con un POT que marca como ruido contradicciones reales, deja que hechos viejos pisen a los nuevos, o responde con seguridad a preguntas fuera de su dominio.
+
+La mayoría de equipos lo hace mal la primera vez. No porque el concepto sea difícil, sino porque la tentación es escribir la versión que suena bien en una presentación en vez de la versión que de verdad restringe decisiones.
+
+Esta guía es el patrón que hemos visto funcionar — seis errores frecuentes que esquivar, dos pruebas de falsabilidad y un ejemplo trabajado que reduce 11 candidatos a 6.
+
+## La forma de una buena Constitución
+
+Cuatro propiedades, todas obligatorias:
+
+**Falsable.** Cada axioma afirma algo que en principio podría ser incorrecto. _"Distribuidora Acme es nuestro cliente más estratégico"_ no es falsable — "estratégico" es subjetivo y nadie podría observar evidencia que lo contradiga. _"El contrato vigente con Distribuidora Acme expira el 30/06/2028 y se renueva por tácita reconducción"_ sí lo es: basta con leer el contrato firmado.
+
+**Estable.** Algo que no va a cambiar este trimestre y, probablemente, tampoco el año que viene. Una métrica que se recalcula cada cierre contable no es axioma. _"Distribuidora Acme representa más del 40% de nuestra facturación 2026"_ es falsable pero **no es estable** — el dato cambia con cada review trimestral y se queda obsoleto el 1 de enero. Eso vive como fact `Verified`, no como axioma. El axioma es la decisión estratégica que tomas alrededor de ese dato (_"Distribuidora Acme es nuestro cliente más estratégico de horeca premium"_), no el dato en sí.
+
+**Específica a tu cuenta.** Los axiomas constitucionales son lo que hace TU POT distinto a una base de conocimiento genérica. _"Las reuniones de revisión trimestral se hacen el primer martes del mes"_ es tuyo. _"Comunicarse bien con el cliente importa"_ es relleno.
+
+**Que defina scope.** La mitad del valor es lo que el POT _no_ cubre. Un `scope_exclusion` explícito ("Este POT no cubre temas de cobranza ni de logística") le dice al sistema cuándo decir "esto está fuera de mi dominio" en vez de inventar.
+
+Cualquier cosa que no pase las cuatro debería vivir como un fact `Verified` por debajo de la Constitución, no como axioma. Para el detalle de la mecánica y cómo gestionarlos, ver la [referencia de Constitución del POT](/es/admin/constitucion-del-pot).
+
+## Seis errores que vemos cada semana
+
+**1. La Constitución de declaración de misión.** _"Cuidamos al cliente con excelencia."_ Suena bien, no restringe nada. Cualquier decisión es consistente con eso. Borrar.
+
+**2. El manifiesto de 30 axiomas.** Cuando todo es foundational, nada lo es. La Constitución es la parte que defenderías en una reunión contra alguien que cree lo opuesto — 30 de esas no existen en ninguna organización real. Recortar a 7 máximo.
+
+**3. El scope implícito.** Dice lo que el POT cubre pero nunca lo que _no_ cubre. El sistema no tiene cómo saber cuándo decir "esto está fuera de scope" — así que intenta responder igual, mal. Incluye siempre al menos un `scope_exclusion`.
+
+**4. La Constitución que aspira.** Describe la cuenta que te gustaría tener, no la que tienes. El primer mes de operación produce una avalancha de banderas `CONTRADICTS` porque cada documento real viola la aspiración. O arreglas la cuenta o arreglas la Constitución. Arreglar la Constitución es más rápido.
+
+**5. La Constitución prestada.** Copiada de otro POT o de otro equipo. Suena razonable pero nadie en tu equipo defendería ninguna cláusula específica. La Constitución se vuelve invisible — ni los humanos ni el sistema la usan de referencia, porque no tiene mordida.
+
+**6. La Constitución huérfana.** Ningún Human Curator nombrado la posee. Cuando el cliente cambia y un axioma necesita amendarse, nadie sabe a quién le toca esa decisión. La Constitución se queda obsoleta y el sistema confía en una ficción.
+
+## Las dos pruebas que cada axioma debe pasar
+
+Aplica las dos a cada candidato. Ambas tienen que dar verdadero.
+
+**Prueba 1 — la prueba de la defensa.** ¿Podrías defender este axioma en una reunión contra alguien sensato que cree lo opuesto? Si toda la sala asentiría y lo olvidaría al minuto, el axioma no está cargando peso. Cortar.
+
+**Prueba 2 — la prueba de la ausencia.** ¿Qué comportamiento permitiría el sistema silenciosamente si este axioma no existiera? Si la respuesta es "no cambiaría nada", el axioma no está haciendo trabajo. Cortar.
+
+Una Constitución que sobrevive ambas pruebas es pequeña. Así debe ser.
+
+## Ejemplo trabajado — POT para la cuenta de Distribuidora Acme
+
+Este es el proceso real. Empezamos con 11 candidatos sacados del CEO comercial y dos KAMs. Terminamos con 6.
+
+### Los 11 candidatos
+
+1. Nos importa la calidad del servicio.
+2. Distribuidora Acme es nuestro cliente más estratégico de horeca premium.
+3. El contrato vigente con Acme expira el 30/06/2026 y se renueva por tácita reconducción salvo aviso 60 días antes.
+4. Cuidamos al cliente.
+5. La política de descuento por volumen aplica a partir de 500 unidades/mes.
+6. El interlocutor único para temas comerciales es Laura Ferrer; los temas operativos van a Juan Sanz.
+7. Damos siempre lo mejor.
+8. Toda especificación de producto debe estar firmada por R+D antes de promoverla a `Verified`.
+9. Este POT no cubre cobranza, logística inversa ni temas de RR.HH. del cliente.
+10. Innovamos constantemente.
+11. La reunión de revisión trimestral se hace el primer martes del mes a las 10:00 en oficinas de Acme.
+
+### Pasada 1 — la prueba de la defensa
+
+Candidatos 1, 4, 7 y 10 caen. Ningún proveedor de servicio del mundo defendería lo opuesto ("no nos importa la calidad", "no cuidamos al cliente", "no damos lo mejor", "no innovamos"). Son relleno de presentación. No restringen ni una decisión.
+
+**Sobreviven 7:** 2, 3, 5, 6, 8, 9, 11.
+
+### Pasada 2 — la prueba de la ausencia
+
+Por cada candidato restante, pregunta qué permitiría el sistema sin él:
+
+| Candidato | Qué se rompe sin él | ¿Mantener? |
+|---|---|---|
+| 2 — Cliente estratégico horeca premium | El POT no sabe priorizar facts cuando hay conflicto entre canales | ✅ |
+| 3 — Contrato expira 30/06/2026, tácita reconducción | Cualquier reunión sobre renovación pierde el anchor temporal | ✅ |
+| 5 — Descuento desde 500 ud/mes | El POT podría dar respuestas inconsistentes sobre pricing al equipo comercial | ✅ |
+| 6 — Interlocutores Laura/Juan | El equipo manda emails al contacto equivocado y pierde semanas | ✅ |
+| 8 — Specs firmadas por R+D antes de Verified | Cualquier asistente operativo puede meter una especificación errónea sin filtro | ✅ |
+| 9 — Scope exclusion | Preguntas sobre cobranza reciben respuestas con facts no autoritativos | ✅ |
+| 11 — Reunión trimestral primer martes | Útil pero el calendario lo lleva otro sistema; no es load-bearing en kb2b | ❌ |
+
+Pasan 6. Por debajo del techo de 7, todas cargando peso. Listo.
+
+### La Constitución final
+
+Desde **Conocimiento → Constitución** en kb2b, los 6 axiomas se añaden uno a uno con el botón **Agregar Axioma** (cada uno pasa por la validación previa con Claude descrita en la [referencia](/es/admin/constitucion-del-pot)).
+
+<Note>
+Los 6 que mantuvimos comparten un rasgo: cada uno implica un comportamiento claro que el sistema debería producir. El axioma 8 significa que un fact extraído de Slack jamás superará a una spec firmada por R+D del mismo POT Score. El axioma 9 significa que las preguntas sobre cobranza reciben "este POT no cubre eso" en vez de una respuesta alucinada. Los 5 que descartamos no implicaban ningún comportamiento. Esa es la prueba.
+</Note>
+
+## Cuándo amendar (y cuándo no)
+
+Una Constitución sana evoluciona, pero despacio. Cadencia típica de amendments:
+
+| Período | Amendments típicos | Por qué |
+|---|---|---|
+| Primeros 3 meses | 0-2 | Descubres huecos que la versión inicial no cubría |
+| Meses 4-12 | 0-1 por trimestre | Cambios en la cuenta o el mercado |
+| Año 2+ | ~1 al año | Sólo cambios estratégicos reales |
+
+Si estás amendando la Constitución cada mes, los axiomas no están cargando peso — son descripciones del estado actual, no principios. Empújalos abajo a facts `Verified` y reescribe la Constitución como la parte que se queda quieta.
+
+Cuando amendas, sigue el procedimiento de la [referencia de Constitución](/es/admin/constitucion-del-pot#eliminar-o-degradar-un-axioma) — la versión previa queda en el audit log, los facts derivados re-scoran y kb2b registra quién hizo el cambio.
+
+## Qué pasa cuando te equivocas con un axioma
+
+Te vas a equivocar. La opción de amendar existe porque kb2b lo asume.
+
+Dos fallos recuperables:
+
+**Axioma incorrecto.** Un axioma que escribiste en el mes 1 resulta ser equivocado — la cuenta cambió, una premisa era ingenua. Lo amendas. Los facts que derivaban del axioma viejo se re-scoran contra el nuevo. Las contradicciones se vuelven a evaluar.
+
+**Axioma faltante.** Seis meses dentro descubres que el sistema sigue equivocándose porque no hay axioma que le diga en qué anclar. Lo añades. La amend cascade se propaga por el grafo.
+
+El fallo irrecuperable es **no tener Constitución en absoluto**. En ese punto tienes una base de búsqueda con pasos extra, no un POT.
+
+## La Constitución es el moat, no los datos
+
+Cualquiera puede meter tus documentos en cualquier sistema de retrieval. Los documentos no son diferenciados.
+
+Lo diferenciado es la apuesta que has hecho sobre qué es verdad en tu cuenta — qué axiomas la anclan, qué exclusiones de scope la bordean, qué contradicciones tienen prioridad crítica. Eso es la Constitución. Eso es lo que kb2b te deja hacer explícito, versionado y auditable.
+
+Un POT sin Constitución es una caja de búsqueda. Un POT con un manifiesto de 30 axiomas es teatro. Un POT con 3 a 7 axiomas falsables, que definen scope y defendibles es un sistema que sabe lo que sabe.
+
+---
+
+<CardGroup cols={2}>
+  <Card title="Referencia de la Constitución" icon="landmark" href="/es/admin/constitucion-del-pot">
+    API completa, propiedades, interacciones con edges, gobernanza.
+  </Card>
+  <Card title="Crea tu primer POT" icon="rocket" href="/es/empezar/primera-conversacion">
+    Adapta el ejemplo de Acme a tu cuenta en 5 minutos.
+  </Card>
+</CardGroup>

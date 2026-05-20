@@ -19,6 +19,7 @@
   "admin/facturacion": "admin/billing",
   "admin/limites-de-tokens": "admin/token-limits",
   "admin/constitucion-del-pot": "admin/pot-constitution",
+  "admin/escribir-constitucion": "admin/writing-the-constitution",
   "escritorio/descargar-e-instalar": "desktop/download-and-install",
   "escritorio/permisos-macos": "desktop/macos-permissions",
   "escritorio/emparejar-con-kb2b": "desktop/pair-with-kb2b",

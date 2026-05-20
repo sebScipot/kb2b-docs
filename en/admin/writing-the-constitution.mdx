@@ -1,0 +1,143 @@
+---
+title: "How to write your POT Constitution"
+sidebarTitle: "Writing the Constitution"
+description: "The 3 to 7 axioms that define what your POT believes are the highest-stakes piece you'll write. Most teams get it wrong on the first try. Here's the pattern that works — six common failure modes, two tests, and a worked example."
+lang: "en"
+---
+
+The Constitution is the foundation of every kb2b POT — 3 to 7 axioms at POT Score 1.0 that define what's true by assertion in your account. Get it right and the rest of the knowledge composes correctly on top. Get it wrong and you have a POT that flags real contradictions as noise, lets stale facts override new ones, or confidently answers questions outside its scope.
+
+Most teams get it wrong on the first try. Not because the concept is hard, but because the temptation is to write the version that sounds good in a slide deck instead of the version that actually constrains decisions.
+
+This guide is the pattern we've seen work — six failure modes to dodge, two falsifiability tests, and a worked example that takes 11 candidates down to 6.
+
+## The shape of a good Constitution
+
+Four properties, all required:
+
+**Falsifiable.** Each axiom states something that could in principle be wrong. _"Distribuidora Acme is our most strategic customer"_ is not falsifiable — "strategic" is subjective and no observation could contradict it. _"The current contract with Distribuidora Acme expires on 2028-06-30 and renews automatically unless notified"_ is: just read the signed contract.
+
+**Stable.** Something that won't change this quarter and probably won't change next year either. A metric that gets recomputed every accounting close is not an axiom. _"Distribuidora Acme accounts for more than 40% of our 2026 revenue"_ is falsifiable but **not stable** — the number shifts every quarterly review and goes stale on January 1. That belongs as a `Verified` fact, not an axiom. The axiom is the strategic decision you take around that number (_"Distribuidora Acme is our most strategic premium horeca customer"_), not the number itself.
+
+**Specific to your account.** Constitutional axioms are what makes YOUR POT different from a generic knowledge base. _"Quarterly review meetings happen the first Tuesday of the month"_ is yours. _"Communicating well with the customer matters"_ is filler.
+
+**Scope-defining.** Half the value is what the POT _doesn't_ cover. An explicit `scope_exclusion` ("This POT does not cover collections or reverse logistics") tells the system when to say "that's out of my domain" instead of inventing.
+
+Anything that doesn't pass all four should live as a `Verified` fact below the Constitution, not as an axiom. For the full mechanic and how to manage them, see the [POT Constitution reference](/en/admin/pot-constitution).
+
+## Six failure modes we see every week
+
+**1. The mission-statement Constitution.** _"We care for customers with excellence."_ Reads well, constrains nothing. Every decision is consistent with it. Delete.
+
+**2. The 30-axiom manifesto.** When everything is foundational, nothing is. The Constitution is the part you'd defend in a meeting against someone who believes the opposite — 30 of those don't exist in any real organization. Cut to 7 maximum.
+
+**3. The implicit scope.** Says what the POT covers but never what it _doesn't_. The system has no way to know when to say "this is out of scope" — so it tries to answer anyway, badly. Always include at least one `scope_exclusion`.
+
+**4. The wishful Constitution.** Describes the account you'd like to have, not the one you do. The first month of operation produces an avalanche of `CONTRADICTS` flags because every real document violates the aspiration. You either fix the account or fix the Constitution. Fixing the Constitution is faster.
+
+**5. The borrowed Constitution.** Copied from another POT or another team. Sounds reasonable but nobody on your team would defend any specific clause. The Constitution becomes invisible — neither humans nor the system reference it, because it has no teeth.
+
+**6. The orphan Constitution.** No named Human Curator owns it. When the account changes and an axiom needs amending, nobody knows whose call that is. The Constitution drifts out of date and the system trusts a fiction.
+
+## The two tests every axiom must pass
+
+Apply both to each candidate. Both must return true.
+
+**Test 1 — the defense test.** Could you defend this axiom in a meeting against a smart person who believes the opposite? If the whole room would nod and forget within a minute, the axiom isn't load-bearing. Cut it.
+
+**Test 2 — the absence test.** What behavior would the system silently allow if this axiom didn't exist? If the answer is "nothing would change," the axiom isn't doing work. Cut it.
+
+A Constitution that survives both tests is small. That's correct.
+
+## Worked example — POT for the Distribuidora Acme account
+
+Here's the real process. We start with 11 candidates collected from the commercial CEO and two KAMs. We end with 6.
+
+### The 11 candidates
+
+1. We care about service quality.
+2. Distribuidora Acme is our most strategic premium horeca customer.
+3. The current contract with Acme expires on 2026-06-30 and renews automatically unless notified 60 days before.
+4. We take care of the customer.
+5. The volume discount policy applies from 500 units/month.
+6. The single point of contact for commercial topics is Laura Ferrer; operational topics go to Juan Sanz.
+7. We always give our best.
+8. Every product spec must be signed off by R&D before being promoted to `Verified`.
+9. This POT does not cover collections, reverse logistics, or customer HR matters.
+10. We innovate constantly.
+11. The quarterly review meeting happens the first Tuesday of the month at 10:00 in Acme's offices.
+
+### Pass 1 — the defense test
+
+Candidates 1, 4, 7, and 10 fall. No service provider in the world would defend the opposite ("we don't care about quality", "we don't take care of the customer", "we don't give our best", "we don't innovate"). They're slide-deck filler. They don't constrain a single decision.
+
+**7 survive:** 2, 3, 5, 6, 8, 9, 11.
+
+### Pass 2 — the absence test
+
+For each remaining candidate, ask what the system would silently allow without it:
+
+| Candidate | What breaks without it | Keep? |
+|---|---|---|
+| 2 — Strategic premium horeca customer | The POT has no anchor for prioritizing facts when there's a conflict across channels | ✅ |
+| 3 — Contract expires 2026-06-30, auto-renewal | Any renewal-related meeting loses its temporal anchor | ✅ |
+| 5 — Discount from 500 units/month | The POT could give inconsistent pricing answers to the sales team | ✅ |
+| 6 — Contacts Laura/Juan | The team emails the wrong contact and loses weeks | ✅ |
+| 8 — Specs signed off by R&D before Verified | Any operational assistant can sneak a wrong spec in unfiltered | ✅ |
+| 9 — Scope exclusion | Questions about collections receive answers from non-authoritative facts | ✅ |
+| 11 — Quarterly meeting first Tuesday | Useful but the calendar tool owns it; not load-bearing in kb2b | ❌ |
+
+Six pass. Under the 7-axiom ceiling, all load-bearing. Done.
+
+### The final Constitution
+
+From **Knowledge → Constitution** in kb2b, the 6 axioms get added one by one with the **Add Axiom** button (each runs through the Claude-powered pre-validation described in the [reference](/en/admin/pot-constitution)).
+
+<Note>
+The 6 we kept share a trait: each implies a clear behavior the system should produce. Axiom 8 means a fact extracted from Slack will never outrank an R&D-signed spec at the same POT Score. Axiom 9 means questions about collections receive "this POT doesn't cover that" instead of a hallucinated answer. The 5 we cut implied no behavior. That's the test.
+</Note>
+
+## When (and when not) to amend
+
+A healthy Constitution evolves, but slowly. Typical amendment cadence:
+
+| Period | Typical amendments | Why |
+|---|---|---|
+| First 3 months | 0-2 | Discovering gaps the original draft missed |
+| Months 4-12 | 0-1 per quarter | Account or market shifts |
+| Year 2+ | ~1 per year | Real strategic pivots only |
+
+If you're amending the Constitution monthly, the axioms aren't load-bearing — they're descriptions of current state, not principles. Push them down to `Verified` facts and rewrite the Constitution as the part that stays still.
+
+When you do amend, follow the procedure in the [Constitution reference](/en/admin/pot-constitution#removing-or-downgrading-an-axiom) — the prior version stays in the audit log, derived facts re-score, and kb2b logs who made the change.
+
+## What happens when you get an axiom wrong
+
+You will. The amendment option exists because kb2b assumes it.
+
+Two recoverable failures:
+
+**Wrong axiom.** An axiom you wrote in month 1 turns out to be wrong — the account changed, a premise was naive. You amend it. Facts derived from the old axiom re-score against the new one. Contradictions get re-evaluated.
+
+**Missing axiom.** Six months in you discover the system keeps making mistakes because there's no axiom telling it what to anchor on. You add it. The amendment cascades through the graph.
+
+The unrecoverable failure is **not having a Constitution at all**. At that point you have a search box with extra steps, not a POT.
+
+## The Constitution is the moat, not the data
+
+Anyone can pour your documents into any retrieval system. The documents aren't differentiated.
+
+What's differentiated is the wager you've made about what's true in your account — which axioms anchor it, which scope exclusions bound it, which contradictions get critical priority. That's the Constitution. That's the part kb2b lets you make explicit, versioned, and audit-trailed.
+
+A POT without a Constitution is a search box. A POT with a 30-axiom manifesto is theater. A POT with 3 to 7 falsifiable, scope-defining, defendable axioms is a system that knows what it knows.
+
+---
+
+<CardGroup cols={2}>
+  <Card title="Constitution reference" icon="landmark" href="/en/admin/pot-constitution">
+    Full mechanic, properties, edge interactions, governance.
+  </Card>
+  <Card title="Create your first POT" icon="rocket" href="/en/get-started/first-conversation">
+    Adapt the Acme example to your account in 5 minutes.
+  </Card>
+</CardGroup>
