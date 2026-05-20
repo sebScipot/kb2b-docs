@@ -13,15 +13,17 @@ This guide is the pattern we've seen work — six failure modes to dodge, two fa
 
 ## The shape of a good Constitution
 
-Three properties, all required:
+Four properties, all required:
 
-**Falsifiable.** Each axiom states something that could in principle be wrong. _"Distribuidora X is our most strategic customer"_ is not falsifiable — no observation could contradict it. _"Distribuidora X accounts for more than 40% of our 2026 revenue"_ is.
+**Falsifiable.** Each axiom states something that could in principle be wrong. _"Distribuidora Acme is our most strategic customer"_ is not falsifiable — "strategic" is subjective and no observation could contradict it. _"The current contract with Distribuidora Acme expires on 2028-06-30 and renews automatically unless notified"_ is: just read the signed contract.
+
+**Stable.** Something that won't change this quarter and probably won't change next year either. A metric that gets recomputed every accounting close is not an axiom. _"Distribuidora Acme accounts for more than 40% of our 2026 revenue"_ is falsifiable but **not stable** — the number shifts every quarterly review and goes stale on January 1. That belongs as a `Verified` fact, not an axiom. The axiom is the strategic decision you take around that number (_"Distribuidora Acme is our most strategic premium horeca customer"_), not the number itself.
 
 **Specific to your account.** Constitutional axioms are what makes YOUR POT different from a generic knowledge base. _"Quarterly review meetings happen the first Tuesday of the month"_ is yours. _"Communicating well with the customer matters"_ is filler.
 
 **Scope-defining.** Half the value is what the POT _doesn't_ cover. An explicit `scope_exclusion` ("This POT does not cover collections or reverse logistics") tells the system when to say "that's out of my domain" instead of inventing.
 
-Anything that doesn't pass all three should live as a `Verified` fact below the Constitution, not as an axiom. For the full mechanic and how to manage them, see the [POT Constitution reference](/en/admin/pot-constitution).
+Anything that doesn't pass all four should live as a `Verified` fact below the Constitution, not as an axiom. For the full mechanic and how to manage them, see the [POT Constitution reference](/en/admin/pot-constitution).
 
 ## Six failure modes we see every week
 

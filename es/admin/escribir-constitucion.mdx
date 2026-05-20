@@ -13,15 +13,17 @@ Esta guía es el patrón que hemos visto funcionar — seis errores frecuentes q
 
 ## La forma de una buena Constitución
 
-Tres propiedades, todas obligatorias:
+Cuatro propiedades, todas obligatorias:
 
-**Falsable.** Cada axioma afirma algo que en principio podría ser incorrecto. _"Distribuidora X es nuestro cliente más estratégico"_ no es falsable — nadie podría observar evidencia que lo contradiga. _"Distribuidora X representa más del 40% de nuestra facturación 2026"_ sí lo es.
+**Falsable.** Cada axioma afirma algo que en principio podría ser incorrecto. _"Distribuidora Acme es nuestro cliente más estratégico"_ no es falsable — "estratégico" es subjetivo y nadie podría observar evidencia que lo contradiga. _"El contrato vigente con Distribuidora Acme expira el 30/06/2028 y se renueva por tácita reconducción"_ sí lo es: basta con leer el contrato firmado.
+
+**Estable.** Algo que no va a cambiar este trimestre y, probablemente, tampoco el año que viene. Una métrica que se recalcula cada cierre contable no es axioma. _"Distribuidora Acme representa más del 40% de nuestra facturación 2026"_ es falsable pero **no es estable** — el dato cambia con cada review trimestral y se queda obsoleto el 1 de enero. Eso vive como fact `Verified`, no como axioma. El axioma es la decisión estratégica que tomas alrededor de ese dato (_"Distribuidora Acme es nuestro cliente más estratégico de horeca premium"_), no el dato en sí.
 
 **Específica a tu cuenta.** Los axiomas constitucionales son lo que hace TU POT distinto a una base de conocimiento genérica. _"Las reuniones de revisión trimestral se hacen el primer martes del mes"_ es tuyo. _"Comunicarse bien con el cliente importa"_ es relleno.
 
 **Que defina scope.** La mitad del valor es lo que el POT _no_ cubre. Un `scope_exclusion` explícito ("Este POT no cubre temas de cobranza ni de logística") le dice al sistema cuándo decir "esto está fuera de mi dominio" en vez de inventar.
 
-Cualquier cosa que no pase las tres debería vivir como un fact `Verified` por debajo de la Constitución, no como axioma. Para el detalle de la mecánica y cómo gestionarlos, ver la [referencia de Constitución del POT](/es/admin/constitucion-del-pot).
+Cualquier cosa que no pase las cuatro debería vivir como un fact `Verified` por debajo de la Constitución, no como axioma. Para el detalle de la mecánica y cómo gestionarlos, ver la [referencia de Constitución del POT](/es/admin/constitucion-del-pot).
 
 ## Seis errores que vemos cada semana
 
