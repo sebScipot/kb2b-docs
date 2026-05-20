@@ -1,16 +1,97 @@
 ---
 title: "What is kb2b?"
 sidebarTitle: "What is kb2b?"
-description: "The 30-second pitch: B2B knowledge base with account memory and sourced answers."
+description: "A B2B knowledge base where every customer account lives as a POT. You talk to it; it answers with the source and a POT Score that tells you how much to trust each fact."
 lang: "en"
 ---
 
+kb2b is a B2B knowledge base where **every customer account lives as a POT** (Knowledge Pot) — a specialized container holding every document, meeting transcript and extracted fact your team has accumulated about that account. You ask questions; kb2b answers with the source and a **POT Score** (the confidence metric, between `0.00` and `1.00`) next to every claim.
+
+kb2b is built on top of [SciPot](https://docs.scipot.ai), the certified memory infrastructure for AI agents. SciPot provides the POTs, the POT Scores and the knowledge graph; kb2b provides the experience tuned for commercial teams that live in accounts and meetings.
+
+## A concrete example
+
+You ask kb2b:
+
+> _When does this account's contract expire?_
+
+kb2b answers with the date, **shows that the fact comes from the `master-contract-2026.pdf` document (section 3.2)**, tells you that fact's POT Score is `0.92 — Verified` (validated by a Human Curator on your team), and points you at the most recent meeting logged with the account — all in one reply. Every member of the team sees the same thing. No answer ever lands without its source.
+
+## Three ways to put knowledge into the POT
+
+An empty POT isn't useful. kb2b gives you three complementary ways to feed it:
+
+<CardGroup cols={3}>
+  <Card title="Documents" icon="file-text" href="/en/user/upload-documents">
+    Upload PDF, Word, Excel, PowerPoint, Markdown, HTML, text, CSV, JSON, XML, YAML. Each file is parsed, chunked and turned into atomic facts.
+  </Card>
+  <Card title="Meetings" icon="microphone" href="/en/desktop/record-a-meeting">
+    kb2b Desktop captures system audio without joining the call as a bot. Transcripts ingest into the POT with citations to the exact minute of the meeting.
+  </Card>
+  <Card title="Curator mode" icon="sparkles" href="/en/user/knowledge-and-trust">
+    You type a fact in natural language at `/dashboard/conocimiento` and kb2b refines it with AI before saving. For knowledge that lives in your head.
+  </Card>
+</CardGroup>
+
+Whatever comes in as a document, meeting or curated entry comes out as **atomic facts** inside the POT's graph. Every fact has its POT Score, its keywords, its provenance and its relationships to other facts.
+
+## The POT Score — the confidence metric
+
+Every fact inside the POT has a POT Score between `0.00` and `1.00`. The score defines which level the fact lives at:
+
+| POT Score | Level | What it means |
+|---|---|---|
+| `1.00` | **Constitution** | Foundational axiom set by a Human Curator. Immune to team votes. |
+| `0.80 – 0.99` | **Verified** | Multiple sources or explicit human validation. |
+| `0.60 – 0.79` | **Supported** | Corroborated by related facts. |
+| `0.40 – 0.59` | **Inferred** | Inferred by the system from other facts. |
+| `0.20 – 0.39` | **Hypothesis** | Low-confidence inference. |
+| `0.00 – 0.19` | **Speculation** | Minimal evidence. |
+
+In chat you'll see the POT Score next to every citation, with a colored border (green ≥ 0.8, yellow ≥ 0.6, orange ≥ 0.4, red below). The [Knowledge and trust](/en/user/knowledge-and-trust) page explains how the score is computed and how it evolves.
+
+## The four things you do with kb2b
+
+<CardGroup cols={2}>
+  <Card title="Chat with the POT" icon="message-square" href="/en/user/chat-with-the-pot">
+    Ask in natural language. Get a synthesized answer with citations to POT facts and visible POT Scores.
+  </Card>
+  <Card title="Explore the graph" icon="git-branch" href="/en/user/explore-and-discuss-facts">
+    Navigate facts directly. See detected contradictions, discuss them with your team, promote or demote.
+  </Card>
+  <Card title="Capture meetings" icon="microphone" href="/en/desktop/record-a-meeting">
+    kb2b Desktop captures the audio. When the meeting ends, the transcript ingests into the POT.
+  </Card>
+  <Card title="Scout — AI agent" icon="compass" href="/en/user/scout-ai-agent">
+    Scout combines POT facts with web search. Returns 3-5 insight cards with citations to your POT and the external sources.
+  </Card>
+</CardGroup>
+
+## What kb2b is NOT
+
+- **Not a generic chatbot.** kb2b doesn't live on the open internet. It lives inside your accounts and the documents you've loaded. Ask it something out of scope and it'll tell you it doesn't have material to answer instead of making things up.
+- **Not just another meeting recorder.** Capture is local from kb2b Desktop, no bot joining the call. The novelty isn't the recording; it's that the transcript feeds account memory automatically.
+- **Not a CRM.** It doesn't replace Salesforce, HubSpot or Pipedrive. It coexists. The CRM is the formal structure (accounts, stages, amounts). kb2b is the narrative brain — context, decisions, the whys.
+- **Not a document search tool.** Searching inside PDFs is what Notion, Drive and OneDrive do. The difference: kb2b extracts facts from the document, connects them to each other, scores them by confidence and lets you ask them in natural language.
+
+## Who uses kb2b?
+
+- **Commercial teams** that need to walk into a meeting with full account context (last contract, prior meetings, decisions made).
+- **Customer Success teams** rotating account owners — they can't lose institutional memory when someone leaves the account.
+- **Small consulting teams** where customer knowledge lives in heads and stray emails — they need a shared brain.
+- **Chief of Staff-style roles** that need to answer fast to CEO/CCO questions with a verifiable source.
+
+## What comes next
+
+<CardGroup cols={2}>
+  <Card title="Your first conversation" icon="rocket" href="/en/get-started/first-conversation">
+    Three minutes. No documents loaded yet. To understand the flow before investing time in setup.
+  </Card>
+  <Card title="Concepts: what is a POT?" icon="book-open" href="/en/concepts/what-is-a-pot">
+    The mental model behind POTs, facts and edges. Useful for admins about to configure workspaces.
+  </Card>
+</CardGroup>
+
 <Note>
-  📝 **Page in progress** — Phase 1 of the documentation. If you have feedback on what you'd like to see here, email [feedback@kb2b.app](mailto:feedback@kb2b.app).
+  Anything on this page that's unclear or feels off? Email us at [feedback@kb2b.app](mailto:feedback@kb2b.app). The documentation is one of our best feedback instruments — your doubts with the docs tell us where the product has friction.
 </Note>
-
-## In one sentence
-
-kb2b is a B2B knowledge base where each account lives as a POT — a container with its documents, meetings, and facts. You talk to it. It answers with the source.
-
-_Full content pending._

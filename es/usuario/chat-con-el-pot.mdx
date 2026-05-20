@@ -1,19 +1,85 @@
 ---
 title: "Chat con el POT"
 sidebarTitle: "Chat con el POT"
-description: "Cómo conversar con tu POT, qué significan los POT Scores, cómo interpretar las fuentes."
+description: "Cómo conversar con tu POT, qué significa cada elemento de una respuesta, cómo leer las citas y los POT Scores."
 lang: "es"
 ---
 
+El chat es la forma principal de **consumir** lo que vive en el POT. Tú preguntas en lenguaje natural; kb2b retoma los facts relevantes del POT, los sintetiza con Claude y te devuelve una respuesta con citas verificables y POT Scores visibles.
+
+## Cómo arrancar una conversación
+
+1. Abre **Chat** en la barra lateral (`/dashboard/chat`).
+2. Escribe tu pregunta en el cuadro de texto. Pulsa Enter para enviar.
+3. La respuesta empieza a aparecer en streaming. Cuando termina, aparecen las citas debajo del mensaje.
+
+Las conversaciones se persisten automáticamente. Cuando vuelves al chat al día siguiente, encuentras el hilo donde lo dejaste, con todos los mensajes anteriores y sus citas intactos.
+
+## Anatomía de una respuesta
+
+Cada respuesta del chat tiene tres componentes visibles:
+
+**El texto sintetizado.** Lo escribe Claude a partir de los facts que SciPot le pasó. Si en el texto hay un número entre paréntesis (por ejemplo `(2)`), eso es una referencia a una cita.
+
+**Las citas debajo del mensaje.** Aparecen como una fila de _badges_ numerados (1, 2, 3, …). Cada badge muestra:
+
+- El **índice** de la cita (1, 2, 3, ...)
+- El **POT Score** con dos decimales (ej. `0.92`)
+- Un **icono de nivel** que clasifica el fact (Constitution, Verified, Supported, Inferred, Hypothesis, Speculation)
+- Un **icono de red** si el fact tiene relaciones (edges) con otros facts del POT
+
+El **color del borde de cada badge** te dice de un vistazo el nivel de confianza:
+
+| Color del borde | POT Score | Lectura rápida |
+|---|---|---|
+| Verde | ≥ 0.80 | Verified o Constitution — puedes accionar sobre esto |
+| Amarillo | 0.60 – 0.79 | Supported — corroborado, razonablemente sólido |
+| Naranja | 0.40 – 0.59 | Inferred — el sistema lo dedujo, valida antes de usar |
+| Rojo | < 0.40 | Hypothesis o Speculation — trátalo como pista, no como verdad |
+
+**Click en cualquier badge** abre un popover con el contenido completo del fact, su score, sus tags, los edges (relaciones con otros facts) y la estrategia de recuperación que lo trajo (CAG, RAG, GraphRAG).
+
+Dentro del popover, **"Inspect in graph"** abre un modal más profundo donde puedes navegar las conexiones del fact y entender por qué entró en la respuesta.
+
+## La UX de streaming
+
+Mientras kb2b prepara y sintetiza la respuesta, ves dos indicadores:
+
+- **Thinking** (tres puntos pulsando con _"Thinking..."_) — el sistema está clasificando la pregunta y decidiendo la estrategia de recuperación.
+- **Reading X** (tres puntos + nombre del documento o fact) — el sistema está leyendo contexto adicional para enriquecer la respuesta.
+
+Cuando empieza a llegar texto, los indicadores desaparecen y el contenido se renderiza con markdown en streaming. No hay un "cursor parpadeante" — simplemente las palabras aparecen.
+
+## Qué tipo de preguntas funcionan mejor
+
+**Preguntas específicas con anchor temporal o de fuente.** _"¿Cuándo expira el contrato con Acme?"_, _"¿Qué dijo Laura en la última reunión sobre pricing?"_, _"¿Qué políticas internas tenemos sobre descuentos por volumen?"_. Estas son las que kb2b contesta mejor porque puede anclar la respuesta a facts concretos.
+
+**Preguntas comparativas dentro del scope del POT.** _"¿Cómo se diferencia esta cuenta de las otras tres más estratégicas?"_ funciona si el POT tiene material sobre las cuatro cuentas; si no, kb2b te dice que faltan datos.
+
+**Preguntas sobre lo que el POT NO sabe.** _"¿Qué información clave nos falta para cerrar esta cuenta?"_ — kb2b puede listar los gaps. Útil antes de una reunión de revisión.
+
+## Qué tipo de preguntas funcionan mal
+
+- **Especulación o creatividad.** _"Inventa un email de seguimiento"_ no es para qué está hecho el chat. Para eso usa un LLM general. kb2b está sesgado hacia _"qué sabes y de dónde"_, no hacia _"qué se te ocurre"_.
+- **Preguntas fuera del dominio del POT.** Si el POT es sobre la cuenta Acme y preguntas sobre tu liquidez del mes, te va a decir que está fuera de scope (asumiendo que el `scope_exclusion` está bien definido en la [Constitución del POT](/es/admin/constitucion-del-pot)).
+- **Preguntas factuales sobre el mundo en general.** _"¿Cuál es la capital de Chile?"_ — kb2b no responde porque no tiene un fact que diga "Santiago" en el POT. Para descubrimiento con contexto web, usa [Scout](/es/usuario/scout-agente-ia).
+
+## Las respuestas se quedan
+
+Cada conversación queda guardada en la base de datos de tu workspace. Eso te permite:
+
+- Volver a abrir un hilo de hace semanas y seguir.
+- Compartir la URL de una respuesta concreta con alguien del equipo.
+- Auditar lo que se dijo, con sus citas y POT Scores tal como estaban en el momento (incluso si los facts se han actualizado después).
+
+## Si la respuesta es importante
+
+Si una respuesta sintetizada te parece tan buena que quieres _promoverla_ a un fact del POT (con su propio POT Score, sus relaciones, su provenance), la promoción se hace desde la pantalla de [Explorar y discutir facts](/es/usuario/explorar-y-discutir-facts), no desde el chat. El chat es el surface de consumo; la curación es otra cosa.
+
+## Si la respuesta tiene contradicciones
+
+A veces verás que kb2b te dice algo como _"el contrato expira el 30/06/2026 según el documento X, pero la última reunión registra una negociación que mueve la fecha a 31/12/2026"_. Eso es una **contradicción detectada** y aparece marcada en el banner superior de Knowledge. Resuélvela desde [Contradicciones y resolución](/es/usuario/contradicciones-y-resolucion) — el POT Score promedio del POT sube cuando bajas el número de contradicciones pendientes.
+
 <Note>
-  📝 **Página en construcción** — escribiéndose ahora. Si ya estás usando el chat y algo no te queda claro, escríbenos a [feedback@kb2b.app](mailto:feedback@kb2b.app).
+  Tu plan incluye un cupo mensual de tokens. El chat consume tokens según el tamaño del POT, la complejidad de la pregunta y el tamaño de la respuesta. Si te acercas al cupo, te avisamos al 95% y bloqueamos al 110% para evitar sorpresas. Revisa [Límites de tokens](/es/admin/limites-de-tokens) para los detalles.
 </Note>
-
-## Qué cubrirá esta página
-
-- Cómo lanzar una conversación
-- Qué tipo de preguntas funcionan mejor
-- Cómo leer las fuentes y POT Scores
-- Cómo guardar y compartir respuestas
-
-_Contenido completo pendiente._

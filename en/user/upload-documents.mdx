@@ -1,19 +1,99 @@
 ---
 title: "Upload documents"
 sidebarTitle: "Upload documents"
-description: "Supported formats, how documents are processed, what to expect after upload."
+description: "Supported formats, what happens after upload, how to verify a document ingested correctly, and what to do when something fails."
 lang: "en"
 ---
 
+Uploading documents is the most direct way to populate a POT with knowledge that already exists in some file. Every document you upload goes through a pipeline that parses it, chunks it and extracts **atomic facts** that enter the POT's graph with full provenance back to the source chunk.
+
+## Supported formats
+
+kb2b currently accepts the following formats directly from the Documents screen:
+
+| Extension | Type |
+|---|---|
+| `.pdf` | PDF documents |
+| `.docx` | Microsoft Word |
+| `.xlsx` | Microsoft Excel |
+| `.pptx` | Microsoft PowerPoint |
+| `.md` | Markdown |
+| `.txt` | Plain text |
+| `.html` | HTML |
+| `.csv` | Comma-separated values |
+| `.json` | JSON |
+| `.xml` | XML |
+| `.yaml` / `.yml` | YAML |
+
+If your material is in another format (legacy `.doc`, `.rtf`, a scanned image), convert it first to one of the supported ones.
+
+## Size limit
+
+A document's processable content is capped at **100 KB** (102,400 characters). That's not the file weight on disk — it's the weight of the text extracted after parsing. A 50-page PDF with lots of text can exceed the limit; a 50-page PDF with mostly images and little text comes in fine.
+
+If you exceed the limit, you get an HTTP `413 Payload Too Large` error. The fix: **split the document into smaller pieces** (chapters, sections, time periods) before uploading.
+
+## How to upload
+
+1. Navigate to **Documents** in the sidebar (`/dashboard/documents`).
+2. Drag the file onto the drop zone, or use the file picker.
+3. kb2b starts ingesting immediately — you'll see the document in the list with `pending` or `processing` status.
+4. When the process finishes (seconds for short texts, several minutes for large PDFs), the status moves to `completed` and the number of extracted facts appears.
+
+## What happens under the hood
+
+Every document goes through four phases:
+
+1. **Parse** — extracts the text from the original format (PDF → text, DOCX → text, etc.).
+2. **Chunk** — splits the text into coherent fragments with context overlap. Chunks are the unit of provenance: every extracted fact knows the chunk it came from.
+3. **Extract** — Claude reads each chunk and extracts atomic facts with their initial POT Score, keywords and possible relationships to other facts already in the POT.
+4. **Insert** — facts enter the POT's graph. If a new fact contradicts an existing one, a contradiction is raised for the team at [Contradictions and resolution](/en/user/contradictions-and-resolution).
+
+[SciPot](https://docs.scipot.ai) runs this whole chain underneath — kb2b gives you the UI and the persistence, SciPot extracts and scores.
+
+## Provenance — full traceability
+
+Every extracted fact keeps a link to the **specific chunk** of the document it came from. That means:
+
+- In chat, when a fact appears as a citation, you can follow the traceability back to the exact text in the document.
+- If you update the document and re-ingest it, kb2b detects which facts change, which are preserved and which become obsolete.
+- In audits or team discussions, _"where did this come from"_ always has an answer.
+
+## Tags and projects
+
+Each document can carry **tags** and belong to a **project**. Tags are free-form labels (`contract`, `q4-2026`, `client-acme`) — useful to filter later. Projects are more structured groupings — useful when you organize the corpus by client, by domain (legal/commercial/technical) or by time period.
+
+Tag the material at upload, not later. Later, in chat or in the fact explorer, you'll want to ask things like _"which facts from the latest contracts contradict the discount policy"_ — and that requires facts to know which document and project they belong to.
+
+## Re-extraction
+
+When extraction improves — because the model improved, because the POT's constitution changed, or because you added new keywords that shift the context — you can **re-extract** an already-uploaded document without re-uploading the file. Re-extraction produces new facts and removes obsolete ones, preserving the historical provenance.
+
+## How to verify it ingested correctly
+
+Three health signs after an upload:
+
+1. **Document status:** must reach `completed`. If it stays in `processing` for more than a few minutes for a small file, something's off.
+2. **Number of extracted facts:** a "normal" document produces between 5 and 50 facts. A document that extracts 0 facts probably has little usable content (a mostly-scanned PDF, a table with no context, a near-empty file).
+3. **Average POT Score:** check [Knowledge and trust](/en/user/knowledge-and-trust) — if the POT's average score drops sharply after an upload, low-quality material is coming in. Consider filtering.
+
+## When something fails
+
+| Symptom | Likely cause | What to do |
+|---|---|---|
+| Error `413 Payload Too Large` | Document exceeds 100 KB of content | Split into smaller pieces |
+| Error `409 Conflict` | Identical content to a previously uploaded document | It's a duplicate — already in the POT |
+| Status stays in `failed` with `LLM_RATE_LIMIT` | Your plan's token quota is hitting the ceiling | Wait or upgrade; see [Token limits](/en/admin/token-limits) |
+| 0 facts extracted | Content has no extractable factual material (image with no OCR, table without context, empty promotional text) | Review the content — if it makes sense, try re-extracting; if not, ignore |
+| Document uploaded but chat citations don't link to it | Fact-retrieval cache — wait 30 seconds and ask again | — |
+
+## Best practices
+
+- **Start small.** Upload 2-3 representative documents before doing a mass dump. Look at the extracted facts. Confirm the POT is learning what you expect it to learn.
+- **Tag at upload, not later.** Initial tagging is 10x easier than re-tagging later.
+- **Authoritative documents first.** Signed contracts, official specs, final internal policies — material that deserves a high POT Score. Informal material (notes, drafts) goes after.
+- **If you have a lot of similar material, consider consolidating it** into a single well-structured document before uploading. Better for kb2b to parse one coherent PDF than 30 stray files on the same topic.
+
 <Note>
-  📝 **Page in progress**.
+  Content processed by SciPot during ingestion is sent to LLM providers (Claude). That data is processed in memory and is not retained for model training, per agreements with the providers. See [Trust and data](/en/legal/trust-and-data) for the details.
 </Note>
-
-## What this page will cover
-
-- Formats: PDF, DOCX, MD, TXT, HTML, images
-- Maximum size and processing
-- How to verify a document ingested correctly
-- What to do when a document fails
-
-_Full content pending._

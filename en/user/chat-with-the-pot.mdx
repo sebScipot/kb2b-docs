@@ -1,19 +1,85 @@
 ---
 title: "Chat with the POT"
 sidebarTitle: "Chat with the POT"
-description: "How to converse with your POT, what POT Scores mean, how to interpret sources."
+description: "How to converse with your POT, what each element of a reply means, how to read citations and POT Scores."
 lang: "en"
 ---
 
+Chat is the main way to **consume** what lives in the POT. You ask in natural language; kb2b pulls the relevant facts from the POT, synthesizes them with Claude and returns a reply with verifiable citations and visible POT Scores.
+
+## How to start a conversation
+
+1. Open **Chat** in the sidebar (`/dashboard/chat`).
+2. Type your question in the text box. Press Enter to send.
+3. The reply starts appearing in streaming. When it finishes, citations appear below the message.
+
+Conversations are auto-persisted. When you come back to chat the next day, you find the thread where you left it, with every previous message and its citations intact.
+
+## Anatomy of a reply
+
+Each reply in chat has three visible components:
+
+**The synthesized text.** Claude writes it from the facts SciPot handed over. If you see a number in parentheses in the text (e.g. `(2)`), that's a reference to a citation.
+
+**The citations below the message.** They appear as a row of numbered _badges_ (1, 2, 3, …). Each badge shows:
+
+- The citation **index** (1, 2, 3, ...)
+- The **POT Score** with two decimals (e.g. `0.92`)
+- A **level icon** classifying the fact (Constitution, Verified, Supported, Inferred, Hypothesis, Speculation)
+- A **network icon** if the fact has relationships (edges) with other POT facts
+
+The **border color of each badge** gives you a one-glance read on confidence:
+
+| Border color | POT Score | Quick read |
+|---|---|---|
+| Green | ≥ 0.80 | Verified or Constitution — you can act on this |
+| Yellow | 0.60 – 0.79 | Supported — corroborated, reasonably solid |
+| Orange | 0.40 – 0.59 | Inferred — the system deduced it, validate before using |
+| Red | < 0.40 | Hypothesis or Speculation — treat as a lead, not as truth |
+
+**Clicking any badge** opens a popover with the fact's full content, its score, its tags, its edges (relations with other facts) and the retrieval strategy that brought it in (CAG, RAG, GraphRAG).
+
+Inside the popover, **"Inspect in graph"** opens a deeper modal where you can navigate the fact's connections and understand why it landed in the reply.
+
+## The streaming UX
+
+While kb2b prepares and synthesizes the reply, you see two indicators:
+
+- **Thinking** (three pulsing dots with _"Thinking..."_) — the system is classifying the question and deciding the retrieval strategy.
+- **Reading X** (three dots + document or fact name) — the system is reading extra context to enrich the reply.
+
+When the text starts arriving, the indicators disappear and the content renders as streaming markdown. There's no "blinking cursor" — words simply appear.
+
+## Which questions work best
+
+**Specific questions with a temporal or source anchor.** _"When does Acme's contract expire?"_, _"What did Laura say in the last meeting about pricing?"_, _"What internal policies do we have about volume discounts?"_. These are the ones kb2b answers best because it can anchor the reply to concrete facts.
+
+**Comparative questions inside the POT's scope.** _"How does this account differ from the other three most strategic ones?"_ works if the POT has material on all four; if not, kb2b tells you data is missing.
+
+**Questions about what the POT does NOT know.** _"What key information are we missing to close this account?"_ — kb2b can list the gaps. Useful before a review meeting.
+
+## Which questions work poorly
+
+- **Speculation or creativity.** _"Draft a follow-up email"_ is not what chat is for. Use a general-purpose LLM for that. kb2b leans toward _"what do you know and where from"_, not _"what can you come up with"_.
+- **Questions outside the POT's domain.** If the POT is about the Acme account and you ask about your monthly cash flow, it'll tell you it's out of scope (assuming `scope_exclusion` is well-defined in the POT's [Constitution](/en/admin/pot-constitution)).
+- **General-world factual questions.** _"What's the capital of Chile?"_ — kb2b doesn't answer because no fact in the POT says "Santiago". For discovery with web context, use [Scout](/en/user/scout-ai-agent).
+
+## Replies stick around
+
+Every conversation is saved to your workspace's database. That lets you:
+
+- Re-open a thread from weeks ago and continue.
+- Share the URL of a specific reply with someone on the team.
+- Audit what was said, with its citations and POT Scores as they were at the time (even if the facts have been updated since).
+
+## When a reply is important
+
+If a synthesized reply feels so good you want to _promote_ it to a POT fact (with its own POT Score, its relations, its provenance), promotion happens from the [Explore and discuss facts](/en/user/explore-and-discuss-facts) screen, not from chat. Chat is the consumption surface; curation is a separate workflow.
+
+## When a reply has contradictions
+
+Sometimes you'll see kb2b say something like _"the contract expires on 2026-06-30 according to document X, but the last meeting records a negotiation moving the date to 2026-12-31"_. That's a **detected contradiction** and appears flagged in the Knowledge top banner. Resolve it from [Contradictions and resolution](/en/user/contradictions-and-resolution) — the POT's average POT Score rises as you lower the pending-contradictions count.
+
 <Note>
-  📝 **Page in progress** — being written now. If you're already using chat and something is unclear, email [feedback@kb2b.app](mailto:feedback@kb2b.app).
+  Your plan includes a monthly token quota. Chat consumes tokens based on POT size, question complexity and reply length. If you approach the quota we warn you at 95% and hard-block at 110% to avoid surprises. See [Token limits](/en/admin/token-limits) for details.
 </Note>
-
-## What this page will cover
-
-- How to start a conversation
-- Which kinds of questions work best
-- How to read sources and POT Scores
-- How to save and share answers
-
-_Full content pending._
