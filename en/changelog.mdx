@@ -7,6 +7,32 @@ lang: "en"
 
 {/* AUTO-GENERATED: scripts/sync-changelog.js writes this file from kb2b/CHANGELOG.md and kb2b-desktop git tags. Do not edit manually — changes between the markers will be overwritten. Last sync: 2026-05-19. */}
 
+## Highlights — week of May 18, 2026
+
+A summary of what shipped recently, written for everyday users. The full technical log is below.
+
+### New
+
+- **Trust Dashboard.** The Memory section is now called **Conocimiento** (Knowledge) and opens to a Trust Dashboard that answers "can I trust what's in this knowledge base?" at a glance — pending contradictions, validation coverage, freshness, a needs-review queue, and recent evidence, all on one page. See [Knowledge and trust](/en/user/knowledge-and-trust).
+- **Meeting-hours top-ups.** Running low on meeting minutes mid-cycle? You can now buy one-shot hour packs (5h, 15h, 30h, or 100h) without upgrading your plan. Bonus minutes don't expire — they stay on your account until you use them. See [Plans and pricing](/en/admin/plans-and-pricing).
+- **Same-page path forward when you hit a quota.** Clicking *Import* at the meeting cap now opens a top-up picker instead of a dead-end error, and the meeting settings page shows an inline "buy extra hours" panel once you cross 80% usage.
+- **Top-ups for admin-granted (courtesy) plans.** Workspaces on a courtesy plan can now buy token and meeting-hour packs, anchored to their grant period.
+
+### Updates
+
+- **Contradictions are visible everywhere in Knowledge.** The triage banner (list, severity, stances, resolve, discussion) now appears across the whole Knowledge section instead of being buried inside the Constitution tab. Deep-links from notifications and the dashboard open the banner directly. See [Contradictions and resolution](/en/user/contradictions-and-resolution).
+- **Subscription page is fully localized.** Every string on `/dashboard/settings/subscription` now respects your chosen language (ES / EN / CA), including dates, status badges, top-up cards, and the delete-account flow.
+- **Honest plan cards.** Plan cards no longer show "X documents" as if it were a hard cap — documents and queries-per-day now render as estimates (≈) with a footnote. Tokens remain the only real ceiling. See [Plans and pricing](/en/admin/plans-and-pricing).
+- **Per-document detail page.** Each document now has its own page with extraction history, paginated facts, an editable description, and cross-links to any contradictions it's involved in or campaign syntheses it's the source of.
+- **Clearer workspace deletion copy.** The Danger zone in your profile now reads "Delete this workspace" instead of "Delete account and organization", because that's what it actually does.
+
+### Bug fixes
+
+- **Critical: deleting a workspace no longer wipes your account.** Previously, clicking *Delete* in the Danger zone could silently remove you from every other workspace you belonged to. Now only the active workspace is deleted; your account and other memberships stay intact.
+- **Onboarding "Capture meetings" quick-start works again.** Starting from the meetings template no longer fails with a "Could not create the knowledge base" error.
+- **Better errors when top-ups aren't configured.** If a top-up product isn't set up on your environment, the buy button now shows a clear message instead of a generic network failure.
+- **Quota-exceeded email** now sends you to the hours top-up tab directly, and uses the correct "Buy extra hours" wording.
+
 {/* changelog:start */}
 
 ## kb2b (web)

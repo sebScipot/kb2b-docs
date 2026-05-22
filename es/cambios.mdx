@@ -11,6 +11,32 @@ lang: "es"
   El contenido detallado del log está originalmente en inglés (es un changelog técnico). Cuando un cambio afecta la UI o la experiencia del usuario, los títulos y descripciones se traducen aquí.
 </Info>
 
+## Novedades — semana del 18 de mayo de 2026
+
+Resumen de lo que se publicó recientemente, en lenguaje de usuario. El log técnico completo está más abajo.
+
+### Nuevo
+
+- **Panel de Conocimiento (Trust Dashboard).** La sección Memoria pasa a llamarse **Conocimiento** y abre en un panel que responde de un vistazo a "¿puedo fiarme de lo que hay en esta base de conocimiento?" — contradicciones pendientes, cobertura de validación, frescura, cola de "necesita revisión" y evidencia reciente, todo en una sola página. Ver [Conocimiento y confianza](/es/usuario/conocimiento-y-confianza).
+- **Top-ups de horas de reunión.** ¿Te quedas sin minutos a mitad de ciclo? Ahora puedes comprar packs sueltos de horas (5h, 15h, 30h o 100h) sin cambiar de plan. Los minutos comprados **no caducan** — quedan en tu cuenta hasta que los uses. Ver [Planes y precios](/es/admin/planes-y-precios).
+- **Salida en la misma página cuando llegas a un límite.** Pulsar *Importar* al tope de minutos abre un selector de top-up en lugar de un error sin salida, y en ajustes de reuniones aparece un panel "comprar horas extra" al cruzar el 80% de uso.
+- **Top-ups para planes de cortesía.** Los workspaces con plan otorgado por administrador ya pueden comprar packs de tokens y de horas, anclados a la duración de su cortesía.
+
+### Cambios
+
+- **Las contradicciones aparecen en toda la sección Conocimiento.** El banner de triaje (lista, severidad, posturas, resolver, discusión) ya no está escondido dentro de la pestaña Constitución: se muestra en todas las sub-pestañas de Conocimiento. Los enlaces directos desde notificaciones y dashboard abren el banner al instante. Ver [Contradicciones y resolución](/es/usuario/contradicciones-y-resolucion).
+- **Página de suscripción totalmente traducida.** Cada texto de `/dashboard/settings/subscription` respeta ahora el idioma elegido (ES / EN / CA), incluidas fechas, badges de estado, tarjetas de top-up y el flujo de eliminar cuenta.
+- **Tarjetas de plan más honestas.** Las tarjetas ya no muestran "X documentos" como si fuera un límite duro: documentos y consultas por día se muestran como estimaciones (≈) con nota al pie. Los tokens siguen siendo el único tope real. Ver [Planes y precios](/es/admin/planes-y-precios).
+- **Página de detalle por documento.** Cada documento tiene ahora su propia página con histórico de extracciones, hechos paginados, descripción editable y enlaces cruzados a las contradicciones donde aparece o a las síntesis de campaña que lo originaron.
+- **Texto más claro al eliminar workspace.** La zona de peligro de tu perfil ahora dice "Eliminar este workspace" en lugar de "Eliminar cuenta y organización", porque es lo que realmente hace.
+
+### Correcciones
+
+- **Crítico: eliminar un workspace ya no borra tu cuenta.** Antes, pulsar *Eliminar* en la zona de peligro podía sacarte silenciosamente de todos los demás workspaces a los que pertenecías. Ahora solo se elimina el workspace activo; tu cuenta y el resto de pertenencias quedan intactas.
+- **El quick-start "Captura reuniones" del onboarding vuelve a funcionar.** Empezar desde la plantilla de reuniones ya no falla con un error de "No se pudo crear la base de conocimiento".
+- **Mejores mensajes cuando un top-up no está configurado.** Si un producto de top-up no está dado de alta en el entorno, el botón de compra ahora muestra un mensaje claro en lugar de un fallo genérico de red.
+- **El email de cuota superada** lleva directamente a la pestaña de horas y usa el texto correcto "Comprar horas extra".
+
 {/* changelog:start */}
 
 ## kb2b (web)
