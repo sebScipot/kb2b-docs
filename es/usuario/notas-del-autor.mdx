@@ -1,0 +1,85 @@
+---
+title: "Notas del autor"
+sidebarTitle: "Notas del autor"
+description: "Texto que adjuntas a un documento para que kb2b lo lea mejor — sin convertirse en un fact. Útil para marcar alcance, encuadre o reglas especiales antes de extraer."
+lang: "es"
+---
+
+Una **nota del autor** es un texto corto que adjuntas a un documento para guiar cómo kb2b interpreta su contenido al extraer facts. La nota **no se convierte en un fact** ni aparece en el grafo del POT — vive pegada al documento y solo influye en la próxima extracción.
+
+Es la herramienta para arreglar lo que el LLM no puede inferir solo: que el documento es interno, que es marketing de un tercero, que tal sección es un anexo legal y no una declaración del equipo. Antes existía como un compromiso — escondías el contexto dentro del documento, contaminabas los facts. Ahora vive aparte.
+
+## Cuándo añadir una nota
+
+Las notas son útiles cuando el documento por sí solo es ambiguo o engañoso para una extracción literal:
+
+| Tipo de documento | Nota típica |
+|---|---|
+| Whitepaper de un proveedor | _"Este es material de marketing del proveedor X. Trata sus afirmaciones como aserciones, no como hechos verificados."_ |
+| Caso de estudio cliente | _"Caso de éxito redactado por nuestro equipo de marketing. Las cifras son reales, las opiniones son curadas."_ |
+| Política interna en draft | _"Documento en borrador, todavía no aprobado. Marcar facts como pendientes hasta firma."_ |
+| Export de configuración de un sistema externo | _"Export de la tenant en Eightfold. Cualquier cosa que suene a marca o producto es del schema, no nuestra."_ |
+| Acta de reunión externa | _"Reunión con un partner. Las afirmaciones del partner son sus opiniones, no posiciones nuestras."_ |
+
+Si el documento es claro y no necesita encuadre, no añadas nota — el LLM extrae bien sin ayuda.
+
+## Cómo añadir una nota al subir un documento
+
+1. Navega a **Documentos** y arrastra el archivo (`/dashboard/documents`).
+2. Antes de pulsar **Extraer**, expande **Adjuntar contexto** bajo el documento en la zona de staging.
+3. Escribe un **Nombre** corto (ej. _"Alcance: documento interno"_) y elige modo:
+   - **Pegar texto** — escribes la nota directamente (hasta 16 KB).
+   - **Subir archivo** — adjuntas un `.txt` o `.md` con la nota (hasta 80 KB).
+4. Pulsa **Crear adjunto**. Aparece un chip ámbar bajo el documento.
+5. Repite para más notas (hasta 5 por documento) o pulsa **Extraer** para iniciar la extracción.
+
+Cada nota es opcional. Un documento sin notas se extrae normalmente, igual que antes.
+
+## Sugerencias automáticas
+
+Al subir un documento, kb2b lo lee con un modelo rápido (Claude Haiku) y propone borradores de notas si detecta señales útiles — por ejemplo, que el archivo es un JSON con un `$schema` externo, o que el texto tiene tono claramente promocional.
+
+Las sugerencias aparecen como tarjetas en un panel ámbar con un encabezado **Sugerencias para extracción**:
+
+- Cada tarjeta tiene un **título** corto (la angle que detectó el modelo) y un **borrador del texto** de la nota.
+- Pulsas **Usar esta nota** y el editor se abre pre-rellenado. Puedes editar el texto antes de pulsar **Crear adjunto**.
+- Si ninguna sugerencia te encaja, ignóralas y escribe tu propia nota — el flujo manual sigue ahí abajo.
+- Cierras el panel con la X si prefieres no usarlas.
+
+Las sugerencias son orientativas. El modelo nunca inventa contenido del documento — solo propone framings. Tú decides qué adjuntar.
+
+## Editar o borrar una nota
+
+Antes de extraer, cada chip ámbar tiene un ícono de papelera para borrar. Borrar un chip elimina la nota inmediatamente.
+
+Si quieres cambiar una nota, bórrala y crea otra — no hay edición in-place. Es deliberado: una nota es una decisión curatorial, no un borrador.
+
+**Después de extraer**, las notas usadas quedan registradas en cada fact (ver [Contexto de un fact](/es/usuario/contexto-de-un-fact)). Si borras la nota más tarde, los facts ya extraídos mantienen una pista visual ("Adjunto eliminado") para que el equipo vea el rastro histórico.
+
+## Límites
+
+| Límite | Valor |
+|---|---|
+| Notas por documento | 5 |
+| Nota pegada (texto inline) | 16 KB |
+| Nota subida como archivo | 80 KB |
+
+Si necesitas pasar mucho más contexto, probablemente el material correcto es **subirlo como documento aparte** y no como nota. Las notas son cortas por diseño — son anclas de interpretación, no fuente de información.
+
+## Lo que NO hacen las notas
+
+- **No se extraen como facts.** La extracción rechaza por diseño cualquier fact cuya evidencia sea solo la nota. La nota guía la lectura del documento principal; los facts vienen del documento.
+- **No aparecen en el chat.** Cuando el equipo conversa con el POT, las notas no se citan ni se mencionan — son metadata de extracción.
+- **No tienen POT Score.** Una nota no es conocimiento del dominio; es una instrucción al pipeline.
+- **No se comparten entre documentos.** Cada nota vive pegada a un documento concreto. Si la misma directriz aplica a 20 documentos, escríbela 20 veces (o usa la [Constitución del POT](/es/admin/constitucion-del-pot) para algo que aplica a todo el POT).
+
+## Buenas prácticas
+
+- **Una nota = una razón.** Si necesitas decir tres cosas, escribe tres notas cortas. El LLM las lee mejor que una nota larga con tres ideas mezcladas.
+- **Nombra la nota como un titular**, no como una frase larga. _"Alcance: externo"_ funciona mejor que _"Esta nota explica que el documento es de origen externo y por eso…"_
+- **Mira las sugerencias antes de escribir.** El modelo capta cosas que se te escapan (un `$schema` en línea 12 del JSON, un disclaimer al final del PDF).
+- **Si una nota cambia, lánzala desde cero.** Borra el chip viejo, crea uno nuevo, vuelve a extraer. Es más limpio que mutar.
+
+<Note>
+  Las notas del autor son una característica de [SciPot](https://docs.scipot.ai/trust-mechanics/context-attachments), el motor de extracción de kb2b. Si te interesa la mecánica interna — cómo se inyectan en el prompt, qué garantiza que el LLM no las trate como hechos — el detalle técnico vive ahí.
+</Note>

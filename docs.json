@@ -41,6 +41,7 @@
                 "pages": [
                   "es/usuario/chat-con-el-pot",
                   "es/usuario/subir-documentos",
+                  "es/usuario/notas-del-autor",
                   "es/usuario/proyectos-y-etiquetas"
                 ]
               },
@@ -49,6 +50,7 @@
                 "pages": [
                   "es/usuario/reuniones-resumenes-y-facts",
                   "es/usuario/explorar-y-discutir-facts",
+                  "es/usuario/contexto-de-un-fact",
                   "es/usuario/contradicciones-y-resolucion"
                 ]
               },
@@ -136,6 +138,7 @@
                 "pages": [
                   "en/user/chat-with-the-pot",
                   "en/user/upload-documents",
+                  "en/user/author-notes",
                   "en/user/projects-and-tags"
                 ]
               },
@@ -144,6 +147,7 @@
                 "pages": [
                   "en/user/meetings-summaries-and-facts",
                   "en/user/explore-and-discuss-facts",
+                  "en/user/fact-context",
                   "en/user/contradictions-and-resolution"
                 ]
               },

@@ -1,0 +1,69 @@
+---
+title: "Contexto de un fact"
+sidebarTitle: "Contexto de un fact"
+description: "Los chips ámbar que aparecen bajo cada fact te dicen qué notas del autor estaban activas cuando kb2b extrajo ese fact. Trazabilidad de la extracción, en una línea."
+lang: "es"
+---
+
+Cuando un fact se extrae de un documento que tiene [notas del autor](/es/usuario/notas-del-autor) adjuntas, kb2b guarda en el fact qué notas estaban en juego en ese momento. Esos chips ámbar bajo el fact son la pista visual de ese contexto.
+
+Es trazabilidad de un nivel por encima de la provenance estándar: la provenance te dice _de qué documento vino el fact_; los chips de contexto te dicen _bajo qué encuadre se leyó ese documento_.
+
+## Qué ves
+
+Cada chip representa una nota del autor que estaba adjunta al documento en el momento de la extracción. El chip muestra el tipo (**Nota**) y el nombre que diste al adjuntar la nota.
+
+Aparecen en dos sitios:
+
+- **Bajo cada fact** en la vista de detalle del documento y en el inspector del fact (lo que se llama `FactAttachmentChips` en el código).
+- **En la cabecera del documento**, como lista completa de adjuntos vigentes (lo que se llama `ContextAttachmentsList`).
+
+Pulsar un chip te lleva a la nota del autor correspondiente. Si la nota ya no existe, el chip se renderiza diferente — ver siguiente sección.
+
+## Cuándo no aparecen chips
+
+No es un bug: si no ves chips bajo un fact, normalmente es por una de tres razones.
+
+| Situación | Por qué |
+|---|---|
+| El documento no tenía notas cuando se extrajo el fact | No hay nada que mostrar. La mayoría de facts del POT son así. |
+| El fact se creó antes de que existiera esta característica | Facts antiguos no llevan registro de notas — no significa que se extrajeran "sin contexto", solo que no se guardaba esa pista. |
+| El fact se creó manualmente o por otra vía (no por extracción) | Por ejemplo, un fact constitucional o uno añadido a mano no pasa por la extracción del documento. |
+
+## Cuando una nota fue borrada después de extraer
+
+Si un compañero borra una nota del autor **después** de que se hayan extraído facts con ella en juego, los facts no pierden la pista — kb2b se la guarda. En vez de un chip ámbar normal, ves uno gris con línea discontinua y el texto **"Adjunto eliminado"**.
+
+Eso es deliberado:
+
+- El fact se sigue extrayendo bien (la nota ya hizo su trabajo durante la extracción).
+- El equipo ve que en su día hubo guía especial al extraer ese fact, aunque la nota ya no esté.
+- Si re-extraes el documento, los facts nuevos se sacarán bajo el nuevo conjunto de notas vigentes — los chips reflejarán ese set.
+
+Cuando el equipo se pregunta _"este fact se extrajo raro, ¿qué guía había?"_, los chips son la primera pista.
+
+## Para qué sirve esto en el día a día
+
+Tres usos concretos:
+
+1. **Auditoría rápida.** Un fact parece descolocado. Miras los chips: _"ah, este documento tenía la nota 'Material de marketing del proveedor X'_". Tiene sentido — el fact refleja una afirmación de marketing, no un hecho del dominio. Lo curas como tal (👎 o re-categorizado).
+2. **Confianza al compartir.** Al exportar o citar un fact en un informe interno, ver los chips te recuerda qué framing usó kb2b para extraerlo. Si el framing era "draft", quizá no quieras citar el fact todavía.
+3. **Detectar deriva.** Si un documento se subió hace 6 meses con cierta nota y la nota desapareció, ves "Adjunto eliminado" en todos los facts asociados. Pista clara de que la guía cambió en algún momento — útil cuando algo en el POT empieza a comportarse distinto.
+
+## Cómo crear las notas que aparecen aquí
+
+Los chips son solo el lado de **lectura**. Para crear o modificar las notas que generan estos chips, ve a [Notas del autor](/es/usuario/notas-del-autor) — el flujo es desde la pantalla de subida del documento, no desde el inspector del fact.
+
+## Diferencia con la provenance del documento
+
+| Eso | Esto |
+|---|---|
+| **Provenance del documento** te dice _de qué documento_ vino el fact y _qué chunk_ exacto. | **Contexto del fact** te dice _qué encuadre curatorial_ tenía ese documento al extraerse. |
+| Siempre presente (todos los facts extraídos llevan provenance). | Solo presente cuando había notas (y empezando desde mayo 2026). |
+| Es la prueba de _dónde vino_ el fact. | Es la pista de _cómo se leyó_ el documento. |
+
+Las dos se complementan. La provenance es la prueba; el contexto es el cómo.
+
+<Note>
+  El detalle técnico de cómo se guarda esto (campo `context_attachment_ids_used` en cada fact, semántica de borrado) está en la [documentación de SciPot](https://docs.scipot.ai/trust-mechanics/context-attachments). En kb2b lo ves siempre como chips — no necesitas tocar el campo directamente.
+</Note>

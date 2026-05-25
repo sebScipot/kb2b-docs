@@ -1,0 +1,69 @@
+---
+title: "Fact context"
+sidebarTitle: "Fact context"
+description: "The amber chips under each fact tell you which author notes were in scope when kb2b extracted that fact. Extraction traceability, in one line."
+lang: "en"
+---
+
+When a fact is extracted from a document that has [author notes](/en/user/author-notes) attached, kb2b records which notes were in play at that moment. The amber chips under a fact are the visual trace of that context.
+
+It's traceability one level up from standard provenance: provenance tells you _which document the fact came from_; context chips tell you _under what framing that document was read_.
+
+## What you see
+
+Each chip represents an author note that was attached to the document at extraction time. The chip shows the type (**Note**) and the name you gave the attachment.
+
+They appear in two places:
+
+- **Under each fact** in the document detail view and in the fact inspector (the `FactAttachmentChips` component in code).
+- **On the document header**, as the live list of current attachments (the `ContextAttachmentsList` component).
+
+Clicking a chip takes you to the corresponding author note. If the note no longer exists, the chip renders differently — see the next section.
+
+## When no chips appear
+
+Not a bug: if you don't see chips under a fact, it's usually one of three reasons.
+
+| Situation | Why |
+|---|---|
+| The document had no notes when the fact was extracted | There's nothing to show. Most facts in the POT look like this. |
+| The fact was created before this feature existed | Old facts carry no note record — not because they were extracted "without context", just because that trace wasn't stored back then. |
+| The fact was created manually or via another path (not extraction) | For example, a constitutional fact or one added by hand doesn't go through document extraction. |
+
+## When a note was deleted after extraction
+
+If a teammate deletes an author note **after** facts were extracted with it in scope, the facts don't lose the trace — kb2b keeps it. Instead of a normal amber chip, you see a muted gray one with a dashed border and the label **"Attachment deleted"**.
+
+That's deliberate:
+
+- The fact still extracts cleanly (the note already did its job during extraction).
+- The team can see that special guidance was in play when that fact was extracted, even if the note is gone now.
+- If you re-extract the document, the new facts will be pulled under the new live set of notes — chips will reflect that set.
+
+When the team asks _"this fact came out odd, what guidance was there?"_, the chips are the first clue.
+
+## What this is for, day to day
+
+Three concrete uses:
+
+1. **Quick audit.** A fact looks off. You glance at the chips: _"ah, this document had the note 'Vendor X marketing material'"_. Makes sense — the fact reflects a marketing claim, not a domain truth. You curate it accordingly (👎 or re-categorize).
+2. **Confidence when sharing.** When exporting or quoting a fact in an internal report, seeing the chips reminds you what framing kb2b used to extract it. If the framing was "draft", maybe you don't want to quote the fact yet.
+3. **Detecting drift.** A document was uploaded six months ago with a certain note, and the note has since disappeared. You see "Attachment deleted" on every associated fact. Clear signal that the guidance changed at some point — useful when something in the POT starts behaving differently.
+
+## How to create the notes that produce these chips
+
+The chips are only the **reading** side. To create or modify the notes that generate these chips, see [Author notes](/en/user/author-notes) — the flow is from the document upload screen, not from the fact inspector.
+
+## Difference from document provenance
+
+| That | This |
+|---|---|
+| **Document provenance** tells you _which document_ the fact came from and _which chunk_ exactly. | **Fact context** tells you _what curatorial framing_ that document had when it was extracted. |
+| Always present (every extracted fact carries provenance). | Only present when notes were attached (and starting from May 2026). |
+| Proof of _where the fact came from_. | A trace of _how the document was read_. |
+
+The two complement each other. Provenance is the proof; context is the how.
+
+<Note>
+  The technical detail of how this is stored (a `context_attachment_ids_used` field on each fact, deletion semantics) lives in the [SciPot docs](https://docs.scipot.ai/trust-mechanics/context-attachments). In kb2b you always see it as chips — you don't need to touch the field directly.
+</Note>

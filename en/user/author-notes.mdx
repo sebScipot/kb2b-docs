@@ -1,0 +1,85 @@
+---
+title: "Author notes"
+sidebarTitle: "Author notes"
+description: "Text you attach to a document so kb2b reads it better — without turning into a fact. Useful to mark scope, framing, or special rules before extracting."
+lang: "en"
+---
+
+An **author note** is a short text you attach to a document to guide how kb2b reads its content when extracting facts. The note **doesn't become a fact** and doesn't appear in the POT's graph — it lives pinned to the document and only influences the next extraction.
+
+It's the tool for things the LLM can't infer on its own: that the document is internal, that it's third-party marketing, that a section is a legal annex and not a team statement. Before, this was a compromise — you hid the context inside the document and polluted the facts. Now it lives separately.
+
+## When to add a note
+
+Notes help when the document, on its own, is ambiguous or misleading for a literal extraction:
+
+| Document type | Typical note |
+|---|---|
+| Vendor whitepaper | _"This is vendor marketing material. Treat claims as assertions, not verified facts."_ |
+| Customer case study | _"Success story written by our marketing team. Numbers are real, opinions are curated."_ |
+| Internal policy draft | _"Document still in draft, not approved. Mark facts as pending until sign-off."_ |
+| Export from an external system | _"Tenant export from Eightfold. Anything that sounds like a brand or product is from the schema, not ours."_ |
+| External meeting minutes | _"Meeting with a partner. The partner's statements are their opinions, not our positions."_ |
+
+If the document is clear and needs no framing, don't add a note — the LLM extracts well without help.
+
+## How to add a note when uploading
+
+1. Navigate to **Documents** and drag the file (`/dashboard/documents`).
+2. Before pressing **Extract**, expand **Attach context** under the document in the staging area.
+3. Type a short **Name** (e.g. _"Scope: internal document"_) and pick a mode:
+   - **Paste text** — type the note directly (up to 16 KB).
+   - **Upload file** — attach a `.txt` or `.md` with the note (up to 80 KB).
+4. Press **Create attachment**. An amber chip appears under the document.
+5. Repeat for more notes (up to 5 per document), or press **Extract** to start extraction.
+
+Every note is optional. A document with no notes extracts normally, the same as before.
+
+## Automatic suggestions
+
+When you upload a document, kb2b reads it with a fast model (Claude Haiku) and proposes draft notes if it detects useful signals — for example, that the file is JSON with an external `$schema`, or that the text has a clearly promotional tone.
+
+Suggestions appear as cards in an amber panel headed **Suggestions for extraction**:
+
+- Each card has a short **title** (the angle the model detected) and a **draft text** for the note.
+- Press **Use this note** and the editor opens pre-filled. You can edit the text before pressing **Create attachment**.
+- If none of the suggestions fits, ignore them and write your own — the manual flow stays right below.
+- Close the panel with the X if you'd rather not use them.
+
+Suggestions are advisory. The model never invents content from the document — it only proposes framings. You decide what to attach.
+
+## Edit or delete a note
+
+Before extracting, each amber chip has a trash icon to delete. Deleting a chip removes the note immediately.
+
+To change a note, delete it and create another — there's no in-place edit. That's deliberate: a note is a curatorial decision, not a draft.
+
+**After extraction**, the notes that were in scope stay recorded on each fact (see [Fact context](/en/user/fact-context)). If you delete the note later, the facts already extracted keep a visual trace ("Attachment deleted") so the team sees the historical record.
+
+## Limits
+
+| Limit | Value |
+|---|---|
+| Notes per document | 5 |
+| Pasted note (inline text) | 16 KB |
+| Note uploaded as a file | 80 KB |
+
+If you need to pass much more context, the right material is probably to **upload it as a separate document**, not as a note. Notes are short by design — they're interpretation anchors, not a source of information.
+
+## What notes do NOT do
+
+- **They aren't extracted as facts.** Extraction rejects, by design, any fact whose evidence is only the note. The note guides how the main document is read; facts come from the document.
+- **They don't appear in chat.** When the team talks with the POT, notes aren't cited or mentioned — they're extraction metadata.
+- **They have no POT Score.** A note isn't domain knowledge; it's an instruction to the pipeline.
+- **They don't carry across documents.** Every note lives pinned to one specific document. If the same directive applies to 20 documents, write it 20 times (or use the [POT Constitution](/en/admin/pot-constitution) for something that applies POT-wide).
+
+## Best practices
+
+- **One note = one reason.** If you need to say three things, write three short notes. The LLM reads them better than one long note with three ideas mixed in.
+- **Name the note like a headline**, not like a long sentence. _"Scope: external"_ works better than _"This note explains that the document is from an external source and therefore…"_
+- **Look at suggestions before writing.** The model catches things you might miss (a `$schema` on line 12 of the JSON, a disclaimer at the end of the PDF).
+- **If a note changes, start it over.** Delete the old chip, create a new one, re-extract. Cleaner than mutating.
+
+<Note>
+  Author notes are a feature of [SciPot](https://docs.scipot.ai/trust-mechanics/context-attachments), the extraction engine behind kb2b. If you're curious about the internal mechanics — how they're injected into the prompt, what guarantees the LLM doesn't treat them as facts — the technical detail lives there.
+</Note>
