@@ -11,6 +11,17 @@ lang: "es"
   El contenido detallado del log está originalmente en inglés (es un changelog técnico). Cuando un cambio afecta la UI o la experiencia del usuario, los títulos y descripciones se traducen aquí.
 </Info>
 
+## Novedades — semana del 25 de mayo de 2026
+
+Resumen de lo que se publicó esta semana, en lenguaje de usuario. El log técnico completo está más abajo.
+
+### Nuevo
+
+- **Notas del autor en documentos.** Ahora puedes adjuntar notas cortas a un documento **antes de extraer** para guiar cómo kb2b lo interpreta — por ejemplo, _"material de marketing del proveedor X"_ o _"borrador, no aprobado"_. Las notas no se convierten en facts y no aparecen en el chat: solo enmarcan la lectura del documento. Hasta 5 notas por documento, 16 KB en línea o 80 KB como archivo. Ver [Notas del autor](/es/usuario/notas-del-autor).
+- **Sugerencias automáticas de notas.** Al subir un documento, kb2b lo lee con un modelo rápido y propone borradores de notas si detecta señales útiles (un JSON con `$schema` externo, tono claramente promocional, etc.). Aceptas la sugerencia con un clic, la editas, o la ignoras y escribes la tuya.
+- **Chips de contexto bajo cada fact.** Los facts extraídos de un documento con notas ahora muestran chips ámbar con el nombre de cada nota que estaba activa durante la extracción. Es la pista visual de _bajo qué encuadre se leyó el documento_, un nivel por encima de la provenance habitual. Ver [Contexto de un fact](/es/usuario/contexto-de-un-fact).
+- **Rastro cuando una nota se borra.** Si alguien borra una nota después de que ya se hayan extraído facts con ella, los facts no pierden la pista: el chip pasa a gris con texto **"Adjunto eliminado"**, para que el equipo sepa que en su día hubo guía especial.
+
 ## Novedades — semana del 18 de mayo de 2026
 
 Resumen de lo que se publicó recientemente, en lenguaje de usuario. El log técnico completo está más abajo.

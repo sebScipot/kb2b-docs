@@ -7,6 +7,17 @@ lang: "en"
 
 {/* AUTO-GENERATED: scripts/sync-changelog.js writes this file from kb2b/CHANGELOG.md and kb2b-desktop git tags. Do not edit manually — changes between the markers will be overwritten. Last sync: 2026-05-19. */}
 
+## Highlights — week of May 25, 2026
+
+A summary of what shipped this week, written for everyday users. The full technical log is below.
+
+### New
+
+- **Author notes on documents.** You can now attach short notes to a document **before extraction** to guide how kb2b interprets it — for example, _"vendor X marketing material"_ or _"draft, not yet approved"_. Notes never become facts and never appear in chat: they only frame how the document is read. Up to 5 notes per document, 16 KB inline or 80 KB as a file. See [Author notes](/en/user/author-notes).
+- **Automatic note suggestions.** When you upload a document, kb2b reads it with a fast model and proposes draft notes if it spots useful signals (a JSON with an external `$schema`, a clearly promotional tone, etc.). Accept the suggestion with one click, edit it, or ignore it and write your own.
+- **Context chips under each fact.** Facts extracted from a document that had notes attached now show amber chips with the name of each note that was active during extraction. It's a visual cue for _which framing the document was read under_, one level above the usual provenance. See [Fact context](/en/user/fact-context).
+- **Trail when a note is deleted.** If someone deletes a note after facts have already been extracted with it in play, those facts don't lose the breadcrumb: the chip turns grey with **"Attachment deleted"** text, so the team can see there was special guidance at the time.
+
 ## Highlights — week of May 18, 2026
 
 A summary of what shipped recently, written for everyday users. The full technical log is below.
