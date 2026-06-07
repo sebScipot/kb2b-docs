@@ -40,6 +40,8 @@
                 "group": "Uso diario",
                 "pages": [
                   "es/usuario/chat-con-el-pot",
+                  "es/usuario/vacios-de-conocimiento",
+                  "es/usuario/busqueda-en-internet",
                   "es/usuario/subir-documentos",
                   "es/usuario/notas-del-autor",
                   "es/usuario/proyectos-y-etiquetas"
@@ -137,6 +139,8 @@
                 "group": "Daily use",
                 "pages": [
                   "en/user/chat-with-the-pot",
+                  "en/user/knowledge-gaps",
+                  "en/user/web-research",
                   "en/user/upload-documents",
                   "en/user/author-notes",
                   "en/user/projects-and-tags"
