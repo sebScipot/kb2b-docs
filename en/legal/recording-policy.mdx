@@ -9,13 +9,17 @@ lang: "en"
 
 ## Summary
 
-kb2b Desktop records local audio from your meetings (microphone and system audio) when you explicitly start it. The transcript is processed in the kb2b backend and stored in your workspace.
+kb2b Desktop records local audio from your meetings (microphone and system audio) when you explicitly start it. The audio is transcribed by our recording provider (Recall.ai, EU); the transcript is processed in the kb2b backend and stored in your workspace.
 
 ## Retention
 
-- **Raw audio**: 168 hours (7 days) on the Recall.ai free tier.
-- **Transcripts**: permanent, while your workspace is active.
-- **Deletion**: you can delete a specific transcript from the app; it's removed from servers within 24h.
+- **Raw audio**: the recording provider's copy (Recall.ai, EU) is deleted automatically after 168 hours (7 days). kb2b keeps an archived copy in its own storage (AWS, US) with no automatic expiry.
+- **Transcripts**: kept until you delete the meeting — no automatic expiry.
+- **Extracted facts**: kept while your knowledge base (POT) exists; deleted when you delete the meeting.
+
+## Deletion
+
+Deleting a meeting from the app removes it from your workspace and permanently deletes its transcript and extracted facts from the knowledge base. Archived copies of the audio and the raw transcript currently remain in kb2b backend storage — email [legal@kb2b.app](mailto:legal@kb2b.app) to request complete removal. Automatic removal of these copies is in development.
 
 ## Consent
 

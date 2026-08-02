@@ -7,28 +7,44 @@ lang: "en"
 
 ## Quick answers for procurement
 
-For an initial security and compliance evaluation:
+For an initial security and compliance evaluation — current state, stated plainly:
 
-- ✅ **Data stored in AWS EU (Frankfurt)** — no transfers outside the EEA in standard operation.
-- ✅ **Sub-processors listed below** — Stripe (billing), Recall.ai (audio), Anthropic (LLM synthesis), AWS (storage), Resend (email).
-- ✅ **Retention policy: 30 days for transcripts, 7 days for meeting media** (Recall free tier).
-- ✅ **Recording consent documented** — see [Recording policy](/en/legal/recording-policy).
-- ✅ **DPA available on request** — email [legal@kb2b.app](mailto:legal@kb2b.app).
-- ✅ **Security call with a responsible party** — request one by emailing [legal@kb2b.app](mailto:legal@kb2b.app) with subject "Security call".
+- **Hosting and storage run in the United States today.** The app runs on Fly.io (Virginia) and data lives in AWS `us-east-1` (databases, files, queues) and Pinecone `us-east-1` (vector index). Migration of this infrastructure to EU regions is in progress.
+- **What runs in the EU today:** meeting audio capture and transcription (Recall.ai, Frankfurt) and product analytics (PostHog EU cloud).
+- **Retention today:** the recording provider's copy of meeting audio is deleted automatically after 7 days. Everything else (documents, transcripts, facts, chat history) is kept until you delete it from the app — there is no automatic expiry. See the [Recording policy](/en/legal/recording-policy) for what deletion covers today.
+- **Recording consent documented** — see [Recording policy](/en/legal/recording-policy).
+- **DPA: in preparation** — email [legal@kb2b.app](mailto:legal@kb2b.app) for status and timeline.
+- **Security call with a responsible party** — request one by emailing [legal@kb2b.app](mailto:legal@kb2b.app) with subject "Security call".
 
 ## If you need more detail
 
 | Document | Availability |
 |---|---|
-| Data Processing Agreement (DPA) | On request (e-signed) |
+| Data Processing Agreement (DPA) | In preparation — not yet available |
 | Up-to-date sub-processor list | Available on this page (next section) |
-| SOC 2 Type II report | In progress — pre-launch we deliver GDPR posture + DPA |
-| Standard security questionnaire (CAIQ, VSA) | On request |
-| Penetration test report | Under NDA |
+| SOC 2 Type II report | Not started — kb2b runs on providers with their own certifications (AWS, Stripe); a kb2b SOC 2 is on the roadmap |
+| Standard security questionnaire (CAIQ, VSA) | On request — we complete yours |
+| Penetration test report | Not yet available — planned |
 
 ## Current sub-processors
 
-_Detailed list and purpose per sub-processor pending — will include: AWS (storage in eu-central-1), Anthropic Claude (LLM synthesis, no training on your data), Recall.ai (meeting audio capture, 7d retention), Stripe (payments), Resend (transactional email)._
+All customer data flows go through the services below. The AI providers (OpenAI, Anthropic) do not train models on data sent through their APIs, per their commercial API terms; they may retain inputs briefly for abuse monitoring.
+
+| Sub-processor | Purpose | Customer data | Region |
+|---|---|---|---|
+| Fly.io | Application hosting | All application traffic; kb2b database | US (Virginia) |
+| AWS | Databases, file storage, queues, backups | Documents, transcripts, meeting audio archive, chat content | US (`us-east-1`) |
+| Pinecone | Vector search | Fact embeddings and identifiers (no raw text) | US (`us-east-1`) |
+| OpenAI | Fact extraction, synthesis, embeddings | Document excerpts, facts, queries | US |
+| Anthropic | Chat answers and summaries | Questions, facts, transcripts | US |
+| Recall.ai | Meeting audio capture and transcription | Raw audio, transcripts (auto-deleted after 7 days on their side) | EU (Frankfurt) |
+| Stripe | Billing | Email, organization id | Global |
+| Resend | Transactional email | Email addresses, login codes, invitations | US |
+| PostHog | Product analytics | Usage events tied to user identity | EU cloud |
+| Tavily | Web research in chat (optional feature, can be disabled) | Search queries derived from chat | US |
+| Handinger | Fetching user-submitted URLs (optional feature, can be disabled) | URLs submitted by users | US |
+
+Sign-in uses Google or GitHub as OAuth identity providers (basic profile only).
 
 ## Workspace isolation
 
@@ -39,4 +55,4 @@ Each kb2b workspace lives in its own **POT** (Knowledge Pot — the account's kn
 - General: [legal@kb2b.app](mailto:legal@kb2b.app)
 - Vulnerability disclosure: [security@kb2b.app](mailto:security@kb2b.app)
 
-_Detailed DPA, sub-processor and isolation content pending._
+_DPA text in preparation; this page will link to it when available._

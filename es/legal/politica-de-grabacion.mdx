@@ -9,13 +9,17 @@ lang: "es"
 
 ## Resumen
 
-kb2b Desktop graba audio local de tus reuniones (micrófono y audio del sistema) cuando tú lo inicias explícitamente. La transcripción se procesa en el backend de kb2b y se almacena en tu workspace.
+kb2b Desktop graba audio local de tus reuniones (micrófono y audio del sistema) cuando tú lo inicias explícitamente. El audio lo transcribe nuestro proveedor de grabación (Recall.ai, UE); la transcripción se procesa en el backend de kb2b y se almacena en tu workspace.
 
 ## Retención
 
-- **Audio raw**: 168 horas (7 días) en el tier free de Recall.ai.
-- **Transcripciones**: permanente, mientras tu workspace esté activo.
-- **Borrado**: puedes eliminar una transcripción específica desde la app, en cuyo caso se borra de los servidores en 24h.
+- **Audio raw**: la copia del proveedor de grabación (Recall.ai, UE) se borra automáticamente a las 168 horas (7 días). kb2b guarda una copia archivada en su propio storage (AWS, EE.UU.) sin caducidad automática.
+- **Transcripciones**: se conservan hasta que borras la reunión — sin caducidad automática.
+- **Facts extraídos**: se conservan mientras exista tu knowledge base (POT); se eliminan al borrar la reunión.
+
+## Borrado
+
+Borrar una reunión desde la app la elimina de tu workspace y borra de forma permanente su transcripción y los facts extraídos del knowledge base. Las copias archivadas del audio y de la transcripción cruda permanecen hoy en el storage backend de kb2b — escribe a [legal@kb2b.app](mailto:legal@kb2b.app) para solicitar su eliminación completa. El borrado automático de estas copias está en desarrollo.
 
 ## Consentimiento
 
