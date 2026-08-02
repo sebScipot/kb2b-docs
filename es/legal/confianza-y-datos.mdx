@@ -11,10 +11,26 @@ Para una evaluación inicial de seguridad y cumplimiento — estado actual, sin 
 
 - **La infraestructura principal y el almacenamiento y procesamiento de datos corren en la Unión Europea.** La aplicación corre en Fly.io en Frankfurt (`fra`); los datos viven en AWS `eu-central-1` (bases de datos, ficheros, colas) y Pinecone `eu-central-1` (índice vectorial). La captura y transcripción de audio de reuniones (Recall.ai, `eu-central-1`) y la analítica de producto (PostHog EU cloud) también corren en la UE. Nota transitoria: los backups congelados en EE.UU. están programados para eliminarse antes del 2026-08-16.
 - **Qué se sigue procesando en EE.UU.:** la inferencia LLM (OpenAI, Anthropic) bajo sus términos comerciales de API, además del email transaccional (Resend) y las funcionalidades web opcionales (Tavily, Handinger) — ver la tabla de sub-procesadores más abajo.
-- **Retención hoy:** la copia del audio de reuniones del proveedor de grabación se borra automáticamente a los 7 días. El resto (documentos, transcripciones, facts, historial de chat) se conserva hasta que lo borras desde la app — no hay caducidad automática. Ver [Política de grabación](/es/legal/politica-de-grabacion) para el alcance actual del borrado.
+- **Retención y borrado:** política única por tipo de dato en la [sección de abajo](#retención-y-borrado). Lo esencial: el audio de reuniones expira solo (7 días en el proveedor); el resto se conserva hasta que lo borras, y el borrado es real — en cascada a facts, embeddings, ficheros y copia del proveedor, con salida de backups en 30 días como máximo.
 - **Consentimiento de grabación documentado** — ver [Política de grabación](/es/legal/politica-de-grabacion).
 - **DPA: en preparación** — escribe a [legal@kb2b.app](mailto:legal@kb2b.app) para estado y fechas.
 - **Reunión de seguridad con un responsable** — solicítala escribiendo a [legal@kb2b.app](mailto:legal@kb2b.app) con asunto "Security call".
+
+## Retención y borrado
+
+Una sola política, por tipo de dato. "Borrar" significa borrar de verdad: el dato desaparece del almacenamiento primario en el momento y de los backups por expiración natural, en 30 días como máximo.
+
+| Dato | Retención | Borrado |
+|---|---|---|
+| Audio de reunión — copia del proveedor (Recall.ai) | 7 días (168 h), borrado automático | También se borra de inmediato al eliminar la reunión |
+| Audio archivado y transcripción cruda (storage de kb2b) | Mientras exista la reunión | Se borran al eliminar la reunión |
+| Documentos, facts y embeddings | Hasta que los borras | En cascada: al eliminar un documento o una reunión se borran sus facts, sus relaciones y sus embeddings del índice vectorial |
+| Historial de chat | Hasta que borras la conversación | El contenido almacenado se elimina al borrar la conversación |
+| Backups | Réplica de base de datos: ventana de 24 h. Ficheros: las versiones de respaldo de objetos borrados expiran a los 30 días | Expiración automática — ninguna copia indefinida |
+| Eventos de uso (telemetría interna, sin contenido de documentos) | 90 días | Expiración automática; solo se conservan agregados de facturación |
+| Cuenta / workspace | Mientras la cuenta esté activa | Cierre y supresión bajo solicitud a [legal@kb2b.app](mailto:legal@kb2b.app); el borrado autoservicio de la cuenta completa y la exportación de datos están en desarrollo |
+
+Detalle operativo del borrado de reuniones en la [Política de grabación](/es/legal/politica-de-grabacion).
 
 ## Si necesitas más detalle
 

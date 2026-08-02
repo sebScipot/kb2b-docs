@@ -13,13 +13,13 @@ kb2b Desktop records local audio from your meetings (microphone and system audio
 
 ## Retention
 
-- **Raw audio**: the recording provider's copy (Recall.ai, EU) is deleted automatically after 168 hours (7 days). kb2b keeps an archived copy in its own storage (AWS, EU — `eu-central-1`) with no automatic expiry.
-- **Transcripts**: kept until you delete the meeting — no automatic expiry.
+- **Raw audio**: the recording provider's copy (Recall.ai, EU) is deleted automatically after 168 hours (7 days) — and immediately when you delete the meeting. kb2b keeps an archived copy in its own storage (AWS, EU — `eu-central-1`) for as long as the meeting exists; deleting the meeting deletes it too.
+- **Transcripts**: kept for as long as the meeting exists; deleting the meeting deletes them too.
 - **Extracted facts**: kept while your knowledge base (POT) exists; deleted when you delete the meeting.
 
 ## Deletion
 
-Deleting a meeting from the app removes it from your workspace and permanently deletes its transcript and extracted facts from the knowledge base. Archived copies of the audio and the raw transcript currently remain in kb2b backend storage — email [legal@kb2b.app](mailto:legal@kb2b.app) to request complete removal. Automatic removal of these copies is in development.
+Deleting a meeting from the app permanently deletes its transcript and all extracted facts (including their search embeddings) from the knowledge base, the archived audio and raw transcript from kb2b storage, and the provider's copy on Recall.ai. Deleted data also leaves backups as they expire, within 30 days at most.
 
 ## Consent
 

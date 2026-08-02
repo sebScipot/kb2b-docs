@@ -11,10 +11,26 @@ For an initial security and compliance evaluation — current state, stated plai
 
 - **Primary infrastructure and data storage and processing run in the European Union.** The app runs on Fly.io in Frankfurt (`fra`); data lives in AWS `eu-central-1` (databases, files, queues) and Pinecone `eu-central-1` (vector index). Meeting audio capture and transcription (Recall.ai, `eu-central-1`) and product analytics (PostHog EU cloud) also run in the EU. Transitional note: frozen US backups are scheduled for deletion by 2026-08-16.
 - **What still processes in the US:** LLM inference (OpenAI, Anthropic) under their commercial API terms, plus transactional email (Resend) and the optional web features (Tavily, Handinger) — see the sub-processor table below.
-- **Retention today:** the recording provider's copy of meeting audio is deleted automatically after 7 days. Everything else (documents, transcripts, facts, chat history) is kept until you delete it from the app — there is no automatic expiry. See the [Recording policy](/en/legal/recording-policy) for what deletion covers today.
+- **Retention and deletion:** one policy per data type in the [section below](#retention-and-deletion). The short version: meeting audio expires on its own (7 days at the provider); everything else is kept until you delete it, and deletion is real — cascading to facts, embeddings, files and the provider's copy, out of backups within 30 days at most.
 - **Recording consent documented** — see [Recording policy](/en/legal/recording-policy).
 - **DPA: in preparation** — email [legal@kb2b.app](mailto:legal@kb2b.app) for status and timeline.
 - **Security call with a responsible party** — request one by emailing [legal@kb2b.app](mailto:legal@kb2b.app) with subject "Security call".
+
+## Retention and deletion
+
+One policy, per data type. "Delete" means actually delete: the data leaves primary storage immediately and leaves backups by natural expiry, within 30 days at most.
+
+| Data | Retention | Deletion |
+|---|---|---|
+| Meeting audio — provider copy (Recall.ai) | 7 days (168 h), automatic | Also deleted immediately when you delete the meeting |
+| Archived audio and raw transcript (kb2b storage) | For as long as the meeting exists | Deleted when you delete the meeting |
+| Documents, facts and embeddings | Until you delete them | Cascading: deleting a document or meeting erases its facts, their relationships and their vector-index embeddings |
+| Chat history | Until you delete the conversation | Stored content is erased when you delete the conversation |
+| Backups | Database replica: 24 h window. Files: backup versions of deleted objects expire after 30 days | Automatic expiry — no indefinite copies |
+| Usage events (internal telemetry, no document content) | 90 days | Automatic expiry; only billing aggregates are kept |
+| Account / workspace | While the account is active | Closure and erasure on request to [legal@kb2b.app](mailto:legal@kb2b.app); self-serve full account deletion and data export are in development |
+
+Operational detail on meeting deletion in the [Recording policy](/en/legal/recording-policy).
 
 ## If you need more detail
 
