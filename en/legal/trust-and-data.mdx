@@ -9,7 +9,7 @@ lang: "en"
 
 For an initial security and compliance evaluation — current state, stated plainly:
 
-- **Primary infrastructure and data storage and processing run in the European Union.** The app runs on Fly.io in Frankfurt (`fra`); data lives in AWS `eu-central-1` (databases, files, queues) and Pinecone `eu-central-1` (vector index). Meeting audio capture and transcription (Recall.ai, `eu-central-1`) and product analytics (PostHog EU cloud) also run in the EU. Transitional note: frozen US backups from the migration are scheduled for deletion within 14 days of the cutover (2026-08-02).
+- **Primary infrastructure and data storage and processing run in the European Union.** The app runs on Fly.io in Frankfurt (`fra`); data lives in AWS `eu-central-1` (databases, files, queues) and Pinecone `eu-central-1` (vector index). Meeting audio capture and transcription (Recall.ai, `eu-central-1`) and product analytics (PostHog EU cloud) also run in the EU. Transitional note: frozen US backups are scheduled for deletion by 2026-08-16.
 - **What still processes in the US:** LLM inference (OpenAI, Anthropic) under their commercial API terms, plus transactional email (Resend) and the optional web features (Tavily, Handinger) — see the sub-processor table below.
 - **Retention today:** the recording provider's copy of meeting audio is deleted automatically after 7 days. Everything else (documents, transcripts, facts, chat history) is kept until you delete it from the app — there is no automatic expiry. See the [Recording policy](/en/legal/recording-policy) for what deletion covers today.
 - **Recording consent documented** — see [Recording policy](/en/legal/recording-policy).
