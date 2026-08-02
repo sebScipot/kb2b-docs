@@ -10,7 +10,7 @@ lang: "en"
 For an initial security and compliance evaluation — current state, stated plainly:
 
 - **Primary infrastructure and data storage and processing run in the European Union.** The app runs on Fly.io in Frankfurt (`fra`); data lives in AWS `eu-central-1` (databases, files, queues) and Pinecone `eu-central-1` (vector index). Meeting audio capture and transcription (Recall.ai, `eu-central-1`) and product analytics (PostHog EU cloud) also run in the EU. Transitional note: frozen US backups are scheduled for deletion by 2026-08-16.
-- **What still processes in the US:** LLM inference (OpenAI, Anthropic) under their commercial API terms, plus transactional email (Resend) and the optional web features (Tavily, Handinger) — see the sub-processor table below.
+- **What still processes in the US:** LLM inference (OpenAI, Anthropic) under their commercial API terms, and transactional email (Resend) — see the sub-processor table below.
 - **Retention and deletion:** one policy per data type in the [section below](#retention-and-deletion). The short version: meeting audio expires on its own (7 days at the provider); everything else is kept until you delete it, and deletion is real — cascading to facts, embeddings, files and the provider's copy, out of backups within 30 days at most.
 - **Recording consent documented** — see [Recording policy](/en/legal/recording-policy).
 - **DPA: in preparation** — email [legal@kb2b.app](mailto:legal@kb2b.app) for status and timeline.
@@ -57,8 +57,6 @@ All customer data flows go through the services below. The AI providers (OpenAI,
 | Stripe (Stripe Payments Europe, Ltd.) | Billing | Email, organization id | Global | [DPA](https://stripe.com/legal/dpa) with SCCs · [DPF](https://www.dataprivacyframework.gov/participant/10014) active |
 | Resend (Plus Five Five, Inc.) | Transactional email | Email addresses, login codes, invitations | US | [DPA](https://resend.com/legal/dpa) with SCCs · [DPF](https://www.dataprivacyframework.gov/list) active (EU/UK) |
 | PostHog | Product analytics | Usage events tied to user identity | EU cloud (Frankfurt) | [DPA](https://posthog.com/dpa) with SCCs · [DPF](https://www.dataprivacyframework.gov/list) active |
-| Tavily | Web research in chat — **feature currently disabled in production** | None while disabled | US | Not applicable while disabled |
-| Handinger | Fetching user-submitted URLs — **feature currently disabled in production** | None while disabled | US | Not applicable while disabled |
 
 Sign-in uses Google or GitHub as OAuth identity providers (basic profile only).
 

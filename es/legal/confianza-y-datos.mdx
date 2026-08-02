@@ -10,7 +10,7 @@ lang: "es"
 Para una evaluación inicial de seguridad y cumplimiento — estado actual, sin adornos:
 
 - **La infraestructura principal y el almacenamiento y procesamiento de datos corren en la Unión Europea.** La aplicación corre en Fly.io en Frankfurt (`fra`); los datos viven en AWS `eu-central-1` (bases de datos, ficheros, colas) y Pinecone `eu-central-1` (índice vectorial). La captura y transcripción de audio de reuniones (Recall.ai, `eu-central-1`) y la analítica de producto (PostHog EU cloud) también corren en la UE. Nota transitoria: los backups congelados en EE.UU. están programados para eliminarse antes del 2026-08-16.
-- **Qué se sigue procesando en EE.UU.:** la inferencia LLM (OpenAI, Anthropic) bajo sus términos comerciales de API, además del email transaccional (Resend) y las funcionalidades web opcionales (Tavily, Handinger) — ver la tabla de sub-procesadores más abajo.
+- **Qué se sigue procesando en EE.UU.:** la inferencia LLM (OpenAI, Anthropic) bajo sus términos comerciales de API, y el email transaccional (Resend) — ver la tabla de sub-procesadores más abajo.
 - **Retención y borrado:** política única por tipo de dato en la [sección de abajo](#retención-y-borrado). Lo esencial: el audio de reuniones expira solo (7 días en el proveedor); el resto se conserva hasta que lo borras, y el borrado es real — en cascada a facts, embeddings, ficheros y copia del proveedor, con salida de backups en 30 días como máximo.
 - **Consentimiento de grabación documentado** — ver [Política de grabación](/es/legal/politica-de-grabacion).
 - **DPA: en preparación** — escribe a [legal@kb2b.app](mailto:legal@kb2b.app) para estado y fechas.
@@ -57,8 +57,6 @@ Todos los flujos de datos de cliente pasan por los servicios de abajo. Los prove
 | Stripe (Stripe Payments Europe, Ltd.) | Facturación | Email e id de organización | Global | [DPA](https://stripe.com/legal/dpa) con SCCs · [DPF](https://www.dataprivacyframework.gov/participant/10014) activo |
 | Resend (Plus Five Five, Inc.) | Email transaccional | Direcciones de email, códigos de login, invitaciones | EE.UU. | [DPA](https://resend.com/legal/dpa) con SCCs · [DPF](https://www.dataprivacyframework.gov/list) activo (EU/UK) |
 | PostHog | Analítica de producto | Eventos de uso ligados a la identidad del usuario | UE (EU cloud, Frankfurt) | [DPA](https://posthog.com/dpa) con SCCs · [DPF](https://www.dataprivacyframework.gov/list) activo |
-| Tavily | Búsqueda web en el chat — **funcionalidad desactivada actualmente en producción** | Ninguno mientras esté desactivada | EE.UU. | No aplica mientras esté desactivada |
-| Handinger | Lectura de URLs enviadas por usuarios — **funcionalidad desactivada actualmente en producción** | Ninguno mientras esté desactivada | EE.UU. | No aplica mientras esté desactivada |
 
 El inicio de sesión usa Google o GitHub como proveedores de identidad OAuth (solo perfil básico).
 
