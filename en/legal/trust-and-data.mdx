@@ -9,8 +9,8 @@ lang: "en"
 
 For an initial security and compliance evaluation — current state, stated plainly:
 
-- **Hosting and storage run in the United States today.** The app runs on Fly.io (Virginia) and data lives in AWS `us-east-1` (databases, files, queues) and Pinecone `us-east-1` (vector index). Migration of this infrastructure to EU regions is in progress.
-- **What runs in the EU today:** meeting audio capture and transcription (Recall.ai, Frankfurt) and product analytics (PostHog EU cloud).
+- **Primary infrastructure and data storage and processing run in the European Union.** The app runs on Fly.io in Frankfurt (`fra`); data lives in AWS `eu-central-1` (databases, files, queues) and Pinecone `eu-central-1` (vector index). Meeting audio capture and transcription (Recall.ai, `eu-central-1`) and product analytics (PostHog EU cloud) also run in the EU. Transitional note: frozen US backups from the migration are scheduled for deletion within 14 days of the cutover (2026-08-02).
+- **What still processes in the US:** LLM inference (OpenAI, Anthropic) under their commercial API terms, plus transactional email (Resend) and the optional web features (Tavily, Handinger) — see the sub-processor table below.
 - **Retention today:** the recording provider's copy of meeting audio is deleted automatically after 7 days. Everything else (documents, transcripts, facts, chat history) is kept until you delete it from the app — there is no automatic expiry. See the [Recording policy](/en/legal/recording-policy) for what deletion covers today.
 - **Recording consent documented** — see [Recording policy](/en/legal/recording-policy).
 - **DPA: in preparation** — email [legal@kb2b.app](mailto:legal@kb2b.app) for status and timeline.
@@ -32,12 +32,12 @@ All customer data flows go through the services below. The AI providers (OpenAI,
 
 | Sub-processor | Purpose | Customer data | Region |
 |---|---|---|---|
-| Fly.io | Application hosting | All application traffic; kb2b database | US (Virginia) |
-| AWS | Databases, file storage, queues, backups | Documents, transcripts, meeting audio archive, chat content | US (`us-east-1`) |
-| Pinecone | Vector search | Fact embeddings and identifiers (no raw text) | US (`us-east-1`) |
+| Fly.io | Application hosting | All application traffic; kb2b database | EU (Frankfurt, `fra`) |
+| AWS | Databases, file storage, queues, backups | Documents, transcripts, meeting audio archive, chat content | EU (`eu-central-1`) |
+| Pinecone | Vector search | Fact embeddings and identifiers (no raw text) | EU (`eu-central-1`) |
 | OpenAI | Fact extraction, synthesis, embeddings | Document excerpts, facts, queries | US |
 | Anthropic | Chat answers and summaries | Questions, facts, transcripts | US |
-| Recall.ai | Meeting audio capture and transcription | Raw audio, transcripts (auto-deleted after 7 days on their side) | EU (Frankfurt) |
+| Recall.ai | Meeting audio capture and transcription | Raw audio, transcripts (auto-deleted after 7 days on their side) | EU (Frankfurt, `eu-central-1`) |
 | Stripe | Billing | Email, organization id | Global |
 | Resend | Transactional email | Email addresses, login codes, invitations | US |
 | PostHog | Product analytics | Usage events tied to user identity | EU cloud |

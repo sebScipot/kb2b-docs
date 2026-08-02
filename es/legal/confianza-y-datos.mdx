@@ -9,8 +9,8 @@ lang: "es"
 
 Para una evaluación inicial de seguridad y cumplimiento — estado actual, sin adornos:
 
-- **Hosting y almacenamiento corren hoy en Estados Unidos.** La aplicación corre en Fly.io (Virginia) y los datos viven en AWS `us-east-1` (bases de datos, ficheros, colas) y Pinecone `us-east-1` (índice vectorial). La migración de esta infraestructura a regiones UE está en curso.
-- **Qué corre hoy en la UE:** captura y transcripción de audio de reuniones (Recall.ai, Frankfurt) y analítica de producto (PostHog EU cloud).
+- **La infraestructura principal y el almacenamiento y procesamiento de datos corren en la Unión Europea.** La aplicación corre en Fly.io en Frankfurt (`fra`); los datos viven en AWS `eu-central-1` (bases de datos, ficheros, colas) y Pinecone `eu-central-1` (índice vectorial). La captura y transcripción de audio de reuniones (Recall.ai, `eu-central-1`) y la analítica de producto (PostHog EU cloud) también corren en la UE. Nota transitoria: los backups congelados en EE.UU. de la migración están programados para eliminarse en los 14 días posteriores al cutover (2026-08-02).
+- **Qué se sigue procesando en EE.UU.:** la inferencia LLM (OpenAI, Anthropic) bajo sus términos comerciales de API, además del email transaccional (Resend) y las funcionalidades web opcionales (Tavily, Handinger) — ver la tabla de sub-procesadores más abajo.
 - **Retención hoy:** la copia del audio de reuniones del proveedor de grabación se borra automáticamente a los 7 días. El resto (documentos, transcripciones, facts, historial de chat) se conserva hasta que lo borras desde la app — no hay caducidad automática. Ver [Política de grabación](/es/legal/politica-de-grabacion) para el alcance actual del borrado.
 - **Consentimiento de grabación documentado** — ver [Política de grabación](/es/legal/politica-de-grabacion).
 - **DPA: en preparación** — escribe a [legal@kb2b.app](mailto:legal@kb2b.app) para estado y fechas.
@@ -32,12 +32,12 @@ Todos los flujos de datos de cliente pasan por los servicios de abajo. Los prove
 
 | Sub-procesador | Función | Datos de cliente | Región |
 |---|---|---|---|
-| Fly.io | Hosting de la aplicación | Todo el tráfico de la aplicación; base de datos de kb2b | EE.UU. (Virginia) |
-| AWS | Bases de datos, ficheros, colas, backups | Documentos, transcripciones, archivo de audio de reuniones, contenido de chat | EE.UU. (`us-east-1`) |
-| Pinecone | Búsqueda vectorial | Embeddings de facts e identificadores (sin texto en claro) | EE.UU. (`us-east-1`) |
+| Fly.io | Hosting de la aplicación | Todo el tráfico de la aplicación; base de datos de kb2b | UE (Frankfurt, `fra`) |
+| AWS | Bases de datos, ficheros, colas, backups | Documentos, transcripciones, archivo de audio de reuniones, contenido de chat | UE (`eu-central-1`) |
+| Pinecone | Búsqueda vectorial | Embeddings de facts e identificadores (sin texto en claro) | UE (`eu-central-1`) |
 | OpenAI | Extracción de facts, síntesis y embeddings | Fragmentos de documentos, facts, consultas | EE.UU. |
 | Anthropic | Respuestas de chat y resúmenes | Preguntas, facts, transcripciones | EE.UU. |
-| Recall.ai | Captura y transcripción de audio de reuniones | Audio bruto y transcripciones (auto-borrado a los 7 días en su lado) | UE (Frankfurt) |
+| Recall.ai | Captura y transcripción de audio de reuniones | Audio bruto y transcripciones (auto-borrado a los 7 días en su lado) | UE (Frankfurt, `eu-central-1`) |
 | Stripe | Facturación | Email e id de organización | Global |
 | Resend | Email transaccional | Direcciones de email, códigos de login, invitaciones | EE.UU. |
 | PostHog | Analítica de producto | Eventos de uso ligados a la identidad del usuario | UE (EU cloud) |
