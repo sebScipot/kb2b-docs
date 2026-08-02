@@ -46,19 +46,19 @@ Detalle operativo del borrado de reuniones en la [Política de grabación](/es/l
 
 Todos los flujos de datos de cliente pasan por los servicios de abajo. Los proveedores de IA (OpenAI, Anthropic) no entrenan modelos con los datos enviados por sus APIs, según sus términos comerciales de API; pueden retener los inputs durante un periodo breve para monitorización de abuso.
 
-| Sub-procesador | Función | Datos de cliente | Región |
-|---|---|---|---|
-| Fly.io | Hosting de la aplicación | Todo el tráfico de la aplicación; base de datos de kb2b | UE (Frankfurt, `fra`) |
-| AWS | Bases de datos, ficheros, colas, backups | Documentos, transcripciones, archivo de audio de reuniones, contenido de chat | UE (`eu-central-1`) |
-| Pinecone | Búsqueda vectorial | Embeddings de facts e identificadores (sin texto en claro) | UE (`eu-central-1`) |
-| OpenAI | Extracción de facts, síntesis y embeddings | Fragmentos de documentos, facts, consultas | EE.UU. |
-| Anthropic | Respuestas de chat y resúmenes | Preguntas, facts, transcripciones | EE.UU. |
-| Recall.ai | Captura y transcripción de audio de reuniones | Audio bruto y transcripciones (auto-borrado a los 7 días en su lado) | UE (Frankfurt, `eu-central-1`) |
-| Stripe | Facturación | Email e id de organización | Global |
-| Resend | Email transaccional | Direcciones de email, códigos de login, invitaciones | EE.UU. |
-| PostHog | Analítica de producto | Eventos de uso ligados a la identidad del usuario | UE (EU cloud) |
-| Tavily | Búsqueda web en el chat (funcionalidad opcional, desactivable) | Consultas de búsqueda derivadas del chat | EE.UU. |
-| Handinger | Lectura de URLs enviadas por usuarios (funcionalidad opcional, desactivable) | URLs enviadas por usuarios | EE.UU. |
+| Sub-procesador | Función | Datos de cliente | Región | Garantía de transferencia |
+|---|---|---|---|---|
+| Fly.io | Hosting de la aplicación | Todo el tráfico de la aplicación; base de datos de kb2b | UE (Frankfurt, `fra`) | [DPA](https://fly.io/documents/) con SCCs · [DPF](https://www.dataprivacyframework.gov/list) activo |
+| AWS | Bases de datos, ficheros, colas, backups | Documentos, transcripciones, archivo de audio de reuniones, contenido de chat | UE (`eu-central-1`) | [DPA](https://aws.amazon.com/compliance/gdpr-center/) con SCCs · [DPF](https://www.dataprivacyframework.gov/participant/5776) activo |
+| Pinecone | Búsqueda vectorial | Embeddings de facts e identificadores (sin texto en claro) | UE (`eu-central-1`) | [DPA](https://www.pinecone.io/legal/data-processing-addendum/) con SCCs |
+| OpenAI | Extracción de facts, síntesis y embeddings | Fragmentos de documentos, facts, consultas | EE.UU. | [DPA](https://openai.com/policies/data-processing-addendum/) con SCCs · contrato con OpenAI Ireland Ltd. |
+| Anthropic | Respuestas de chat y resúmenes | Preguntas, facts, transcripciones | EE.UU. | [DPA](https://www.anthropic.com/legal/data-processing-addendum) con SCCs · contrato con Anthropic Ireland, Limited |
+| Recall.ai (Hyperdoc Inc.) | Captura y transcripción de audio de reuniones | Audio bruto y transcripciones (auto-borrado a los 7 días en su lado, e inmediato al borrar la reunión) | UE (Frankfurt, `eu-central-1`) | [DPA](https://www.recall.ai/data-processing-agreement) con SCCs |
+| Stripe (Stripe Payments Europe, Ltd.) | Facturación | Email e id de organización | Global | [DPA](https://stripe.com/legal/dpa) con SCCs · [DPF](https://www.dataprivacyframework.gov/participant/10014) activo |
+| Resend (Plus Five Five, Inc.) | Email transaccional | Direcciones de email, códigos de login, invitaciones | EE.UU. | [DPA](https://resend.com/legal/dpa) con SCCs · [DPF](https://www.dataprivacyframework.gov/list) activo (EU/UK) |
+| PostHog | Analítica de producto | Eventos de uso ligados a la identidad del usuario | UE (EU cloud, Frankfurt) | [DPA](https://posthog.com/dpa) con SCCs · [DPF](https://www.dataprivacyframework.gov/list) activo |
+| Tavily | Búsqueda web en el chat — **funcionalidad desactivada actualmente en producción** | Ninguno mientras esté desactivada | EE.UU. | No aplica mientras esté desactivada |
+| Handinger | Lectura de URLs enviadas por usuarios — **funcionalidad desactivada actualmente en producción** | Ninguno mientras esté desactivada | EE.UU. | No aplica mientras esté desactivada |
 
 El inicio de sesión usa Google o GitHub como proveedores de identidad OAuth (solo perfil básico).
 

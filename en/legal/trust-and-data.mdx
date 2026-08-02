@@ -46,19 +46,19 @@ Operational detail on meeting deletion in the [Recording policy](/en/legal/recor
 
 All customer data flows go through the services below. The AI providers (OpenAI, Anthropic) do not train models on data sent through their APIs, per their commercial API terms; they may retain inputs briefly for abuse monitoring.
 
-| Sub-processor | Purpose | Customer data | Region |
-|---|---|---|---|
-| Fly.io | Application hosting | All application traffic; kb2b database | EU (Frankfurt, `fra`) |
-| AWS | Databases, file storage, queues, backups | Documents, transcripts, meeting audio archive, chat content | EU (`eu-central-1`) |
-| Pinecone | Vector search | Fact embeddings and identifiers (no raw text) | EU (`eu-central-1`) |
-| OpenAI | Fact extraction, synthesis, embeddings | Document excerpts, facts, queries | US |
-| Anthropic | Chat answers and summaries | Questions, facts, transcripts | US |
-| Recall.ai | Meeting audio capture and transcription | Raw audio, transcripts (auto-deleted after 7 days on their side) | EU (Frankfurt, `eu-central-1`) |
-| Stripe | Billing | Email, organization id | Global |
-| Resend | Transactional email | Email addresses, login codes, invitations | US |
-| PostHog | Product analytics | Usage events tied to user identity | EU cloud |
-| Tavily | Web research in chat (optional feature, can be disabled) | Search queries derived from chat | US |
-| Handinger | Fetching user-submitted URLs (optional feature, can be disabled) | URLs submitted by users | US |
+| Sub-processor | Purpose | Customer data | Region | Transfer safeguard |
+|---|---|---|---|---|
+| Fly.io | Application hosting | All application traffic; kb2b database | EU (Frankfurt, `fra`) | [DPA](https://fly.io/documents/) with SCCs · [DPF](https://www.dataprivacyframework.gov/list) active |
+| AWS | Databases, file storage, queues, backups | Documents, transcripts, meeting audio archive, chat content | EU (`eu-central-1`) | [DPA](https://aws.amazon.com/compliance/gdpr-center/) with SCCs · [DPF](https://www.dataprivacyframework.gov/participant/5776) active |
+| Pinecone | Vector search | Fact embeddings and identifiers (no raw text) | EU (`eu-central-1`) | [DPA](https://www.pinecone.io/legal/data-processing-addendum/) with SCCs |
+| OpenAI | Fact extraction, synthesis, embeddings | Document excerpts, facts, queries | US | [DPA](https://openai.com/policies/data-processing-addendum/) with SCCs · contract with OpenAI Ireland Ltd. |
+| Anthropic | Chat answers and summaries | Questions, facts, transcripts | US | [DPA](https://www.anthropic.com/legal/data-processing-addendum) with SCCs · contract with Anthropic Ireland, Limited |
+| Recall.ai (Hyperdoc Inc.) | Meeting audio capture and transcription | Raw audio, transcripts (auto-deleted after 7 days on their side, and immediately when you delete the meeting) | EU (Frankfurt, `eu-central-1`) | [DPA](https://www.recall.ai/data-processing-agreement) with SCCs |
+| Stripe (Stripe Payments Europe, Ltd.) | Billing | Email, organization id | Global | [DPA](https://stripe.com/legal/dpa) with SCCs · [DPF](https://www.dataprivacyframework.gov/participant/10014) active |
+| Resend (Plus Five Five, Inc.) | Transactional email | Email addresses, login codes, invitations | US | [DPA](https://resend.com/legal/dpa) with SCCs · [DPF](https://www.dataprivacyframework.gov/list) active (EU/UK) |
+| PostHog | Product analytics | Usage events tied to user identity | EU cloud (Frankfurt) | [DPA](https://posthog.com/dpa) with SCCs · [DPF](https://www.dataprivacyframework.gov/list) active |
+| Tavily | Web research in chat — **feature currently disabled in production** | None while disabled | US | Not applicable while disabled |
+| Handinger | Fetching user-submitted URLs — **feature currently disabled in production** | None while disabled | US | Not applicable while disabled |
 
 Sign-in uses Google or GitHub as OAuth identity providers (basic profile only).
 
